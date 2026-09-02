@@ -1,5 +1,6 @@
 /* ============================================================
-   EcoMedic - Estilos del formulario de inicio de sesión
+   ECOMEDIC - ESTILOS DEL FORMULARIO DE INICIO DE SESIÓN
+   Identidad visual: Azul marino + Naranja
    ============================================================ */
 
 
@@ -7,12 +8,6 @@
    1. PÁGINA PRINCIPAL DEL LOGIN
    ============================================================ */
 
-/*
- * Contenedor que ocupa toda la pantalla.
- *
- * Se utiliza Flexbox para centrar el formulario
- * horizontal y verticalmente.
- */
 .login-page {
   min-height: 100vh;
   width: 100%;
@@ -24,13 +19,8 @@
   padding: 24px;
   box-sizing: border-box;
 
-  /* Fondo degradado de la pantalla */
-  background: linear-gradient(
-    135deg,
-    #e8f7f5 0%,
-    #f4fbff 50%,
-    #e8f0ff 100%
-  );
+  /* Fondo utilizado en la interfaz principal de EcoMedic */
+  background: #f5f6f9;
 }
 
 
@@ -38,26 +28,19 @@
    2. TARJETA DEL FORMULARIO
    ============================================================ */
 
-/*
- * Contenedor principal donde se encuentra
- * todo el formulario de inicio de sesión.
- */
 .login-form {
   width: 100%;
   max-width: 420px;
 
   padding: 40px;
 
-  background: rgba(255, 255, 255, 0.96);
+  background: #ffffff;
 
-  border: 1px solid rgba(255, 255, 255, 0.8);
-  border-radius: 20px;
+  border: 1px solid #e3e7ee;
+  border-radius: 16px;
 
-  /*
-   * Sombra suave para dar profundidad
-   * y apariencia de tarjeta.
-   */
-  box-shadow: 0 20px 50px rgba(30, 70, 90, 0.14);
+  /* Sombra suave para dar profundidad */
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.09);
 
   box-sizing: border-box;
 }
@@ -67,10 +50,6 @@
    3. ENCABEZADO
    ============================================================ */
 
-/*
- * Organiza y centra el contenido superior
- * del formulario.
- */
 .login-header {
   text-align: center;
   margin-bottom: 32px;
@@ -82,13 +61,9 @@
    ============================================================ */
 
 /*
- * Botón visual que muestra el nombre EcoMedic.
- *
- * No tiene ninguna función de navegación.
- * Su objetivo es representar la identidad visual
- * de la aplicación.
+ * Muestra el nombre de la aplicación.
+ * El azul representa la identidad principal de EcoMedic.
  */
-/* Identidad visual de EcoMedic */
 .login-logo {
   width: 150px;
   height: 50px;
@@ -99,25 +74,24 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 14px;
+  border-radius: 10px;
 
-  background: linear-gradient(
-    135deg,
-    #159a8c,
-    #25b6a5
-  );
+  /* Azul principal de EcoMedic */
+  background: #13315c;
 
-  color: white;
+  color: #ffffff;
 
   font-size: 20px;
   font-weight: 700;
 
   letter-spacing: 0.5px;
 
-  /* Evita que el nombre se corte */
   white-space: nowrap;
 
-  box-shadow: 0 10px 25px rgba(21, 154, 140, 0.25);
+  /* Detalle naranja */
+  border-bottom: 3px solid #e2542a;
+
+  box-shadow: 0 6px 16px rgba(19, 49, 92, 0.18);
 }
 
 
@@ -125,26 +99,21 @@
    5. TÍTULO Y DESCRIPCIÓN
    ============================================================ */
 
-/*
- * Título principal del formulario.
- */
 .login-header h1 {
   margin: 0 0 8px;
 
-  color: #173b4d;
+  /* Azul oscuro utilizado en EcoMedic */
+  color: #0f1b2d;
 
   font-size: 30px;
   font-weight: 700;
 }
 
 
-/*
- * Texto descriptivo ubicado debajo del título.
- */
 .login-header p {
   margin: 0;
 
-  color: #71838d;
+  color: #64748b;
 
   font-size: 14px;
 }
@@ -154,10 +123,6 @@
    6. GRUPOS DE CAMPOS
    ============================================================ */
 
-/*
- * Espaciado entre los diferentes campos
- * del formulario.
- */
 .form-group {
   margin-bottom: 22px;
 }
@@ -167,16 +132,12 @@
    7. ETIQUETAS
    ============================================================ */
 
-/*
- * Estilos para las etiquetas de Carnet
- * y Contraseña.
- */
 .form-group label {
   display: block;
 
   margin-bottom: 8px;
 
-  color: #294957;
+  color: #13315c;
 
   font-size: 14px;
   font-weight: 600;
@@ -187,21 +148,18 @@
    8. CAMPOS DE ENTRADA
    ============================================================ */
 
-/*
- * Diseño general de los campos de texto.
- */
 .form-group input {
   width: 100%;
   height: 50px;
 
   padding: 0 15px;
 
-  border: 1px solid #d5e2e7;
-  border-radius: 10px;
+  border: 1px solid #e3e7ee;
+  border-radius: 8px;
 
-  background: #fafdfe;
+  background: #ffffff;
 
-  color: #243f4a;
+  color: #0f1b2d;
 
   font-size: 15px;
 
@@ -209,10 +167,6 @@
 
   box-sizing: border-box;
 
-  /*
-   * Permite realizar una transición
-   * suave cuando el campo recibe el foco.
-   */
   transition:
     border-color 0.2s ease,
     box-shadow 0.2s ease,
@@ -220,32 +174,26 @@
 }
 
 
-/*
- * Color del texto de ayuda que aparece
- * cuando el campo está vacío.
- */
+/* Texto de ayuda de los campos */
 .form-group input::placeholder {
-  color: #9aabb3;
+  color: #94a3b8;
 }
 
 
 /* ============================================================
-   9. ESTADO FOCUS DE LOS INPUTS
+   9. INPUT SELECCIONADO
    ============================================================ */
 
-/*
- * Se aplica cuando el usuario selecciona
- * uno de los campos.
- */
 .form-group input:focus {
-  border-color: #159a8c;
+  border-color: #e2542a;
 
-  background: white;
+  background: #ffffff;
 
   /*
-   * Resalta visualmente el campo seleccionado.
+   * Resalta el campo utilizando
+   * el naranja de EcoMedic.
    */
-  box-shadow: 0 0 0 4px rgba(21, 154, 140, 0.12);
+  box-shadow: 0 0 0 3px rgba(226, 84, 42, 0.12);
 }
 
 
@@ -253,21 +201,17 @@
    10. MENSAJE DE ERROR
    ============================================================ */
 
-/*
- * Aviso visual para mostrar errores de autenticación
- * enviados por el componente padre.
- */
 .login-error {
   margin: 0 0 18px;
 
   padding: 12px 14px;
 
-  border: 1px solid #f1cccc;
-  border-radius: 9px;
+  border: 1px solid #f3c4b7;
+  border-radius: 8px;
 
-  background: #fff3f3;
+  background: #fff5f2;
 
-  color: #c03939;
+  color: #b9381d;
 
   font-size: 14px;
 }
@@ -278,8 +222,9 @@
    ============================================================ */
 
 /*
- * Botón principal utilizado para enviar
- * las credenciales de inicio de sesión.
+ * Botón principal del formulario.
+ * Utiliza el naranja de la identidad visual
+ * de EcoMedic para llamar la atención.
  */
 .login-button {
   width: 100%;
@@ -288,30 +233,19 @@
   margin-top: 4px;
 
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
 
-  background: linear-gradient(
-    135deg,
-    #159a8c,
-    #20aa9a
-  );
+  background: #e2542a;
 
-  color: white;
+  color: #ffffff;
 
   font-size: 16px;
   font-weight: 600;
 
   cursor: pointer;
 
-  /*
-   * Sombra que da profundidad al botón.
-   */
-  box-shadow: 0 8px 18px rgba(21, 154, 140, 0.22);
+  box-shadow: 0 6px 16px rgba(226, 84, 42, 0.20);
 
-  /*
-   * Transición para los efectos
-   * de interacción.
-   */
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,
@@ -323,39 +257,34 @@
    12. EFECTO HOVER DEL BOTÓN
    ============================================================ */
 
-/*
- * Se ejecuta cuando el cursor pasa
- * por encima del botón.
- */
 .login-button:hover {
+  background: #c94722;
+
   transform: translateY(-1px);
 
-  box-shadow: 0 11px 25px rgba(21, 154, 140, 0.3);
+  box-shadow: 0 9px 20px rgba(226, 84, 42, 0.28);
 }
 
 
-/*
- * Se ejecuta mientras el botón está siendo presionado.
- */
+/* ============================================================
+   13. BOTÓN PRESIONADO
+   ============================================================ */
+
 .login-button:active {
   transform: translateY(0);
 }
 
 
 /* ============================================================
-   13. PIE DEL FORMULARIO
+   14. PIE DEL FORMULARIO
    ============================================================ */
 
-/*
- * Información secundaria ubicada
- * debajo del botón.
- */
 .login-footer {
   margin: 24px 0 0;
 
   text-align: center;
 
-  color: #8a9aa2;
+  color: #64748b;
 
   font-size: 13px;
 
@@ -363,56 +292,36 @@
 }
 
 
-/*
- * Resalta el nombre de la aplicación.
- */
+/* Nombre EcoMedic en el pie */
 .login-footer strong {
-  color: #159a8c;
+  color: #13315c;
 }
 
 
 /* ============================================================
-   14. DISEÑO RESPONSIVO
+   15. DISEÑO RESPONSIVO
    ============================================================ */
 
-/*
- * Adaptaciones para dispositivos móviles
- * y pantallas pequeñas.
- */
 @media (max-width: 480px) {
 
-  /*
-   * Reduce el espacio alrededor
-   * del formulario.
-   */
   .login-page {
     padding: 16px;
   }
 
-  /*
-   * Reduce el tamaño interno
-   * de la tarjeta.
-   */
   .login-form {
     padding: 30px 22px;
 
-    border-radius: 16px;
+    border-radius: 14px;
   }
 
-  /*
-   * Reduce el tamaño del título
-   * para pantallas pequeñas.
-   */
   .login-header h1 {
     font-size: 26px;
   }
 
-  /*
-   * Ajusta el tamaño del nombre EcoMedic.
-   */
-    .login-logo {
+  .login-logo {
     width: 150px;
     height: 50px;
+
     font-size: 20px;
-    }
+  }
 }
