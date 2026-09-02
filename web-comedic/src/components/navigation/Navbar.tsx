@@ -5,12 +5,10 @@ import type { User } from "../../types/auth";
 
 import "./Navbar.css";
 
-
 interface NavbarProps {
   user: User | null;
   onLogout: () => void;
 }
-
 
 interface NavigationItemProps {
   href: string;
@@ -18,7 +16,6 @@ interface NavigationItemProps {
   onNavigate: () => void;
   children: ReactNode;
 }
-
 
 function NavigationItem({ href, label, onNavigate, children }: NavigationItemProps) {
   return (
@@ -29,7 +26,6 @@ function NavigationItem({ href, label, onNavigate, children }: NavigationItemPro
   );
 }
 
-
 function MenuIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -37,7 +33,6 @@ function MenuIcon() {
     </svg>
   );
 }
-
 
 function CloseIcon() {
   return (
@@ -47,7 +42,6 @@ function CloseIcon() {
   );
 }
 
-
 function HomeIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -56,35 +50,46 @@ function HomeIcon() {
   );
 }
 
-
-function UserIcon() {
+function PatientsIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="M20 21a8 8 0 0 0-16 0M12 13a5 5 0 1 0 0-10 5 5 0 0 0 0 10Z" />
+      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
     </svg>
   );
 }
 
-
-function BellIcon() {
+function ReportIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M14 21h-4" />
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8ZM14 2v6h6M8 13h8M8 17h6" />
     </svg>
   );
 }
 
-
-function CartIcon() {
+function ImageIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="M3 4h2l2.3 10.2a2 2 0 0 0 2 1.6h7.9a2 2 0 0 0 1.9-1.4L21 8H7M10 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0ZM18 20a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z" />
+      <rect x="3" y="3" width="18" height="18" rx="2" />
+      <circle cx="8.5" cy="8.5" r="1.5" />
+      <path d="m21 15-5-5L5 21" />
     </svg>
   );
 }
 
+function SettingsIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
+      <path d="m19.4 15 .1.1a2 2 0 0 1-2.8 2.8l-.1-.1a2 2 0 0 0-3.4 1.4V19a2 2 0 0 1-4 0v-.1a2 2 0 0 0-3.4-1.4l-.1.1A2 2 0 0 1 3 14.8l.1-.1a2 2 0 0 0-1.4-3.4H1.5a2 2 0 0 1 0-4h.1A2 2 0 0 0 3 3.9l-.1-.1A2 2 0 0 1 5.7 1l.1.1a2 2 0 0 0 3.4-1.4V-.5a2 2 0 0 1 4 0v.1a2 2 0 0 0 3.4 1.4l.1-.1A2 2 0 0 1 19.5 3l-.1.1a2 2 0 0 0 1.4 3.4h.1a2 2 0 0 1 0 4h-.1a2 2 0 0 0-1.4 3.4Z" transform="translate(1 3)" />
+    </svg>
+  );
+}
 
-/** Menú lateral reutilizable para las vistas con sesión autenticada. */
+/**
+ * Menú lateral principal de EcoMedic.
+ * Su identidad visual sigue el prototipo: azul marino,
+ * blanco y naranja como color de acento.
+ */
 function Navbar({ user, onLogout }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const closeMenu = () => setIsOpen(false);
@@ -116,6 +121,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
             <span className="sidebar__brand-mark" aria-hidden="true">+</span>
             <span>EcoMedic</span>
           </a>
+
           <button className="sidebar__close" type="button" aria-label="Cerrar menú" onClick={closeMenu}>
             <CloseIcon />
           </button>
@@ -125,19 +131,32 @@ function Navbar({ user, onLogout }: NavbarProps) {
           <NavigationItem href="#inicio" label="Inicio" onNavigate={closeMenu}>
             <HomeIcon />
           </NavigationItem>
-          <NavigationItem href="#perfil" label="Perfil" onNavigate={closeMenu}>
-            <UserIcon />
+
+          <NavigationItem href="#pacientes" label="Pacientes e Historiales" onNavigate={closeMenu}>
+            <PatientsIcon />
           </NavigationItem>
-          <NavigationItem href="#notificaciones" label="Notificaciones" onNavigate={closeMenu}>
-            <BellIcon />
+
+          <NavigationItem href="#nuevo-informe" label="Nuevo Informe Ecográfico" onNavigate={closeMenu}>
+            <ReportIcon />
           </NavigationItem>
-          <NavigationItem href="#carrito" label="Carrito" onNavigate={closeMenu}>
-            <CartIcon />
+
+          <NavigationItem href="#imagenes" label="Repositorio de Imágenes" onNavigate={closeMenu}>
+            <ImageIcon />
+          </NavigationItem>
+
+          <NavigationItem href="#configuracion" label="Configuración / Usuarios" onNavigate={closeMenu}>
+            <SettingsIcon />
           </NavigationItem>
         </nav>
 
         <div className="sidebar__footer">
-          {user && <p className="sidebar__user">{user.name}</p>}
+          {user && (
+            <div className="sidebar__user-info">
+              <span className="sidebar__user-name">{user.name}</span>
+              <span className="sidebar__user-role">{user.role}</span>
+            </div>
+          )}
+
           <button className="sidebar__logout" type="button" onClick={onLogout}>
             Cerrar sesión
           </button>
@@ -146,6 +165,5 @@ function Navbar({ user, onLogout }: NavbarProps) {
     </>
   );
 }
-
 
 export default Navbar;
