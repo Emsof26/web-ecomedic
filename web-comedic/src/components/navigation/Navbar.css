@@ -1,17 +1,42 @@
+/* ============================================================
+   ECOMEDIC - NAVBAR / MENÚ LATERAL
+   Identidad visual del prototipo: azul marino + blanco + naranja
+   ============================================================ */
+
+:root {
+  --ec-navy: #13315c;
+  --ec-navy-deep: #0a1d38;
+  --ec-orange: #e2542a;
+  --ec-orange-dark: #c94722;
+  --ec-white: #ffffff;
+  --ec-text: #0f1b2d;
+  --ec-text-soft: #64748b;
+  --ec-line: #e3e7ee;
+}
+
+/* ============================================================
+   1. MENÚ LATERAL
+   ============================================================ */
+
 .sidebar {
   position: fixed;
   z-index: 20;
   inset: 0 auto 0 0;
-  width: 260px;
-  padding: 24px 16px 20px;
+  width: 250px;
+  padding: 22px 14px 18px;
+  box-sizing: border-box;
 
   display: flex;
   flex-direction: column;
 
-  background: rgba(255, 255, 255, 0.96);
-  border-right: 1px solid #d5e2e7;
-  box-shadow: 8px 0 24px rgba(30, 70, 90, 0.1);
+  background: linear-gradient(190deg, var(--ec-navy), var(--ec-navy-deep));
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 8px 0 24px rgba(15, 23, 42, 0.14);
 }
+
+/* ============================================================
+   2. CABECERA Y MARCA
+   ============================================================ */
 
 .sidebar__header,
 .sidebar__brand,
@@ -26,11 +51,11 @@
 }
 
 .sidebar__brand {
-  gap: 10px;
-  color: #173b4d;
+  gap: 11px;
+  color: var(--ec-white);
   font-size: 20px;
   font-weight: 700;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
   text-decoration: none;
 }
 
@@ -39,35 +64,43 @@
   height: 38px;
   display: grid;
   place-items: center;
-  border-radius: 12px;
-  background: linear-gradient(135deg, #159a8c, #25b6a5);
-  box-shadow: 0 8px 18px rgba(21, 154, 140, 0.25);
-  color: #fff;
-  font-size: 27px;
+  border-radius: 10px;
+  background: var(--ec-orange);
+  color: var(--ec-white);
+  font-size: 25px;
+  font-weight: 500;
   line-height: 1;
+  box-shadow: 0 6px 16px rgba(226, 84, 42, 0.25);
 }
+
+/* ============================================================
+   3. NAVEGACIÓN
+   ============================================================ */
 
 .sidebar__navigation {
   display: grid;
-  gap: 6px;
+  gap: 5px;
 }
 
 .sidebar__link {
   min-height: 48px;
-  gap: 14px;
+  gap: 13px;
   padding: 0 14px;
-  border-radius: 10px;
-  color: #294957;
-  font-size: 15px;
+  border-radius: 9px;
+
+  color: rgba(255, 255, 255, 0.82);
+  font-size: 14px;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color 0.2s ease, color 0.2s ease;
+
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
 .sidebar__link:hover,
 .sidebar__link:focus-visible {
-  background: #e8f7f5;
-  color: #117d73;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--ec-white);
+  transform: translateX(2px);
 }
 
 .sidebar__link svg,
@@ -75,6 +108,7 @@
 .sidebar__close svg {
   width: 21px;
   height: 21px;
+  flex-shrink: 0;
   fill: none;
   stroke: currentColor;
   stroke-linecap: round;
@@ -82,46 +116,73 @@
   stroke-width: 1.8;
 }
 
+/* ============================================================
+   4. PIE DEL MENÚ / USUARIO
+   ============================================================ */
+
 .sidebar__footer {
   margin-top: auto;
-  padding: 20px 8px 0;
-  border-top: 1px solid #d5e2e7;
+  padding: 18px 8px 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
 }
 
-.sidebar__user {
-  margin: 0 0 12px;
+.sidebar__user-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 14px;
+}
+
+.sidebar__user-name {
   overflow: hidden;
-  color: #71838d;
+  color: var(--ec-white);
   font-size: 14px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sidebar__user-role {
+  overflow: hidden;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 12px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
 .sidebar__logout {
   width: 100%;
-  min-height: 46px;
-  border: 0;
-  border-radius: 10px;
-  background: #159a8c;
-  box-shadow: 0 5px 12px rgba(21, 154, 140, 0.2);
-  color: #fff;
+  min-height: 44px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+
+  background: var(--ec-orange);
+  color: var(--ec-white);
+
   font: inherit;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+
+  box-shadow: 0 5px 12px rgba(226, 84, 42, 0.2);
+  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
 .sidebar__logout:hover,
 .sidebar__logout:focus-visible {
-  background: #117d73;
+  background: var(--ec-orange-dark);
+  transform: translateY(-1px);
 }
+
+/* ============================================================
+   5. BOTONES DE MENÚ RESPONSIVO
+   ============================================================ */
 
 .sidebar-toggle,
 .sidebar__close {
   border: 0;
   background: transparent;
-  color: #294957;
+  color: var(--ec-white);
   cursor: pointer;
 }
 
@@ -138,18 +199,26 @@
   display: none;
 }
 
+/* ============================================================
+   6. ACCESIBILIDAD
+   ============================================================ */
+
 .sidebar__link:focus-visible,
 .sidebar__brand:focus-visible,
 .sidebar__logout:focus-visible,
 .sidebar-toggle:focus-visible,
 .sidebar__close:focus-visible {
-  outline: 3px solid rgba(21, 154, 140, 0.3);
+  outline: 3px solid rgba(226, 84, 42, 0.45);
   outline-offset: 2px;
 }
 
+/* ============================================================
+   7. VISTA MÓVIL
+   ============================================================ */
+
 @media (max-width: 768px) {
   .sidebar {
-    width: min(82vw, 300px);
+    width: min(84vw, 300px);
     transform: translateX(-105%);
     transition: transform 0.25s ease;
   }
@@ -165,11 +234,14 @@
     left: 16px;
     width: 44px;
     height: 44px;
+
     display: grid;
     place-items: center;
-    border-radius: 10px;
-    background: #fff;
-    box-shadow: 0 6px 18px rgba(30, 70, 90, 0.14);
+
+    border-radius: 9px;
+    background: var(--ec-navy);
+    color: var(--ec-white);
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
   }
 
   .sidebar__close {
@@ -181,11 +253,14 @@
     position: fixed;
     z-index: 15;
     inset: 0;
+
     display: block;
     visibility: hidden;
+
     border: 0;
-    background: rgba(23, 59, 77, 0.35);
+    background: rgba(10, 29, 56, 0.55);
     opacity: 0;
+
     transition: opacity 0.25s ease, visibility 0.25s ease;
   }
 
