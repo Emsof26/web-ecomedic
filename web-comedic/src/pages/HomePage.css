@@ -1,34 +1,190 @@
+/* ============================================================
+   ECOMEDIC - PÁGINA PRINCIPAL
+   Diseño basado en el prototipo: azul marino, blanco y naranja
+   ============================================================ */
+
 .home-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e8f7f5 0%, #f4fbff 50%, #e8f0ff 100%);
+  background: #f5f6f9;
 }
 
 .home-page__content {
   min-height: 100vh;
-  margin-left: 260px;
-  padding: 48px clamp(28px, 6vw, 80px);
-  color: #294957;
+  margin-left: 250px;
+  padding: 34px clamp(24px, 5vw, 64px) 60px;
+  box-sizing: border-box;
+  color: #0f1b2d;
 }
 
-.home-page__content h1 {
-  margin: 0 0 12px;
-  color: #173b4d;
+/* ============================================================
+   1. ENCABEZADO DE BIENVENIDA
+   ============================================================ */
+
+.home-page__hero {
+  max-width: 980px;
+  min-height: 190px;
+  margin: 0 auto 24px;
+  padding: 30px 34px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 28px;
+
+  border-radius: 14px;
+  background: linear-gradient(135deg, #13315c, #0a1d38);
+  color: #ffffff;
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.12);
+  overflow: hidden;
 }
 
-.home-page__content section {
-  max-width: 680px;
-  margin-bottom: 44px;
-  scroll-margin-top: 24px;
+.home-page__eyebrow {
+  margin: 0 0 9px;
+  color: #ffb49a;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
 }
 
-.home-page__content h2 {
-  color: #173b4d;
-  font-size: 20px;
+.home-page__hero h1 {
+  margin: 0 0 10px;
+  color: #ffffff;
+  font-size: clamp(28px, 4vw, 38px);
+  line-height: 1.15;
 }
+
+.home-page__welcome {
+  max-width: 650px;
+  margin: 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.home-page__welcome strong {
+  color: #ffffff;
+}
+
+.home-page__hero-accent {
+  width: 92px;
+  height: 92px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  background: #e2542a;
+  box-shadow: 0 12px 24px rgba(226, 84, 42, 0.24);
+  transform: rotate(4deg);
+}
+
+.home-page__hero-accent span {
+  color: #ffffff;
+  font-size: 54px;
+  font-weight: 300;
+  line-height: 1;
+  transform: rotate(-4deg);
+}
+
+/* ============================================================
+   2. TARJETAS DE MÓDULOS
+   ============================================================ */
+
+.home-page__card {
+  max-width: 980px;
+  min-height: 100px;
+  margin: 0 auto 14px;
+  padding: 22px 24px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  border: 1px solid #e3e7ee;
+  border-radius: 12px;
+  background: #ffffff;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, 0.06);
+
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.home-page__card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.09);
+}
+
+.home-page__card h2 {
+  margin: 0 0 6px;
+  color: #13315c;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.home-page__card p {
+  margin: 0;
+  color: #64748b;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.home-page__card-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.home-page__card-icon--blue {
+  background: #13315c;
+}
+
+.home-page__card-icon--orange {
+  background: #e2542a;
+}
+
+/* ============================================================
+   3. VISTA MÓVIL
+   ============================================================ */
 
 @media (max-width: 768px) {
   .home-page__content {
     margin-left: 0;
-    padding: 84px 24px 40px;
+    padding: 82px 18px 40px;
+  }
+
+  .home-page__hero {
+    min-height: auto;
+    padding: 26px 22px;
+  }
+
+  .home-page__hero-accent {
+    width: 68px;
+    height: 68px;
+    border-radius: 14px;
+  }
+
+  .home-page__hero-accent span {
+    font-size: 40px;
+  }
+}
+
+@media (max-width: 520px) {
+  .home-page__hero {
+    align-items: flex-start;
+  }
+
+  .home-page__hero-accent {
+    display: none;
+  }
+
+  .home-page__card {
+    align-items: flex-start;
+    padding: 18px;
   }
 }
