@@ -1,271 +1,174 @@
-/* ============================================================
-   ECOMEDIC - NAVBAR / MENÚ LATERAL
-   Identidad visual del prototipo: azul marino + blanco + naranja
-   ============================================================ */
-
-:root {
-  --ec-navy: #13315c;
-  --ec-navy-deep: #0a1d38;
-  --ec-orange: #e2542a;
-  --ec-orange-dark: #c94722;
-  --ec-white: #ffffff;
-  --ec-text: #0f1b2d;
-  --ec-text-soft: #64748b;
-  --ec-line: #e3e7ee;
-}
-
-/* ============================================================
-   1. MENÚ LATERAL
-   ============================================================ */
-
-.sidebar {
+.navbar {
   position: fixed;
   z-index: 20;
   inset: 0 auto 0 0;
-  width: 250px;
-  padding: 22px 14px 18px;
-  box-sizing: border-box;
-
+  width: 274px;
+  padding: 20px 14px 12px;
   display: flex;
   flex-direction: column;
-
-  background: linear-gradient(190deg, var(--ec-navy), var(--ec-navy-deep));
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 8px 0 24px rgba(15, 23, 42, 0.14);
+  background: #08254b;
+  box-shadow: 6px 0 20px rgba(4, 23, 51, 0.18);
+  color: #eaf3ff;
 }
 
-/* ============================================================
-   2. CABECERA Y MARCA
-   ============================================================ */
+.navbar__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1px 8px 15px;
+}
 
-.sidebar__header,
-.sidebar__brand,
-.sidebar__link {
+.navbar__brand,
+.navbar__account,
+.navbar__link,
+.navbar__theme {
   display: flex;
   align-items: center;
 }
 
-.sidebar__header {
-  justify-content: space-between;
-  padding: 0 8px 28px;
-}
-
-.sidebar__brand {
-  gap: 11px;
-  color: var(--ec-white);
-  font-size: 20px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
+.navbar__brand {
+  gap: 10px;
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.05;
   text-decoration: none;
 }
 
-.sidebar__brand-mark {
-  width: 38px;
-  height: 38px;
+.navbar__brand strong,
+.navbar__brand small,
+.navbar__account strong,
+.navbar__account small {
+  display: block;
+}
+
+.navbar__brand small,
+.navbar__account small {
+  margin-top: 4px;
+  color: #b7cce8;
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.navbar__brand-mark,
+.navbar__avatar {
   display: grid;
   place-items: center;
-  border-radius: 10px;
-  background: var(--ec-orange);
-  color: var(--ec-white);
-  font-size: 25px;
-  font-weight: 500;
-  line-height: 1;
-  box-shadow: 0 6px 16px rgba(226, 84, 42, 0.25);
+  border-radius: 11px;
+  background: #102f58;
+  color: #ff8a58;
+  font-size: 23px;
+  font-weight: 700;
 }
 
-/* ============================================================
-   3. NAVEGACIÓN
-   ============================================================ */
-
-.sidebar__navigation {
-  display: grid;
-  gap: 5px;
+.navbar__brand-mark {
+  width: 36px;
+  height: 36px;
 }
 
-.sidebar__link {
-  min-height: 48px;
-  gap: 13px;
-  padding: 0 14px;
-  border-radius: 9px;
+.navbar__user-panel { margin-bottom: 20px; }
 
-  color: rgba(255, 255, 255, 0.82);
-  font-size: 14px;
-  font-weight: 600;
-  text-decoration: none;
-
-  transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
-}
-
-.sidebar__link:hover,
-.sidebar__link:focus-visible {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--ec-white);
-  transform: translateX(2px);
-}
-
-.sidebar__link svg,
-.sidebar-toggle svg,
-.sidebar__close svg {
-  width: 21px;
-  height: 21px;
-  flex-shrink: 0;
-  fill: none;
-  stroke: currentColor;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  stroke-width: 1.8;
-}
-
-/* ============================================================
-   4. PIE DEL MENÚ / USUARIO
-   ============================================================ */
-
-.sidebar__footer {
-  margin-top: auto;
-  padding: 18px 8px 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.14);
-}
-
-.sidebar__user-info {
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  margin-bottom: 14px;
-}
-
-.sidebar__user-name {
-  overflow: hidden;
-  color: var(--ec-white);
-  font-size: 14px;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.sidebar__user-role {
-  overflow: hidden;
-  color: rgba(255, 255, 255, 0.62);
-  font-size: 12px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.sidebar__logout {
+.navbar__account {
   width: 100%;
-  min-height: 44px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 8px;
-
-  background: var(--ec-orange);
-  color: var(--ec-white);
-
+  min-height: 52px;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid #365579;
+  border-radius: 11px;
+  background: #163960;
+  color: #fff;
   font: inherit;
-  font-size: 14px;
-  font-weight: 600;
+  text-align: left;
   cursor: pointer;
-
-  box-shadow: 0 5px 12px rgba(226, 84, 42, 0.2);
-  transition: background-color 0.2s ease, transform 0.2s ease;
 }
 
-.sidebar__logout:hover,
-.sidebar__logout:focus-visible {
-  background: var(--ec-orange-dark);
-  transform: translateY(-1px);
+.navbar__avatar { width: 29px; height: 29px; border-radius: 50%; font-size: 16px; }
+.navbar__account strong { font-size: 12px; }
+.navbar__account svg { width: 16px; margin-left: auto; fill: none; stroke: #b7cce8; stroke-width: 2; }
+
+.navbar__roles {
+  margin-top: 6px;
+  overflow: hidden;
+  border-radius: 9px;
+  background: #061c39;
 }
 
-/* ============================================================
-   5. BOTONES DE MENÚ RESPONSIVO
-   ============================================================ */
-
-.sidebar-toggle,
-.sidebar__close {
+.navbar__role {
+  width: 100%;
+  padding: 10px 16px;
   border: 0;
   background: transparent;
-  color: var(--ec-white);
+  color: #f6f9ff;
+  font: inherit;
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+.navbar__role--selected { color: #ffad79; }
+.navbar__role:hover { background: #102f58; }
+
+.navbar__navigation { display: grid; gap: 7px; }
+
+.navbar__link {
+  min-height: 40px;
+  gap: 14px;
+  padding: 0 12px;
+  border-radius: 9px;
+  color: #e6f0ff;
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background-color .2s ease, color .2s ease;
+}
+
+.navbar__link:first-child,
+.navbar__link:hover,
+.navbar__link:focus-visible { background: #3d405a; color: #ffad79; }
+.navbar__link svg,
+.navbar__theme svg,
+.navbar-toggle svg,
+.navbar__close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+
+.navbar__footer { margin-top: auto; }
+.navbar__theme {
+  width: 100%;
+  min-height: 39px;
+  gap: 12px;
+  padding: 0 13px;
+  border: 1px solid #365579;
+  border-radius: 10px;
+  background: #15375f;
+  color: #eaf3ff;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
   cursor: pointer;
 }
 
-.sidebar-toggle {
-  display: none;
-}
+.navbar__logout { width: 100%; margin-top: 10px; padding: 8px; border: 0; border-radius: 8px; background: transparent; color: #b7cce8; font: inherit; font-size: 12px; cursor: pointer; }
+.navbar__logout:hover { background: #15375f; color: #fff; }
+.navbar__copyright { margin: 10px 0 0; color: #7191b5; font-size: 9px; text-align: center; }
 
-.sidebar__close {
-  display: none;
-  padding: 8px;
-}
-
-.sidebar__overlay {
-  display: none;
-}
-
-/* ============================================================
-   6. ACCESIBILIDAD
-   ============================================================ */
-
-.sidebar__link:focus-visible,
-.sidebar__brand:focus-visible,
-.sidebar__logout:focus-visible,
-.sidebar-toggle:focus-visible,
-.sidebar__close:focus-visible {
-  outline: 3px solid rgba(226, 84, 42, 0.45);
-  outline-offset: 2px;
-}
-
-/* ============================================================
-   7. VISTA MÓVIL
-   ============================================================ */
+.navbar-toggle, .navbar__close { border: 0; background: transparent; color: #dfeeff; cursor: pointer; }
+.navbar-toggle, .navbar__close, .navbar__overlay { display: none; }
+.navbar__link:focus-visible, .navbar__brand:focus-visible, .navbar__account:focus-visible, .navbar__theme:focus-visible, .navbar__logout:focus-visible, .navbar-toggle:focus-visible, .navbar__close:focus-visible { outline: 2px solid #ffad79; outline-offset: 2px; }
 
 @media (max-width: 768px) {
-  .sidebar {
-    width: min(84vw, 300px);
-    transform: translateX(-105%);
-    transition: transform 0.25s ease;
-  }
-
-  .sidebar--open {
-    transform: translateX(0);
-  }
-
-  .sidebar-toggle {
-    position: fixed;
-    z-index: 10;
-    top: 16px;
-    left: 16px;
-    width: 44px;
-    height: 44px;
-
-    display: grid;
-    place-items: center;
-
-    border-radius: 9px;
-    background: var(--ec-navy);
-    color: var(--ec-white);
-    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
-  }
-
-  .sidebar__close {
-    display: grid;
-    place-items: center;
-  }
-
-  .sidebar__overlay {
-    position: fixed;
-    z-index: 15;
-    inset: 0;
-
-    display: block;
-    visibility: hidden;
-
-    border: 0;
-    background: rgba(10, 29, 56, 0.55);
-    opacity: 0;
-
-    transition: opacity 0.25s ease, visibility 0.25s ease;
-  }
-
-  .sidebar__overlay--visible {
-    visibility: visible;
-    opacity: 1;
-  }
+  .navbar { width: min(82vw, 300px); transform: translateX(-105%); transition: transform .25s ease; }
+  .navbar--open { transform: translateX(0); }
+  .navbar-toggle { position: fixed; z-index: 10; top: 16px; left: 16px; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 9px; background: #08254b; box-shadow: 0 4px 12px rgba(4, 23, 51, .3); }
+  .navbar__close { display: grid; place-items: center; }
+  .navbar__overlay { position: fixed; z-index: 15; inset: 0; display: block; visibility: hidden; border: 0; background: rgba(3, 18, 40, .58); opacity: 0; transition: opacity .25s ease, visibility .25s ease; }
+  .navbar__overlay--visible { visibility: visible; opacity: 1; }
 }
+
+body.navbar-dark-mode { background: #0b1830; }
+body.navbar-dark-mode .home-page { background: #0b1830; }
+body.navbar-dark-mode .home-page__content { color: #dce9f8; }
+body.navbar-dark-mode .dashboard-header h1,
+body.navbar-dark-mode .dashboard-panel h2 { color: #fff; }
+body.navbar-dark-mode .dashboard-header p,
+body.navbar-dark-mode .summary-card p,
+body.navbar-dark-mode .dashboard-panel p { color: #b7cce8; }
+body.navbar-dark-mode .summary-card,
+body.navbar-dark-mode .dashboard-panel { border-color: #284565; background: #122d50; }

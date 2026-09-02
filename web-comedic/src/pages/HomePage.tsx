@@ -5,72 +5,43 @@ import { authRepository } from "../repositories/authRepository";
 
 import "./HomePage.css";
 
+
 function HomePage() {
   const navigate = useNavigate();
   const user = authRepository.getCurrentUser();
+
 
   const handleLogout = () => {
     authRepository.logout();
     navigate("/login", { replace: true });
   };
 
+
   return (
     <div className="home-page">
       <Navbar user={user} onLogout={handleLogout} />
-
       <main className="home-page__content">
-        <section id="inicio" className="home-page__hero">
+        <section id="inicio" className="dashboard-header">
           <div>
-            <p className="home-page__eyebrow">SISTEMA CLÍNICO ECOGRÁFICO</p>
-            <h1>Bienvenido a EcoMedic</h1>
-            {user ? (
-              <p className="home-page__welcome">
-                Bienvenido, <strong>{user.name}</strong>. Gestiona la información clínica de manera organizada y segura.
-              </p>
-            ) : (
-              <p className="home-page__welcome">Sistema de gestión para la atención y diagnóstico ecográfico.</p>
-            )}
+            <h1>Buenos días, {user?.name ?? "Usuario"}</h1>
+            <p>Panel de gestión clínica de EcoMedic</p>
           </div>
-
-          <div className="home-page__hero-accent" aria-hidden="true">
-            <span>+</span>
-          </div>
+          <a className="new-report-button" href="#nuevo-informe">＋ Nuevo Informe</a>
         </section>
 
-        <section id="pacientes" className="home-page__card">
-          <div className="home-page__card-icon home-page__card-icon--blue">01</div>
-          <div>
-            <h2>Pacientes e Historiales</h2>
-            <p>Consulta pacientes, datos personales e historial clínico de forma rápida y organizada.</p>
-          </div>
+        <section className="summary-cards" aria-label="Resumen de informes">
+          <article className="summary-card"><span className="summary-card__icon">◷</span><strong>2</strong><p>Informes en borrador</p></article>
+          <article className="summary-card"><span className="summary-card__icon summary-card__icon--green">♢</span><strong>4</strong><p>Informes firmados</p></article>
         </section>
 
-        <section id="nuevo-informe" className="home-page__card">
-          <div className="home-page__card-icon home-page__card-icon--orange">02</div>
-          <div>
-            <h2>Nuevo Informe Ecográfico</h2>
-            <p>Registra y administra los informes correspondientes a los estudios ecográficos realizados.</p>
-          </div>
-        </section>
-
-        <section id="imagenes" className="home-page__card">
-          <div className="home-page__card-icon home-page__card-icon--blue">03</div>
-          <div>
-            <h2>Repositorio de Imágenes</h2>
-            <p>Organiza y consulta las imágenes asociadas a los estudios ecográficos de los pacientes.</p>
-          </div>
-        </section>
-
-        <section id="configuracion" className="home-page__card">
-          <div className="home-page__card-icon home-page__card-icon--orange">04</div>
-          <div>
-            <h2>Configuración / Usuarios</h2>
-            <p>Administra las opciones del sistema y los usuarios según los permisos asignados.</p>
-          </div>
-        </section>
+        <section id="pacientes" className="dashboard-panel"><h2>Actividad reciente</h2><p>Consulta pacientes e historiales ecográficos.</p></section>
+        <section id="nuevo-informe" className="dashboard-panel"><h2>Nuevo Informe Ecográfico</h2><p>Registra un nuevo informe para tus pacientes.</p></section>
+        <section id="repositorio" className="dashboard-panel"><h2>Repositorio de Imágenes</h2><p>Organiza y consulta los estudios almacenados.</p></section>
+        <section id="configuracion" className="dashboard-panel"><h2>Configuración / Usuarios</h2><p>Administra preferencias y usuarios del sistema.</p></section>
       </main>
     </div>
   );
 }
+
 
 export default HomePage;

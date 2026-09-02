@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 
 import type { User } from "../../types/auth";
 
 import "./Navbar.css";
 
+
 interface NavbarProps {
   user: User | null;
   onLogout: () => void;
 }
+
 
 interface NavigationItemProps {
   href: string;
@@ -17,14 +19,16 @@ interface NavigationItemProps {
   children: ReactNode;
 }
 
+
 function NavigationItem({ href, label, onNavigate, children }: NavigationItemProps) {
   return (
-    <a className="sidebar__link" href={href} onClick={onNavigate}>
+    <a className="navbar__link" href={href} onClick={onNavigate}>
       {children}
       <span>{label}</span>
     </a>
   );
 }
+
 
 function MenuIcon() {
   return (
@@ -34,6 +38,7 @@ function MenuIcon() {
   );
 }
 
+
 function CloseIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -41,6 +46,7 @@ function CloseIcon() {
     </svg>
   );
 }
+
 
 function HomeIcon() {
   return (
@@ -50,54 +56,88 @@ function HomeIcon() {
   );
 }
 
+
 function PatientsIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
+      <path d="M16 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM21 20v-1a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8" />
     </svg>
   );
 }
+
 
 function ReportIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8ZM14 2v6h6M8 13h8M8 17h6" />
+      <path d="M6 3h8l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2ZM14 3v5h5M8 13h8M8 17h6" />
     </svg>
   );
 }
+
 
 function ImageIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
-      <rect x="3" y="3" width="18" height="18" rx="2" />
-      <circle cx="8.5" cy="8.5" r="1.5" />
-      <path d="m21 15-5-5L5 21" />
+      <rect x="3" y="4" width="18" height="16" rx="2" />
+      <circle cx="8.5" cy="9" r="1.5" />
+      <path d="m21 16-5-5L5 20" />
     </svg>
   );
 }
+
 
 function SettingsIcon() {
   return (
     <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7Z" />
-      <path d="m19.4 15 .1.1a2 2 0 0 1-2.8 2.8l-.1-.1a2 2 0 0 0-3.4 1.4V19a2 2 0 0 1-4 0v-.1a2 2 0 0 0-3.4-1.4l-.1.1A2 2 0 0 1 3 14.8l.1-.1a2 2 0 0 0-1.4-3.4H1.5a2 2 0 0 1 0-4h.1A2 2 0 0 0 3 3.9l-.1-.1A2 2 0 0 1 5.7 1l.1.1a2 2 0 0 0 3.4-1.4V-.5a2 2 0 0 1 4 0v.1a2 2 0 0 0 3.4 1.4l.1-.1A2 2 0 0 1 19.5 3l-.1.1a2 2 0 0 0 1.4 3.4h.1a2 2 0 0 1 0 4h-.1a2 2 0 0 0-1.4 3.4Z" transform="translate(1 3)" />
+      <circle cx="12" cy="12" r="3" />
+      <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.4 2.4-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-3.4v-.2a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1-2.4-2.4.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H4.2v-3.4h.2a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1L8 5.2l.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.6v-.2h3.4V4a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1 2.4 2.4-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2V14H21a1.7 1.7 0 0 0-1.6 1Z" />
     </svg>
   );
 }
 
-/**
- * Menú lateral principal de EcoMedic.
- * Su identidad visual sigue el prototipo: azul marino,
- * blanco y naranja como color de acento.
- */
+
+function MoonIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path d="M21 15.2A9 9 0 0 1 8.8 3 9 9 0 1 0 21 15.2Z" />
+    </svg>
+  );
+}
+
+
+function ChevronIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path d="m7 14 5-5 5 5" />
+    </svg>
+  );
+}
+
+
+/** Menú lateral reutilizable para las vistas con sesión autenticada. */
 function Navbar({ user, onLogout }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
+  const [isRoleMenuOpen, setIsRoleMenuOpen] = useState(true);
+  const initialRole = user?.role === "ADMIN" ? "Administrador" : "Médico General";
+  const [selectedRole, setSelectedRole] = useState(initialRole);
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const closeMenu = () => setIsOpen(false);
+
+  useEffect(() => {
+    document.body.classList.toggle("navbar-dark-mode", isDarkMode);
+
+    return () => document.body.classList.remove("navbar-dark-mode");
+  }, [isDarkMode]);
+
+  const selectRole = (role: string) => {
+    setSelectedRole(role);
+    setIsRoleMenuOpen(false);
+  };
 
   return (
     <>
       <button
-        className="sidebar-toggle"
+        className="navbar-toggle"
         type="button"
         aria-label={isOpen ? "Cerrar menú" : "Abrir menú"}
         aria-controls="main-sidebar"
@@ -108,62 +148,87 @@ function Navbar({ user, onLogout }: NavbarProps) {
       </button>
 
       <button
-        className={`sidebar__overlay${isOpen ? " sidebar__overlay--visible" : ""}`}
+        className={`navbar__overlay${isOpen ? " navbar__overlay--visible" : ""}`}
         type="button"
         aria-label="Cerrar menú"
         tabIndex={isOpen ? 0 : -1}
         onClick={closeMenu}
       />
 
-      <aside id="main-sidebar" className={`sidebar${isOpen ? " sidebar--open" : ""}`}>
-        <div className="sidebar__header">
-          <a className="sidebar__brand" href="#inicio" onClick={closeMenu}>
-            <span className="sidebar__brand-mark" aria-hidden="true">+</span>
-            <span>EcoMedic</span>
+      <aside id="main-sidebar" className={`navbar${isOpen ? " navbar--open" : ""}`}>
+        <div className="navbar__header">
+          <a className="navbar__brand" href="#inicio" onClick={closeMenu}>
+            <span className="navbar__brand-mark" aria-hidden="true">↯</span>
+            <span><strong>EcoMedic</strong><small>Gestión Ecográfica</small></span>
           </a>
-
-          <button className="sidebar__close" type="button" aria-label="Cerrar menú" onClick={closeMenu}>
+          <button className="navbar__close" type="button" aria-label="Cerrar menú" onClick={closeMenu}>
             <CloseIcon />
           </button>
         </div>
 
-        <nav className="sidebar__navigation" aria-label="Navegación principal">
+        <div className="navbar__user-panel">
+          <button
+            className="navbar__account"
+            type="button"
+            aria-expanded={isRoleMenuOpen}
+            onClick={() => setIsRoleMenuOpen((currentValue) => !currentValue)}
+          >
+            <span className="navbar__avatar" aria-hidden="true">↯</span>
+            <span><strong>{user?.name ?? "Usuario"}</strong><small>{selectedRole}</small></span>
+            <ChevronIcon />
+          </button>
+          {isRoleMenuOpen && (
+            <div className="navbar__roles">
+              {(["Médico General", "Administrador", "Recepcionista"] as const).map((role) => (
+                <button
+                  className={`navbar__role${selectedRole === role ? " navbar__role--selected" : ""}`}
+                  type="button"
+                  key={role}
+                  onClick={() => selectRole(role)}
+                >
+                  {selectedRole === role ? "✓ " : ""}{role}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <nav className="navbar__navigation" aria-label="Navegación principal">
           <NavigationItem href="#inicio" label="Inicio" onNavigate={closeMenu}>
             <HomeIcon />
           </NavigationItem>
-
           <NavigationItem href="#pacientes" label="Pacientes e Historiales" onNavigate={closeMenu}>
             <PatientsIcon />
           </NavigationItem>
-
           <NavigationItem href="#nuevo-informe" label="Nuevo Informe Ecográfico" onNavigate={closeMenu}>
             <ReportIcon />
           </NavigationItem>
-
-          <NavigationItem href="#imagenes" label="Repositorio de Imágenes" onNavigate={closeMenu}>
+          <NavigationItem href="#repositorio" label="Repositorio de Imágenes" onNavigate={closeMenu}>
             <ImageIcon />
           </NavigationItem>
-
           <NavigationItem href="#configuracion" label="Configuración / Usuarios" onNavigate={closeMenu}>
             <SettingsIcon />
           </NavigationItem>
         </nav>
 
-        <div className="sidebar__footer">
-          {user && (
-            <div className="sidebar__user-info">
-              <span className="sidebar__user-name">{user.name}</span>
-              <span className="sidebar__user-role">{user.role}</span>
-            </div>
-          )}
-
-          <button className="sidebar__logout" type="button" onClick={onLogout}>
+        <div className="navbar__footer">
+          <button
+            className="navbar__theme"
+            type="button"
+            aria-pressed={isDarkMode}
+            onClick={() => setIsDarkMode((currentValue) => !currentValue)}
+          >
+            <MoonIcon />{isDarkMode ? "Modo claro" : "Modo nocturno"}
+          </button>
+          <button className="navbar__logout" type="button" onClick={onLogout}>
             Cerrar sesión
           </button>
+          <p className="navbar__copyright">EcoMedic · Servicios de Ecografía</p>
         </div>
       </aside>
     </>
   );
 }
+
 
 export default Navbar;
