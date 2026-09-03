@@ -168,7 +168,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
           <NavigationItem href="#inicio" label="Inicio" onNavigate={closeMenu}>
             <HomeIcon />
           </NavigationItem>
-          <NavigationItem href="#pacientes" label="Pacientes e Historiales" onNavigate={closeMenu}>
+          <NavigationItem href="/pacientes" label="Pacientes e Historiales" onNavigate={closeMenu}>
             <PatientsIcon />
           </NavigationItem>
           {!isReceptionist && (

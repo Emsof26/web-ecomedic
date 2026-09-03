@@ -7,6 +7,7 @@ import {
 
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/auth/LoginPage";
+import PatientsHistoryPage from "../pages/patients/PatientsHistoryPage";
 
 
 function AppRoutes() {
@@ -14,6 +15,7 @@ function AppRoutes() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        <Route path="/pacientes" element={<PatientsHistoryPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
