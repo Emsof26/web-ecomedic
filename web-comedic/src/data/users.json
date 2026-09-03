@@ -2,15 +2,22 @@
   {
     "id": "user-1",
     "name": "Administrador",
-    "carnet": "1234567",
+    "carnet": "123",
     "password": "admin123",
     "role": "ADMIN"
   },
   {
     "id": "user-2",
-    "name": "Usuario de prueba",
-    "carnet": "7654321",
-    "password": "usuario123",
-    "role": "USUARIO"
+    "name": "Médico General",
+    "carnet": "456",
+    "password": "medico456",
+    "role": "MEDICO"
+  },
+  {
+    "id": "user-3",
+    "name": "Recepcionista",
+    "carnet": "789",
+    "password": "recep789",
+    "role": "RECEPCIONISTA"
   }
 ]

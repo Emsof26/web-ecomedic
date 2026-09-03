@@ -105,34 +105,23 @@ function MoonIcon() {
 }
 
 
-function ChevronIcon() {
-  return (
-    <svg aria-hidden="true" viewBox="0 0 24 24">
-      <path d="m7 14 5-5 5 5" />
-    </svg>
-  );
-}
-
-
 /** Menú lateral reutilizable para las vistas con sesión autenticada. */
 function Navbar({ user, onLogout }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isRoleMenuOpen, setIsRoleMenuOpen] = useState(true);
-  const initialRole = user?.role === "ADMIN" ? "Administrador" : "Médico General";
-  const [selectedRole, setSelectedRole] = useState(initialRole);
   const [isDarkMode, setIsDarkMode] = useState(false);
   const closeMenu = () => setIsOpen(false);
+  const isReceptionist = user?.role === "RECEPCIONISTA";
+  const roleLabel = {
+    ADMIN: "Administrador",
+    MEDICO: "Médico General",
+    RECEPCIONISTA: "Recepcionista",
+  }[user?.role ?? "ADMIN"];
 
   useEffect(() => {
     document.body.classList.toggle("navbar-dark-mode", isDarkMode);
 
     return () => document.body.classList.remove("navbar-dark-mode");
   }, [isDarkMode]);
-
-  const selectRole = (role: string) => {
-    setSelectedRole(role);
-    setIsRoleMenuOpen(false);
-  };
 
   return (
     <>
@@ -167,31 +156,13 @@ function Navbar({ user, onLogout }: NavbarProps) {
         </div>
 
         <div className="navbar__user-panel">
-          <button
-            className="navbar__account"
-            type="button"
-            aria-expanded={isRoleMenuOpen}
-            onClick={() => setIsRoleMenuOpen((currentValue) => !currentValue)}
-          >
+          <div className="navbar__account">
             <span className="navbar__avatar" aria-hidden="true">↯</span>
-            <span><strong>{user?.name ?? "Usuario"}</strong><small>{selectedRole}</small></span>
-            <ChevronIcon />
-          </button>
-          {isRoleMenuOpen && (
-            <div className="navbar__roles">
-              {(["Médico General", "Administrador", "Recepcionista"] as const).map((role) => (
-                <button
-                  className={`navbar__role${selectedRole === role ? " navbar__role--selected" : ""}`}
-                  type="button"
-                  key={role}
-                  onClick={() => selectRole(role)}
-                >
-                  {selectedRole === role ? "✓ " : ""}{role}
-                </button>
-              ))}
-            </div>
-          )}
+            <span><strong>{user?.name ?? "Usuario"}</strong><small>{roleLabel}</small></span>
+          </div>
         </div>
+
+        {isReceptionist && <p className="navbar__read-only">⌁ Acceso de solo lectura</p>}
 
         <nav className="navbar__navigation" aria-label="Navegación principal">
           <NavigationItem href="#inicio" label="Inicio" onNavigate={closeMenu}>
@@ -200,9 +171,11 @@ function Navbar({ user, onLogout }: NavbarProps) {
           <NavigationItem href="#pacientes" label="Pacientes e Historiales" onNavigate={closeMenu}>
             <PatientsIcon />
           </NavigationItem>
-          <NavigationItem href="#nuevo-informe" label="Nuevo Informe Ecográfico" onNavigate={closeMenu}>
-            <ReportIcon />
-          </NavigationItem>
+          {!isReceptionist && (
+            <NavigationItem href="#nuevo-informe" label="Nuevo Informe Ecográfico" onNavigate={closeMenu}>
+              <ReportIcon />
+            </NavigationItem>
+          )}
           <NavigationItem href="#repositorio" label="Repositorio de Imágenes" onNavigate={closeMenu}>
             <ImageIcon />
           </NavigationItem>
