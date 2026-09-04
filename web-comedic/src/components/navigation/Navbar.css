@@ -11,88 +11,19 @@
   color: #eaf3ff;
 }
 
-.navbar__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1px 8px 15px;
-}
-
-.navbar__brand,
-.navbar__link,
-.navbar__theme {
-  display: flex;
-  align-items: center;
-}
-
-.navbar__brand {
-  gap: 10px;
-  color: #fff;
-  font-size: 15px;
-  line-height: 1.05;
-  text-decoration: none;
-}
-
-.navbar__brand strong,
-.navbar__brand small,
-.navbar__account strong,
-.navbar__account small {
-  display: block;
-}
-
-.navbar__brand small,
-.navbar__account small {
-  margin-top: 4px;
-  color: #b7cce8;
-  font-size: 10px;
-  font-weight: 500;
-}
-
-.navbar__brand-mark,
-.navbar__avatar {
-  display: grid;
-  place-items: center;
-  border-radius: 11px;
-  background: #102f58;
-  color: #ff8a58;
-  font-size: 23px;
-  font-weight: 700;
-}
-
-.navbar__brand-mark {
-  width: 36px;
-  height: 36px;
-  overflow: hidden;
-  padding: 3px;
-}
-
-.navbar__brand-mark img {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: contain;
-}
-
+.navbar__header { display: flex; align-items: center; justify-content: space-between; padding: 1px 8px 15px; }
+.navbar__brand, .navbar__link, .navbar__theme { display: flex; align-items: center; }
+.navbar__brand { gap: 10px; color: #fff; font-size: 15px; line-height: 1.05; text-decoration: none; }
+.navbar__brand strong, .navbar__brand small, .navbar__account strong, .navbar__account small { display: block; }
+.navbar__brand small, .navbar__account small { margin-top: 4px; color: #b7cce8; font-size: 10px; font-weight: 500; }
+.navbar__brand-mark, .navbar__avatar { display: grid; place-items: center; border-radius: 11px; background: #102f58; color: #ff8a58; font-size: 23px; font-weight: 700; }
+.navbar__brand-mark { width: 36px; height: 36px; overflow: hidden; padding: 3px; }
+.navbar__brand-mark img { width: 100%; height: 100%; display: block; object-fit: contain; }
 .navbar__user-panel { margin-bottom: 20px; }
-
-.navbar__account {
-  width: 100%;
-  min-height: 52px;
-  gap: 10px;
-  padding: 9px 12px;
-  border: 1px solid #365579;
-  border-radius: 11px;
-  background: #163960;
-  color: #fff;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-
+.navbar__account { width: 100%; min-height: 52px; gap: 10px; padding: 9px 12px; border: 1px solid #365579; border-radius: 11px; background: #163960; color: #fff; font: inherit; text-align: left; }
 .navbar__avatar { width: 29px; height: 29px; border-radius: 50%; font-size: 16px; }
 .navbar__account strong { font-size: 12px; }
 .navbar__read-only { margin: -8px 4px 14px; color: #b7cce8; font-size: 11px; }
-
 .navbar__navigation { display: grid; gap: 7px; }
 
 .navbar__link {
@@ -104,38 +35,23 @@
   font-size: 12px;
   font-weight: 600;
   text-decoration: none;
-  transition: background-color .2s ease, color .2s ease;
+  transition: background-color .2s ease, color .2s ease, transform .2s ease;
 }
 
-.navbar__link:first-child,
 .navbar__link:hover,
-.navbar__link:focus-visible { background: #3d405a; color: #ffad79; }
-.navbar__link svg,
-.navbar__theme svg,
-.navbar-toggle svg,
-.navbar__close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
-
-.navbar__footer { margin-top: auto; }
-.navbar__theme {
-  width: 100%;
-  min-height: 39px;
-  gap: 12px;
-  padding: 0 13px;
-  border: 1px solid #365579;
-  border-radius: 10px;
-  background: #15375f;
-  color: #eaf3ff;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: left;
-  cursor: pointer;
+.navbar__link:focus-visible,
+.navbar__link--active {
+  background: #3d405a;
+  color: #ffad79;
 }
 
+.navbar__link--active { box-shadow: inset 3px 0 0 #ffad79; }
+.navbar__link svg, .navbar__theme svg, .navbar-toggle svg, .navbar__close svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.7; }
+.navbar__footer { margin-top: auto; }
+.navbar__theme { width: 100%; min-height: 39px; gap: 12px; padding: 0 13px; border: 1px solid #365579; border-radius: 10px; background: #15375f; color: #eaf3ff; font: inherit; font-size: 12px; font-weight: 600; text-align: left; cursor: pointer; }
 .navbar__logout { width: 100%; margin-top: 10px; padding: 8px; border: 0; border-radius: 8px; background: transparent; color: #b7cce8; font: inherit; font-size: 12px; cursor: pointer; }
 .navbar__logout:hover { background: #15375f; color: #fff; }
 .navbar__copyright { margin: 10px 0 0; color: #7191b5; font-size: 9px; text-align: center; }
-
 .navbar-toggle, .navbar__close { border: 0; background: transparent; color: #dfeeff; cursor: pointer; }
 .navbar-toggle, .navbar__close, .navbar__overlay { display: none; }
 .navbar__link:focus-visible, .navbar__brand:focus-visible, .navbar__theme:focus-visible, .navbar__logout:focus-visible, .navbar-toggle:focus-visible, .navbar__close:focus-visible { outline: 2px solid #ffad79; outline-offset: 2px; }
