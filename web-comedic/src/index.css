@@ -1,10 +1,42 @@
-* {
-  box-sizing: border-box;
+:root {
+  color-scheme: light;
+  --app-background: #f4f7fb;
+  --surface: #ffffff;
+  --surface-muted: #edf3f8;
+  --text-primary: #08254b;
+  --text-secondary: #597493;
+  --border: #d8e1eb;
+  --accent: #c94b2b;
+  --accent-hover: #a83a20;
+  --notice-background: #e5f4ff;
+  --notice-border: #9ed0f2;
+  --shadow: 0 4px 14px rgba(34, 61, 95, .06);
 }
 
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --app-background: #0b1728;
+  --surface: #12243b;
+  --surface-muted: #1a314b;
+  --text-primary: #edf5ff;
+  --text-secondary: #b4c5d9;
+  --border: #294764;
+  --accent: #f07a52;
+  --accent-hover: #ff926d;
+  --notice-background: #133451;
+  --notice-border: #326282;
+  --shadow: 0 8px 22px rgba(0, 0, 0, .2);
+}
+
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
+  min-width: 320px;
+  background: var(--app-background);
+  color: var(--text-primary);
   font-family: Arial, sans-serif;
-  background: #f3f4f6;
+  transition: background-color .2s ease, color .2s ease;
 }
+
+button, input, select { font: inherit; }

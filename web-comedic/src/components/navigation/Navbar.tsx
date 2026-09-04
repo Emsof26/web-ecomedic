@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ReactNode } from "react";
 
 import type { User } from "../../types/auth";
-
+import { useTheme } from "../../hooks/useTheme";
 import "./Navbar.css";
+
 
 
 interface NavbarProps {
@@ -105,23 +106,28 @@ function MoonIcon() {
 }
 
 
+function SunIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+    </svg>
+  );
+}
+
+
 /** Menú lateral reutilizable para las vistas con sesión autenticada. */
 function Navbar({ user, onLogout }: NavbarProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { theme, toggleTheme } = useTheme();
   const closeMenu = () => setIsOpen(false);
   const isReceptionist = user?.role === "RECEPCIONISTA";
+  const isAdmin = user?.role === "ADMIN";
   const roleLabel = {
     ADMIN: "Administrador",
     MEDICO: "Médico General",
     RECEPCIONISTA: "Recepcionista",
   }[user?.role ?? "ADMIN"];
-
-  useEffect(() => {
-    document.body.classList.toggle("navbar-dark-mode", isDarkMode);
-
-    return () => document.body.classList.remove("navbar-dark-mode");
-  }, [isDarkMode]);
 
   return (
     <>
@@ -147,7 +153,9 @@ function Navbar({ user, onLogout }: NavbarProps) {
       <aside id="main-sidebar" className={`navbar${isOpen ? " navbar--open" : ""}`}>
         <div className="navbar__header">
           <a className="navbar__brand" href="#inicio" onClick={closeMenu}>
-            <span className="navbar__brand-mark" aria-hidden="true">↯</span>
+            <span className="navbar__brand-mark">
+              <img src="/logo/logo-eco.png" alt="" />
+            </span>
             <span><strong>EcoMedic</strong><small>Gestión Ecográfica</small></span>
           </a>
           <button className="navbar__close" type="button" aria-label="Cerrar menú" onClick={closeMenu}>
@@ -179,19 +187,22 @@ function Navbar({ user, onLogout }: NavbarProps) {
           <NavigationItem href="#repositorio" label="Repositorio de Imágenes" onNavigate={closeMenu}>
             <ImageIcon />
           </NavigationItem>
-          <NavigationItem href="#configuracion" label="Configuración / Usuarios" onNavigate={closeMenu}>
-            <SettingsIcon />
-          </NavigationItem>
+          {isAdmin && (
+            <NavigationItem href="#configuracion" label="Configuración / Usuarios" onNavigate={closeMenu}>
+              <SettingsIcon />
+            </NavigationItem>
+          )}
         </nav>
 
         <div className="navbar__footer">
           <button
             className="navbar__theme"
             type="button"
-            aria-pressed={isDarkMode}
-            onClick={() => setIsDarkMode((currentValue) => !currentValue)}
+            aria-pressed={theme === "dark"}
+            onClick={toggleTheme}
           >
-            <MoonIcon />{isDarkMode ? "Modo claro" : "Modo nocturno"}
+            {theme === "dark" ? <SunIcon /> : <MoonIcon />}
+            {theme === "dark" ? "Modo claro" : "Modo nocturno"}
           </button>
           <button className="navbar__logout" type="button" onClick={onLogout}>
             Cerrar sesión

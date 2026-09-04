@@ -10,6 +10,7 @@ function HomePage() {
   const navigate = useNavigate();
   const user = authRepository.getCurrentUser();
   const isReceptionist = user?.role === "RECEPCIONISTA";
+  const isAdmin = user?.role === "ADMIN";
 
 
   const handleLogout = () => {
@@ -44,7 +45,7 @@ function HomePage() {
         <section id="pacientes" className="dashboard-panel"><h2>Actividad reciente</h2><p>Consulta pacientes e historiales ecográficos.</p></section>
         {!isReceptionist && <section id="nuevo-informe" className="dashboard-panel"><h2>Nuevo Informe Ecográfico</h2><p>Registra un nuevo informe para tus pacientes.</p></section>}
         <section id="repositorio" className="dashboard-panel"><h2>Repositorio de Imágenes</h2><p>Organiza y consulta los estudios almacenados.</p></section>
-        <section id="configuracion" className="dashboard-panel"><h2>Configuración / Usuarios</h2><p>Administra preferencias y usuarios del sistema.</p></section>
+                {isAdmin && <section id="configuracion" className="dashboard-panel"><h2>Configuración / Usuarios</h2><p>Administra preferencias y usuarios del sistema.</p></section>}
       </main>
     </div>
   );

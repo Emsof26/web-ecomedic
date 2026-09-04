@@ -297,6 +297,16 @@
   color: #13315c;
 }
 
+/* El tema se hereda del selector global para conservarlo en cualquier ruta. */
+:root[data-theme="dark"] .login-page { background: var(--app-background); }
+:root[data-theme="dark"] .login-form { border-color: var(--border); background: var(--surface); box-shadow: var(--shadow); }
+:root[data-theme="dark"] .login-header h1,
+:root[data-theme="dark"] .form-group label { color: var(--text-primary); }
+:root[data-theme="dark"] .login-header p,
+:root[data-theme="dark"] .login-footer { color: var(--text-secondary); }
+:root[data-theme="dark"] .login-footer strong { color: var(--accent); }
+:root[data-theme="dark"] .form-group input { border-color: var(--border); background: var(--surface); color: var(--text-primary); }
+
 
 /* ============================================================
    15. DISEÑO RESPONSIVO
@@ -321,7 +331,6 @@
   .login-logo {
     width: 150px;
     height: 50px;
-
     font-size: 20px;
   }
 }
