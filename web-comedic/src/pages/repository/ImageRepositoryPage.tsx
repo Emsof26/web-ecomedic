@@ -6,9 +6,11 @@ import { authRepository } from "../../repositories/authRepository";
 
 import "./ImageRepositoryPage.css";
 
+// Tipos de especialidad disponibles para clasificar y filtrar las imágenes.
 type Specialty = "Obstétrica" | "Abdominal" | "Mamaria" | "Renal" | "Partes blandas";
 type SpecialtyFilter = "Todas las especialidades" | Specialty;
 
+// Estructura de cada imagen mostrada en el repositorio.
 interface UltrasoundImage {
   id: number;
   patientId: string;
