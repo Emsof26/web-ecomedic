@@ -1,17 +1,31 @@
+// ============================================================
+// NAVBAR / MENÚ LATERAL
+// Contiene la navegación principal de EcoMedic, el menú responsive,
+// el cambio de tema y las opciones según el rol del usuario.
+// ============================================================
+
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+// Tipo utilizado para identificar al usuario y su rol.
 import type { User } from "../../types/auth";
+// Hook para cambiar entre modo claro y nocturno.
 import { useTheme } from "../../hooks/useTheme";
+// Estilos exclusivos del Navbar.
 import "./Navbar.css";
 
+// Props recibidas por el Navbar.
 interface NavbarProps { user: User | null; onLogout: () => void; }
+// Props de cada elemento reutilizable del menú.
 interface NavigationItemProps { href: string; label: string; active: boolean; onNavigate: () => void; children: ReactNode; }
 
+// Componente reutilizable para representar una opción de navegación.
 function NavigationItem({ href, label, active, onNavigate, children }: NavigationItemProps) {
   return <a className={`navbar__link${active ? " navbar__link--active" : ""}`} href={href} aria-current={active ? "page" : undefined} onClick={onNavigate}>{children}<span>{label}</span></a>;
 }
+
+// Iconos SVG utilizados por las diferentes opciones del menú.
 function MenuIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg>; }
 function CloseIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></svg>; }
 function HomeIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9ZM9 21v-6h6v6" /></svg>; }
@@ -22,30 +36,51 @@ function SettingsIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><ci
 function MoonIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M21 15.2A9 9 0 0 1 8.8 3 9 9 0 1 0 21 15.2Z" /></svg>; }
 function SunIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" /></svg>; }
 
+// Componente principal del menú lateral.
 function Navbar({ user, onLogout }: NavbarProps) {
+  // Estado que controla la apertura del menú en dispositivos pequeños.
   const [isOpen, setIsOpen] = useState(false);
+  // Hash actual de la URL para identificar secciones activas del inicio.
   const [currentHash, setCurrentHash] = useState(window.location.hash);
+  // Estado y función para controlar el tema visual.
   const { theme, toggleTheme } = useTheme();
+  // Información de la ruta actual y función de navegación.
   const location = useLocation();
   const navigate = useNavigate();
+
+  // Escucha cambios del hash para actualizar la opción activa.
   useEffect(() => { const updateHash = () => setCurrentHash(window.location.hash); window.addEventListener("hashchange", updateHash); return () => window.removeEventListener("hashchange", updateHash); }, []);
+
+  // Cierra el menú lateral.
   const closeMenu = () => setIsOpen(false);
+  // Determina permisos según el rol del usuario.
   const isReceptionist = user?.role === "RECEPCIONISTA";
   const isAdmin = user?.role === "ADMIN";
+  // Texto visible del rol del usuario.
   const roleLabel = { ADMIN: "Administrador", MEDICO: "Médico General", RECEPCIONISTA: "Recepcionista" }[user?.role ?? "ADMIN"];
+
+  // Comprueba qué ruta debe mostrarse como activa.
   const isActive = (target: string) => {
     if (target === "/") return location.pathname === "/" && currentHash !== "#nuevo-informe" && currentHash !== "#repositorio" && currentHash !== "#configuracion";
     if (target === "/pacientes") return location.pathname === "/pacientes";
     return location.pathname === target;
   };
+
+  // Permite acceder a secciones internas del inicio.
   const goToSection = (href: string) => { closeMenu(); if (href.startsWith("#") && location.pathname !== "/") navigate(`/${href}`); };
+
+  // Estructura visual completa del Navbar.
   return <>
     <button className="navbar-toggle" type="button" aria-label={isOpen ? "Cerrar menú" : "Abrir menú"} aria-controls="main-sidebar" aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><MenuIcon /></button>
     <button className={`navbar__overlay${isOpen ? " navbar__overlay--visible" : ""}`} type="button" aria-label="Cerrar menú" tabIndex={isOpen ? 0 : -1} onClick={closeMenu} />
     <aside id="main-sidebar" className={`navbar${isOpen ? " navbar--open" : ""}`}>
+      {/* Cabecera del menú: logo, nombre y botón de cierre. */}
       <div className="navbar__header"><a className="navbar__brand" href="/" onClick={closeMenu}><span className="navbar__brand-mark"><img src="/logo/logo-eco.png" alt="Logo EcoMedic" /></span><span><strong>EcoMedic</strong><small>Gestión Ecográfica</small></span></a><button className="navbar__close" type="button" aria-label="Cerrar menú" onClick={closeMenu}><CloseIcon /></button></div>
+      {/* Información del usuario autenticado. */}
       <div className="navbar__user-panel"><div className="navbar__account"><span className="navbar__avatar" aria-hidden="true">↯</span><span><strong>{user?.name ?? "Usuario"}</strong><small>{roleLabel}</small></span></div></div>
+      {/* Aviso de acceso de solo lectura para recepción. */}
       {isReceptionist && <p className="navbar__read-only">⌁ Acceso de solo lectura</p>}
+      {/* Opciones principales disponibles según el rol. */}
       <nav className="navbar__navigation" aria-label="Navegación principal">
         <NavigationItem href="/" label="Inicio" active={isActive("/")} onNavigate={closeMenu}><HomeIcon /></NavigationItem>
         <NavigationItem href="/pacientes" label="Pacientes e Historiales" active={isActive("/pacientes")} onNavigate={closeMenu}><PatientsIcon /></NavigationItem>
@@ -53,8 +88,10 @@ function Navbar({ user, onLogout }: NavbarProps) {
         <NavigationItem href="#repositorio" label="Repositorio de Imágenes" active={location.pathname === "/" && currentHash === "#repositorio"} onNavigate={() => goToSection("#repositorio")}><ImageIcon /></NavigationItem>
         {isAdmin && <NavigationItem href="#configuracion" label="Configuración / Usuarios" active={location.pathname === "/" && currentHash === "#configuracion"} onNavigate={() => goToSection("#configuracion")}><SettingsIcon /></NavigationItem>}
       </nav>
+      {/* Pie del menú: cambio de tema, cierre de sesión y copyright. */}
       <div className="navbar__footer"><button className="navbar__theme" type="button" aria-pressed={theme === "dark"} onClick={toggleTheme}>{theme === "dark" ? <SunIcon /> : <MoonIcon />}{theme === "dark" ? "Modo claro" : "Modo nocturno"}</button><button className="navbar__logout" type="button" onClick={onLogout}>Cerrar sesión</button><p className="navbar__copyright">EcoMedic · Servicios de Ecografía</p></div>
     </aside>
   </>;
 }
+
 export default Navbar;
