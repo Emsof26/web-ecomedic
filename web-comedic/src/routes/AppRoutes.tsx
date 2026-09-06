@@ -7,6 +7,7 @@ import {
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/auth/LoginPage";
 import PatientsHistoryPage from "../pages/patients/PatientsHistoryPage";
+import PatientDetailPage from "../pages/patients/PatientDetailPage";
 import NewUltrasoundReportPage from "../pages/reports/NewUltrasoundReportPage";
 import ImageRepositoryPage from "../pages/repository/ImageRepositoryPage";
 
@@ -16,6 +17,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/pacientes" element={<PatientsHistoryPage />} />
+        <Route path="/pacientes/:patientId" element={<PatientDetailPage />} />
         <Route path="/nuevo-informe" element={<NewUltrasoundReportPage />} />
         <Route path="/repositorio" element={<ImageRepositoryPage />} />
         <Route path="/login" element={<LoginPage />} />
