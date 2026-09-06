@@ -62,12 +62,9 @@ function Navbar({ user, onLogout }: NavbarProps) {
   // Comprueba qué ruta debe mostrarse como activa.
   const isActive = (target: string) => {
     if (target === "/") return location.pathname === "/" && currentHash !== "#nuevo-informe" && currentHash !== "#repositorio" && currentHash !== "#configuracion";
-    if (target === "/pacientes") return location.pathname === "/pacientes";
+    if (target === "/pacientes") return location.pathname === "/pacientes" || location.pathname.startsWith("/pacientes/");
     return location.pathname === target;
   };
-
-  // Permite acceder a secciones internas del inicio.
-  const goToSection = (href: string) => { closeMenu(); if (href.startsWith("#") && location.pathname !== "/") navigate(`/${href}`); };
 
   // Estructura visual completa del Navbar.
   return <>
@@ -86,7 +83,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
         <NavigationItem href="/pacientes" label="Pacientes e Historiales" active={isActive("/pacientes")} onNavigate={closeMenu}><PatientsIcon /></NavigationItem>
         {!isReceptionist && <NavigationItem href="/nuevo-informe" label="Nuevo Informe Ecográfico" active={isActive("/nuevo-informe")} onNavigate={closeMenu}><ReportIcon /></NavigationItem>}
         <NavigationItem href="/repositorio" label="Repositorio de Imágenes" active={isActive("/repositorio")} onNavigate={closeMenu}><ImageIcon /></NavigationItem>
-        {isAdmin && <NavigationItem href="#configuracion" label="Configuración / Usuarios" active={location.pathname === "/" && currentHash === "#configuracion"} onNavigate={() => goToSection("#configuracion")}><SettingsIcon /></NavigationItem>}
+        {isAdmin && <NavigationItem href="/configuracion" label="Configuración / Usuarios" active={isActive("/configuracion")} onNavigate={closeMenu}><SettingsIcon /></NavigationItem>}
       </nav>
       {/* Pie del menú: cambio de tema, cierre de sesión y copyright. */}
       <div className="navbar__footer"><button className="navbar__theme" type="button" aria-pressed={theme === "dark"} onClick={toggleTheme}>{theme === "dark" ? <SunIcon /> : <MoonIcon />}{theme === "dark" ? "Modo claro" : "Modo nocturno"}</button><button className="navbar__logout" type="button" onClick={onLogout}>Cerrar sesión</button><p className="navbar__copyright">EcoMedic · Servicios de Ecografía</p></div>
