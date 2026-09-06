@@ -17,6 +17,7 @@ function AppRoutes() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/pacientes" element={<PatientsHistoryPage />} />
+        {/* La ficha individual permite consultar estudios, crear informes y generar su PDF. */}
         <Route path="/pacientes/:patientId" element={<PatientDetailPage />} />
         <Route path="/nuevo-informe" element={<NewUltrasoundReportPage />} />
         <Route path="/repositorio" element={<ImageRepositoryPage />} />
