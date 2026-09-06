@@ -2,64 +2,56 @@ import { useMemo, useState } from "react";
 
 import Navbar from "../../components/navigation/Navbar";
 import { authRepository } from "../../repositories/authRepository";
+import { clinicalStorage, type ClinicalPatient, type Specialty } from "../../services/clinicalStorage";
 import { useNavigate } from "react-router-dom";
 
 import "./PatientsHistoryPage.css";
 
-
-type Specialty = "Obstétrica" | "Abdominal" | "Renal" | "Mamaria" | "Partes blandas";
-
-interface Patient {
-  id: string;
-  name: string;
-  carnet: string;
-  sex: "Femenino" | "Masculino";
-  age: number;
-  studies: Specialty[];
-}
-
-const initialPatients: Patient[] = [
-  { id: "patient-1", name: "María Elena Vargas", carnet: "6482913", sex: "Femenino", age: 30, studies: ["Obstétrica", "Abdominal", "Renal"] },
-  { id: "patient-2", name: "José Luis Fernández", carnet: "5521048", sex: "Masculino", age: 57, studies: ["Renal", "Abdominal"] },
-  { id: "patient-3", name: "Andrea Sofía Choque", carnet: "7890231", sex: "Femenino", age: 36, studies: ["Mamaria"] },
-  { id: "patient-4", name: "Ricardo Aguilar", carnet: "4432109", sex: "Masculino", age: 11, studies: ["Partes blandas"] },
-  { id: "patient-5", name: "Lucía Rojas", carnet: "3345678", sex: "Femenino", age: 40, studies: [] },
-];
-
+// Especialidades utilizadas para filtrar los pacientes según sus estudios registrados.
 const specialties: Array<Specialty | "Todas las especialidades"> = ["Todas las especialidades", "Obstétrica", "Abdominal", "Renal", "Mamaria", "Partes blandas"];
 
 function PatientsHistoryPage() {
   const navigate = useNavigate();
   const user = authRepository.getCurrentUser();
   const isReceptionist = user?.role === "RECEPCIONISTA";
-  const [patients, setPatients] = useState(initialPatients);
+
+  // Los pacientes se mantienen en almacenamiento compartido para que también aparezcan en Inicio.
+  const [patients, setPatients] = useState<ClinicalPatient[]>(() => clinicalStorage.getPatients());
   const [query, setQuery] = useState("");
   const [specialty, setSpecialty] = useState<(typeof specialties)[number]>("Todas las especialidades");
   const [isFormOpen, setIsFormOpen] = useState(false);
 
+  // Aplica simultáneamente la búsqueda por nombre/CI y el filtro de especialidad.
   const visiblePatients = useMemo(() => patients.filter((patient) => {
     const matchesQuery = `${patient.name} ${patient.carnet}`.toLowerCase().includes(query.toLowerCase().trim());
     const matchesSpecialty = specialty === "Todas las especialidades" || patient.studies.includes(specialty);
     return matchesQuery && matchesSpecialty;
   }), [patients, query, specialty]);
 
+  // Registra el paciente y guarda el nuevo listado para que otras páginas puedan consultarlo.
   const registerPatient = (formData: FormData) => {
     const firstName = String(formData.get("firstName") ?? "").trim();
     const paternalLastName = String(formData.get("paternalLastName") ?? "").trim();
     const maternalLastName = String(formData.get("maternalLastName") ?? "").trim();
     const carnet = String(formData.get("carnet") ?? "").trim();
-    const sex = String(formData.get("sex")) as Patient["sex"];
+    const sex = String(formData.get("sex")) as ClinicalPatient["sex"];
     const birthDate = new Date(String(formData.get("birthDate")));
     const age = Number.isNaN(birthDate.getTime()) ? 0 : new Date().getFullYear() - birthDate.getFullYear();
 
-    setPatients((currentPatients) => [{
+    const newPatient: ClinicalPatient = {
       id: crypto.randomUUID(),
       name: [firstName, paternalLastName, maternalLastName].filter(Boolean).join(" "),
       carnet,
       sex,
       age,
       studies: [],
-    }, ...currentPatients]);
+    };
+
+    setPatients((currentPatients) => {
+      const updatedPatients = [newPatient, ...currentPatients];
+      clinicalStorage.savePatients(updatedPatients);
+      return updatedPatients;
+    });
     setIsFormOpen(false);
   };
 
@@ -100,6 +92,7 @@ function PatientsHistoryPage() {
   );
 }
 
+// Formulario reutilizable de registro de pacientes dentro de esta pantalla.
 function PatientForm({ onClose, onRegister }: { onClose: () => void; onRegister: (formData: FormData) => void }) {
   return <div className="patient-modal" role="dialog" aria-modal="true" aria-labelledby="patient-form-title">
     <form className="patient-modal__form" onSubmit={(event) => { event.preventDefault(); onRegister(new FormData(event.currentTarget)); }}>
