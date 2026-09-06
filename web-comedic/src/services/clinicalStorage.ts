@@ -3,20 +3,21 @@ import { storageService } from "./storageService";
 // Especialidades que puede manejar EcoMedic en los estudios ecográficos.
 export type Specialty = "Obstétrica" | "Abdominal" | "Renal" | "Mamaria" | "Partes blandas";
 
-// Datos mínimos que necesita el panel de inicio para representar a un paciente.
+// Datos mínimos que necesitan Inicio y la ficha del paciente.
 export interface ClinicalPatient {
   id: string;
   name: string;
   carnet: string;
+  phone?: string;
   sex: "Femenino" | "Masculino";
   age: number;
   studies: Specialty[];
 }
 
-// Estados que puede mostrar un estudio en la actividad reciente.
+// Estados que puede mostrar un estudio en la actividad reciente y la línea de tiempo.
 export type StudyStatus = "Borrador" | "Firmado" | "Finalizado" | "Anulado";
 
-// Información compartida de un informe/estudio.
+// Información compartida de un informe/estudio clínico.
 export interface ClinicalStudy {
   id: string;
   patientId: string;
@@ -25,6 +26,7 @@ export interface ClinicalStudy {
   doctor: string;
   date: string;
   status: StudyStatus;
+  conclusion?: string;
 }
 
 const PATIENTS_KEY = "ecomedic_patients";
@@ -39,13 +41,15 @@ const initialPatients: ClinicalPatient[] = [
   { id: "patient-5", name: "Lucía Rojas", carnet: "3345678", sex: "Femenino", age: 40, studies: [] },
 ];
 
-// Actividad de demostración para que el inicio no aparezca vacío al comenzar.
+// Actividad inicial para que la interfaz pueda probar estados y la línea de tiempo.
 const initialStudies: ClinicalStudy[] = [
-  { id: "study-1", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dr. Marcos Pérez", date: "09 ago 2026", status: "Firmado" },
-  { id: "study-2", patientId: "patient-2", patientName: "José Luis Fernández", specialty: "Renal", doctor: "Dr. Marcos Pérez", date: "27 jul 2026", status: "Finalizado" },
-  { id: "study-3", patientId: "patient-3", patientName: "Andrea Sofía Choque", specialty: "Mamaria", doctor: "Dr. Marcos Pérez", date: "04 ago 2026", status: "Borrador" },
-  { id: "study-4", patientId: "patient-4", patientName: "Ricardo Aguilar", specialty: "Partes blandas", doctor: "Dr. Marcos Pérez", date: "14 jul 2026", status: "Anulado" },
-  { id: "study-5", patientId: "patient-5", patientName: "Lucía Rojas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "22 may 2026", status: "Firmado" },
+  { id: "study-1", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dr. Marcos Pérez", date: "09 ago 2026", status: "Firmado", conclusion: "Feto único vivo, EG acorde a FUR, sin hallazgos patológicos." },
+  { id: "study-2", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dra. Fabiola Rojas", date: "01 jun 2026", status: "Firmado", conclusion: "Control gestacional normal, biometría acorde." },
+  { id: "study-3", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "19 ene 2026", status: "Firmado", conclusion: "Hígado, vesícula y páncreas sin alteraciones ecográficas." },
+  { id: "study-4", patientId: "patient-2", patientName: "José Luis Fernández", specialty: "Renal", doctor: "Dr. Marcos Pérez", date: "27 jul 2026", status: "Finalizado", conclusion: "Estudio renal sin alteraciones ecográficas significativas." },
+  { id: "study-5", patientId: "patient-3", patientName: "Andrea Sofía Choque", specialty: "Mamaria", doctor: "Dr. Marcos Pérez", date: "04 ago 2026", status: "Borrador", conclusion: "Estudio mamario pendiente de conclusión final." },
+  { id: "study-6", patientId: "patient-4", patientName: "Ricardo Aguilar", specialty: "Partes blandas", doctor: "Dr. Marcos Pérez", date: "14 jul 2026", status: "Anulado", conclusion: "Informe anulado." },
+  { id: "study-7", patientId: "patient-5", patientName: "Lucía Rojas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "22 may 2026", status: "Firmado", conclusion: "Estudio abdominal sin hallazgos relevantes." },
 ];
 
 export const clinicalStorage = {
