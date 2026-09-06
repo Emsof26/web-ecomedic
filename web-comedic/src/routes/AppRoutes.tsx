@@ -10,6 +10,7 @@ import PatientsHistoryPage from "../pages/patients/PatientsHistoryPage";
 import PatientDetailPage from "../pages/patients/PatientDetailPage";
 import NewUltrasoundReportPage from "../pages/reports/NewUltrasoundReportPage";
 import ImageRepositoryPage from "../pages/repository/ImageRepositoryPage";
+import ConfigurationUsersPage from "../pages/configuration/ConfigurationUsersPage";
 
 function AppRoutes() {
   return (
@@ -21,6 +22,7 @@ function AppRoutes() {
         <Route path="/pacientes/:patientId" element={<PatientDetailPage />} />
         <Route path="/nuevo-informe" element={<NewUltrasoundReportPage />} />
         <Route path="/repositorio" element={<ImageRepositoryPage />} />
+        <Route path="/configuracion" element={<ConfigurationUsersPage />} />
         <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
