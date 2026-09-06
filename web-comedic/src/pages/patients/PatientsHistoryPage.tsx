@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Navbar from "../../components/navigation/Navbar";
 import { authRepository } from "../../repositories/authRepository";
 import { clinicalStorage, type ClinicalPatient, type Specialty } from "../../services/clinicalStorage";
-import { useNavigate } from "react-router-dom";
 
 import "./PatientsHistoryPage.css";
 
@@ -34,6 +34,7 @@ function PatientsHistoryPage() {
     const paternalLastName = String(formData.get("paternalLastName") ?? "").trim();
     const maternalLastName = String(formData.get("maternalLastName") ?? "").trim();
     const carnet = String(formData.get("carnet") ?? "").trim();
+    const phone = String(formData.get("phone") ?? "").trim();
     const sex = String(formData.get("sex")) as ClinicalPatient["sex"];
     const birthDate = new Date(String(formData.get("birthDate")));
     const age = Number.isNaN(birthDate.getTime()) ? 0 : new Date().getFullYear() - birthDate.getFullYear();
@@ -42,6 +43,7 @@ function PatientsHistoryPage() {
       id: crypto.randomUUID(),
       name: [firstName, paternalLastName, maternalLastName].filter(Boolean).join(" "),
       carnet,
+      phone,
       sex,
       age,
       studies: [],
@@ -79,7 +81,7 @@ function PatientsHistoryPage() {
         </div>
 
         <section className="patients-page__grid" aria-live="polite">
-          {visiblePatients.map((patient) => <button className="patient-card" type="button" key={patient.id}>
+          {visiblePatients.map((patient) => <button className="patient-card" type="button" key={patient.id} onClick={() => navigate(`/pacientes/${encodeURIComponent(patient.id)}`)}>
             <span className="patient-card__avatar">{patient.name.split(" ").slice(0, 2).map((name) => name[0]).join("")}</span>
             <span><strong>{patient.name}</strong><small>CI {patient.carnet} · {patient.sex} · {patient.age}a</small><em>{patient.studies.length} estudio(s) registrados</em></span>
           </button>)}
