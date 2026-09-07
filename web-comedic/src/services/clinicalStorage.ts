@@ -1,9 +1,7 @@
 import { storageService } from "./storageService";
 
-// Especialidades que puede manejar EcoMedic en los estudios ecográficos.
 export type Specialty = "Obstétrica" | "Abdominal" | "Renal" | "Mamaria" | "Partes blandas";
 
-// Datos mínimos que necesitan Inicio y la ficha del paciente.
 export interface ClinicalPatient {
   id: string;
   name: string;
@@ -14,10 +12,25 @@ export interface ClinicalPatient {
   studies: Specialty[];
 }
 
-// Estados que puede mostrar un estudio en la actividad reciente y la línea de tiempo.
 export type StudyStatus = "Borrador" | "Firmado" | "Finalizado" | "Anulado";
 
-// Información compartida de un informe/estudio clínico.
+export interface StudyImage {
+  name: string;
+  type: string;
+  dataUrl: string;
+}
+
+export interface ClinicalReportData {
+  clinicalReason?: string;
+  findings?: string;
+  measurements?: string;
+  observations?: string;
+  conclusion?: string;
+  recommendations?: string;
+  parameters?: Record<string, string>;
+  images?: StudyImage[];
+}
+
 export interface ClinicalStudy {
   id: string;
   patientId: string;
@@ -27,12 +40,12 @@ export interface ClinicalStudy {
   date: string;
   status: StudyStatus;
   conclusion?: string;
+  reportData?: ClinicalReportData;
 }
 
 const PATIENTS_KEY = "ecomedic_patients";
 const STUDIES_KEY = "ecomedic_studies";
 
-// Pacientes de demostración que aparecen inicialmente en la aplicación.
 const initialPatients: ClinicalPatient[] = [
   { id: "patient-1", name: "María Elena Vargas", carnet: "6482913", sex: "Femenino", age: 30, studies: ["Obstétrica", "Abdominal", "Renal"] },
   { id: "patient-2", name: "José Luis Fernández", carnet: "5521048", sex: "Masculino", age: 57, studies: ["Renal", "Abdominal"] },
@@ -41,7 +54,6 @@ const initialPatients: ClinicalPatient[] = [
   { id: "patient-5", name: "Lucía Rojas", carnet: "3345678", sex: "Femenino", age: 40, studies: [] },
 ];
 
-// Actividad inicial para que la interfaz pueda probar estados y la línea de tiempo.
 const initialStudies: ClinicalStudy[] = [
   { id: "study-1", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dr. Marcos Pérez", date: "09 ago 2026", status: "Firmado", conclusion: "Feto único vivo, EG acorde a FUR, sin hallazgos patológicos." },
   { id: "study-2", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dra. Fabiola Rojas", date: "01 jun 2026", status: "Firmado", conclusion: "Control gestacional normal, biometría acorde." },
@@ -71,5 +83,16 @@ export const clinicalStorage = {
 
   addStudy(study: ClinicalStudy): void {
     this.saveStudies([study, ...this.getStudies()]);
+  },
+
+  upsertStudy(study: ClinicalStudy): void {
+    const studies = this.getStudies();
+    const index = studies.findIndex((item) => item.id === study.id);
+    if (index === -1) this.addStudy(study);
+    else {
+      const updated = [...studies];
+      updated[index] = study;
+      this.saveStudies(updated);
+    }
   },
 };
