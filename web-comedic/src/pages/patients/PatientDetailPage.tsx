@@ -2,7 +2,7 @@ import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import Navbar from "../../components/navigation/Navbar";
-import { ArrowLeftIcon, CalendarIcon, DownloadIcon, FilePdfIcon, PlusIcon, UserIcon } from "../../components/ui/Icons";
+import { ArrowLeftIcon, CalendarIcon, FilePdfIcon, PlusIcon, UserIcon } from "../../components/ui/Icons";
 import { authRepository } from "../../repositories/authRepository";
 import { clinicalStorage, type Specialty } from "../../services/clinicalStorage";
 import { downloadUltrasoundReportPdf } from "../../services/pdfService";
@@ -72,12 +72,6 @@ function PatientDetailPage() {
     );
   }
 
-  const initials = patient.name
-    .split(" ")
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((item) => item[0])
-    .join("");
   const ageLabel = patient.age < 12 ? "Niño/a" : patient.age < 18 ? "Adolescente" : "Adulto";
 
   return (
