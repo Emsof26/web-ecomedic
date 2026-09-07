@@ -31,23 +31,10 @@
 }
 
 * { box-sizing: border-box; }
-
 html { background: var(--app-background); }
-
-body {
-  margin: 0;
-  min-width: 320px;
-  background: var(--app-background);
-  color: var(--text-primary);
-  font-family: Arial, sans-serif;
-  transition: background-color .2s ease, color .2s ease;
-}
-
+body { margin: 0; min-width: 320px; background: var(--app-background); color: var(--text-primary); font-family: Arial, sans-serif; transition: background-color .2s ease, color .2s ease; }
 button, input, select, textarea { font: inherit; }
-
-button, input, select, textarea, a {
-  transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease;
-}
+button, input, select, textarea, a { transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease; }
 
 :root[data-theme="dark"] .patient-card:hover,
 :root[data-theme="dark"] .patient-study-card:hover,
@@ -81,9 +68,15 @@ button, input, select, textarea, a {
 :root[data-theme="dark"] .patient-study-card__status--finalizado { color: #78b8ed; }
 :root[data-theme="dark"] .patient-study-card__status--anulado { color: #f07f7f; }
 
-:root[data-theme="dark"] .image-preview button { background: rgba(10, 25, 43, .9); }
-:root[data-theme="dark"] .image-card__preview { background: #050b12; }
+:root[data-theme="dark"] .status-option--borrador .status-option__icon { color: #e8c15b; background: rgba(232,193,91,.13); }
+:root[data-theme="dark"] .status-option--finalizado .status-option__icon { color: #78b8ed; background: rgba(120,184,237,.13); }
+:root[data-theme="dark"] .status-option--firmado .status-option__icon { color: #63d39a; background: rgba(99,211,154,.13); }
+:root[data-theme="dark"] .status-option--anulado .status-option__icon { color: #f07f7f; background: rgba(240,127,127,.13); }
 
+:root[data-theme="dark"] .role-badge--admin { background: rgba(237,244,251,.08); color: var(--text-primary); }
+:root[data-theme="dark"] .role-badge--recepcionista { background: rgba(179,194,210,.10); color: var(--text-secondary); }
+:root[data-theme="dark"] .image-preview button { background: rgba(10,25,43,.9); }
+:root[data-theme="dark"] .image-card__preview { background: #050b12; }
 :root[data-theme="dark"] .configuration-notice { border-color: #39734a; }
 
 @media (prefers-reduced-motion: reduce) {
