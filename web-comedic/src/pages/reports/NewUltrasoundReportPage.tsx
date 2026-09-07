@@ -71,7 +71,7 @@ const parameterDefinitions: Record<Specialty, ParameterDefinition[]> = {
 
 const statusDefinitions: Array<{ value: StudyStatus; label: string; description: string; icon: "draft" | "finished" | "signed" | "cancelled" }> = [
   { value: "Borrador", label: "Borrador", description: "En edición", icon: "draft" },
-  { value: "Finalizado", label: "Finalizado", description: "Listo para firma", icon: "finished" },
+  { value: "Finalizado", label: "Finalizado", description: "Estudio terminado", icon: "finished" },
   { value: "Firmado", label: "Firmado", description: "Informe validado", icon: "signed" },
   { value: "Anulado", label: "Anulado", description: "Informe cancelado", icon: "cancelled" },
 ];
@@ -86,7 +86,6 @@ function Icon({ name, size = 18 }: { name: string; size?: number }) {
   if (name === "ban") return <svg {...common}><circle cx="12" cy="12" r="8.5" /><path d="m6 6 12 12" /></svg>;
   if (name === "save") return <svg {...common}><path d="M5 4h12l2 2v14H5z" /><path d="M8 4v6h8V4M8 20v-6h8v6" /></svg>;
   if (name === "file-pdf") return <svg {...common}><path d="M6 3h8l4 4v14H6z" /><path d="M14 3v5h5" /><path d="M8 15h2a1.5 1.5 0 0 0 0-3H8v5M12 17v-5h2a2.5 2.5 0 0 1 0 5h-2M17 12h-3v5" /></svg>;
-  if (name === "close") return <svg {...common}><path d="m6 6 12 12M18 6 6 18" /></svg>;
   if (name === "check") return <svg {...common}><path d="m5 12 4 4L19 6" /></svg>;
   if (name === "arrow-left") return <svg {...common}><path d="M19 12H5M11 6l-6 6 6 6" /></svg>;
   return <svg {...common}><circle cx="12" cy="12" r="8" /></svg>;
@@ -177,10 +176,16 @@ function NewUltrasoundReportPage() {
     setErrorMessage("");
   };
 
-  const validate = () => {
+  const validateBase = () => {
     if (!patient) return "Selecciona un paciente.";
     if (!specialty) return "Selecciona el tipo de ecografía.";
     if (!studyDate) return "Selecciona la fecha del estudio.";
+    return "";
+  };
+
+  const validateComplete = () => {
+    const base = validateBase();
+    if (base) return base;
     if (!findings.trim()) return "Completa la descripción de hallazgos.";
     if (!conclusion.trim()) return "Completa la conclusión diagnóstica.";
     return "";
@@ -198,8 +203,8 @@ function NewUltrasoundReportPage() {
     images,
   });
 
-  const persistStudy = (nextStatus: StudyStatus) => {
-    const validation = validate();
+  const persistStudy = (nextStatus: StudyStatus, requireComplete = true) => {
+    const validation = requireComplete ? validateComplete() : validateBase();
     if (validation) {
       setErrorMessage(validation);
       setSavedMessage("");
@@ -226,25 +231,28 @@ function NewUltrasoundReportPage() {
     setStudyId(id);
     setStatus(nextStatus);
     setErrorMessage("");
-    setSavedMessage(nextStatus === "Borrador" ? "Informe guardado como borrador correctamente." : nextStatus === "Firmado" ? "Informe finalizado y firmado correctamente." : nextStatus === "Finalizado" ? "Informe marcado como finalizado." : "Informe anulado correctamente.");
+    setSavedMessage(nextStatus === "Borrador" ? "Informe guardado como borrador correctamente." : nextStatus === "Firmado" ? "Informe firmado correctamente." : nextStatus === "Finalizado" ? "Informe marcado como finalizado." : "Informe anulado correctamente.");
     return true;
   };
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    persistStudy("Borrador");
+    persistStudy("Borrador", false);
   };
 
   const handleFinalizeAndSign = () => {
-    if (persistStudy("Firmado")) {
+    if (persistStudy("Firmado", true)) {
       window.setTimeout(() => navigate(patient ? `/pacientes/${patient.id}` : "/pacientes"), 700);
     }
   };
 
   const handleStatusSelect = (nextStatus: StudyStatus) => {
-    setStatus(nextStatus);
-    setSavedMessage("");
-    setErrorMessage(nextStatus === "Anulado" ? "Completa la justificación para poder anular el informe." : "");
+    if (nextStatus === "Borrador") persistStudy("Borrador", false);
+    else if (nextStatus === "Anulado") {
+      setStatus(nextStatus);
+      setSavedMessage("");
+      setErrorMessage(cancellationReason.trim() ? "" : "Completa la justificación para poder anular el informe.");
+    } else persistStudy(nextStatus, true);
   };
 
   const processImages = async (files: File[]) => {
@@ -274,18 +282,16 @@ function NewUltrasoundReportPage() {
     event.target.value = "";
   };
 
-  const handleDrop = async (event: DragEvent<HTMLLabelElement>) => {
+  const handleDrop = async (event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     setIsDragging(false);
     await processImages(Array.from(event.dataTransfer.files));
   };
 
-  const removeImage = (index: number) => {
-    setImages((current) => current.filter((_, imageIndex) => imageIndex !== index));
-  };
+  const removeImage = (index: number) => setImages((current) => current.filter((_, imageIndex) => imageIndex !== index));
 
   const handleDownloadPdf = () => {
-    const validation = validate();
+    const validation = validateComplete();
     if (validation) {
       setErrorMessage(`${validation} Puedes descargar el PDF después de completar los campos obligatorios.`);
       return;
@@ -319,7 +325,7 @@ function NewUltrasoundReportPage() {
 
       <form className="report-form" onSubmit={handleSubmit}>
         <section className="report-card">
-          <div className="report-card__heading"><div><span className="report-card__number">01</span><div><h2>Paciente y estudio</h2><p>Selecciona al paciente y el tipo de ecografía.</p></div></div></div>
+          <div className="report-card__heading"><div><span className="report-card__number">01</span><div><h2>Paciente y estudio</h2><p>Selecciona el paciente y el tipo de ecografía.</p></div></div></div>
           <div className="report-form__grid">
             <label className="report-field report-field--wide"><span>Paciente <b>*</b></span><select value={patientId} onChange={(event) => handlePatientChange(event.target.value)} required><option value="">Selecciona un paciente</option>{patients.map((item) => <option key={item.id} value={item.id}>{item.name} · CI {item.carnet}</option>)}</select></label>
             <div className="patient-summary"><span className="patient-summary__avatar">{patient ? patient.name.split(" ").slice(0, 2).map((item) => item[0]).join("") : "—"}</span><div><strong>{patient?.name ?? "Paciente no seleccionado"}</strong><small>{patient ? `CI ${patient.carnet} · ${patient.sex} · ${patient.age} años` : "Selecciona un paciente para continuar"}</small></div></div>
@@ -344,20 +350,22 @@ function NewUltrasoundReportPage() {
 
         <section className="report-card report-images">
           <div className="report-card__heading"><div><span className="report-card__number">04</span><div><h2>Imágenes Adjuntas del Estudio</h2><p>Agrega las imágenes obtenidas directamente del ecógrafo.</p></div></div></div>
-          <label className={`image-upload${isDragging ? " image-upload--dragging" : ""}`} onDragOver={(event) => { event.preventDefault(); setIsDragging(true); }} onDragLeave={() => setIsDragging(false)} onDrop={handleDrop}>
-            <input ref={fileInputRef} type="file" accept="image/png,image/jpeg,image/jpg,image/webp" multiple onChange={handleImageChange} />
-            <span className="image-upload__icon"><Icon name="upload" size={22} /></span>
-            <strong>Arrastra imágenes del ecógrafo aquí</strong>
-            <small>PNG, JPG, JPEG o WEBP · máximo 5 imágenes</small>
+          <div className={`image-upload${isDragging ? " image-upload--dragging" : ""}`}>
+            <div className="image-upload__dropzone" onDragOver={(event) => { event.preventDefault(); setIsDragging(true); }} onDragLeave={() => setIsDragging(false)} onDrop={handleDrop}>
+              <span className="image-upload__icon"><Icon name="upload" size={22} /></span>
+              <strong>Arrastra imágenes del ecógrafo aquí</strong>
+              <small>PNG, JPG, JPEG o WEBP · máximo 5 imágenes</small>
+            </div>
+            <input ref={fileInputRef} id="report-image-input" type="file" accept="image/png,image/jpeg,image/jpg,image/webp" multiple onChange={handleImageChange} />
             <button type="button" className="image-upload__button" onClick={() => fileInputRef.current?.click()} disabled={isProcessing}><Icon name="upload" size={15} /> {isProcessing ? "Procesando..." : "Subir archivo"}</button>
-          </label>
+          </div>
           {images.length > 0 && <div className="image-preview-grid">{images.map((image, index) => <article className="image-preview" key={`${image.name}-${index}`}><img src={image.dataUrl} alt={`Imagen adjunta ${index + 1}`} /><button type="button" aria-label={`Eliminar ${image.name}`} onClick={() => removeImage(index)}><Icon name="trash" size={15} /></button><span title={image.name}>{image.name}</span></article>)}</div>}
         </section>
 
         <section className="report-card report-status-card">
           <div className="report-card__heading"><div><span className="report-card__number">05</span><div><h2>Estado del informe</h2><p>Selecciona el estado correspondiente al avance del informe.</p></div></div></div>
           <div className="status-options">{statusDefinitions.map((item) => <button key={item.value} type="button" className={`status-option status-option--${item.value.toLowerCase()}${status === item.value ? " status-option--selected" : ""}`} onClick={() => handleStatusSelect(item.value)}><span className="status-option__icon"><Icon name={item.icon === "draft" ? "pencil" : item.icon === "finished" ? "document-plus" : item.icon === "signed" ? "shield" : "ban"} size={19} /></span><span><strong>{item.label}</strong><small>{item.description}</small></span></button>)}</div>
-          <div className="cancellation-area"><label className="report-field"><span>Justificación de anulación <small>(obligatoria para anular)</small></span><textarea value={cancellationReason} onChange={(event) => { setCancellationReason(event.target.value); if (event.target.value.trim()) setErrorMessage(""); }} placeholder="Motivo de anulación..." rows={3} /></label><button type="button" className="cancel-report-button" onClick={() => persistStudy("Anulado")}><Icon name="ban" size={17} /> Anular informe</button></div>
+          <div className="cancellation-area"><label className="report-field"><span>Justificación de anulación <small>(obligatoria para anular)</small></span><textarea value={cancellationReason} onChange={(event) => { setCancellationReason(event.target.value); if (event.target.value.trim()) setErrorMessage(""); }} placeholder="Motivo de anulación..." rows={3} /></label><button type="button" className="cancel-report-button" onClick={() => persistStudy("Anulado", false)}><Icon name="ban" size={17} /> Anular informe</button></div>
         </section>
 
         {errorMessage && <p className="report-alert" role="alert">{errorMessage}</p>}
