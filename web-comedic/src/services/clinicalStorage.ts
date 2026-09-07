@@ -27,6 +27,7 @@ export interface ClinicalReportData {
   observations?: string;
   conclusion?: string;
   recommendations?: string;
+  cancellationReason?: string;
   parameters?: Record<string, string>;
   images?: StudyImage[];
 }
