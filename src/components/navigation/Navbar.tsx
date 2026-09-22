@@ -6,8 +6,7 @@
 
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-
+import { useLocation } from "react-router-dom";
 // Tipo utilizado para identificar al usuario y su rol.
 import type { User } from "../../types/auth";
 // Hook para cambiar entre modo claro y nocturno.
@@ -46,7 +45,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
   const { theme, toggleTheme } = useTheme();
   // Información de la ruta actual y función de navegación.
   const location = useLocation();
-  const navigate = useNavigate();
+  
 
   // Escucha cambios del hash para actualizar la opción activa.
   useEffect(() => { const updateHash = () => setCurrentHash(window.location.hash); window.addEventListener("hashchange", updateHash); return () => window.removeEventListener("hashchange", updateHash); }, []);
