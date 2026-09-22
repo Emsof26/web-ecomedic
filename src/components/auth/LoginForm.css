@@ -1,0 +1,336 @@
+/* ============================================================
+   ECOMEDIC - ESTILOS DEL FORMULARIO DE INICIO DE SESIÓN
+   Identidad visual: Azul marino + Naranja
+   ============================================================ */
+
+
+/* ============================================================
+   1. PÁGINA PRINCIPAL DEL LOGIN
+   ============================================================ */
+
+.login-page {
+  min-height: 100vh;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 24px;
+  box-sizing: border-box;
+
+  /* Fondo utilizado en la interfaz principal de EcoMedic */
+  background: #f5f6f9;
+}
+
+
+/* ============================================================
+   2. TARJETA DEL FORMULARIO
+   ============================================================ */
+
+.login-form {
+  width: 100%;
+  max-width: 420px;
+
+  padding: 40px;
+
+  background: #ffffff;
+
+  border: 1px solid #e3e7ee;
+  border-radius: 16px;
+
+  /* Sombra suave para dar profundidad */
+  box-shadow: 0 10px 26px rgba(15, 23, 42, 0.09);
+
+  box-sizing: border-box;
+}
+
+
+/* ============================================================
+   3. ENCABEZADO
+   ============================================================ */
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+
+/* ============================================================
+   4. IDENTIDAD DE ECOMEDIC
+   ============================================================ */
+
+/*
+ * Muestra el nombre de la aplicación.
+ * El azul representa la identidad principal de EcoMedic.
+ */
+.login-logo {
+  width: 150px;
+  height: 50px;
+
+  margin: 0 auto 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
+
+  /* Azul principal de EcoMedic */
+  background: #13315c;
+
+  color: #ffffff;
+
+  font-size: 20px;
+  font-weight: 700;
+
+  letter-spacing: 0.5px;
+
+  white-space: nowrap;
+
+  /* Detalle naranja */
+  border-bottom: 3px solid #e2542a;
+
+  box-shadow: 0 6px 16px rgba(19, 49, 92, 0.18);
+}
+
+
+/* ============================================================
+   5. TÍTULO Y DESCRIPCIÓN
+   ============================================================ */
+
+.login-header h1 {
+  margin: 0 0 8px;
+
+  /* Azul oscuro utilizado en EcoMedic */
+  color: #0f1b2d;
+
+  font-size: 30px;
+  font-weight: 700;
+}
+
+
+.login-header p {
+  margin: 0;
+
+  color: #64748b;
+
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   6. GRUPOS DE CAMPOS
+   ============================================================ */
+
+.form-group {
+  margin-bottom: 22px;
+}
+
+
+/* ============================================================
+   7. ETIQUETAS
+   ============================================================ */
+
+.form-group label {
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: #13315c;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+/* ============================================================
+   8. CAMPOS DE ENTRADA
+   ============================================================ */
+
+.form-group input {
+  width: 100%;
+  height: 50px;
+
+  padding: 0 15px;
+
+  border: 1px solid #e3e7ee;
+  border-radius: 8px;
+
+  background: #ffffff;
+
+  color: #0f1b2d;
+
+  font-size: 15px;
+
+  outline: none;
+
+  box-sizing: border-box;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+}
+
+
+/* Texto de ayuda de los campos */
+.form-group input::placeholder {
+  color: #94a3b8;
+}
+
+
+/* ============================================================
+   9. INPUT SELECCIONADO
+   ============================================================ */
+
+.form-group input:focus {
+  border-color: #e2542a;
+
+  background: #ffffff;
+
+  /*
+   * Resalta el campo utilizando
+   * el naranja de EcoMedic.
+   */
+  box-shadow: 0 0 0 3px rgba(226, 84, 42, 0.12);
+}
+
+
+/* ============================================================
+   10. MENSAJE DE ERROR
+   ============================================================ */
+
+.login-error {
+  margin: 0 0 18px;
+
+  padding: 12px 14px;
+
+  border: 1px solid #f3c4b7;
+  border-radius: 8px;
+
+  background: #fff5f2;
+
+  color: #b9381d;
+
+  font-size: 14px;
+}
+
+
+/* ============================================================
+   11. BOTÓN INGRESAR
+   ============================================================ */
+
+/*
+ * Botón principal del formulario.
+ * Utiliza el naranja de la identidad visual
+ * de EcoMedic para llamar la atención.
+ */
+.login-button {
+  width: 100%;
+  height: 50px;
+
+  margin-top: 4px;
+
+  border: none;
+  border-radius: 8px;
+
+  background: #e2542a;
+
+  color: #ffffff;
+
+  font-size: 16px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  box-shadow: 0 6px 16px rgba(226, 84, 42, 0.20);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+
+/* ============================================================
+   12. EFECTO HOVER DEL BOTÓN
+   ============================================================ */
+
+.login-button:hover {
+  background: #c94722;
+
+  transform: translateY(-1px);
+
+  box-shadow: 0 9px 20px rgba(226, 84, 42, 0.28);
+}
+
+
+/* ============================================================
+   13. BOTÓN PRESIONADO
+   ============================================================ */
+
+.login-button:active {
+  transform: translateY(0);
+}
+
+
+/* ============================================================
+   14. PIE DEL FORMULARIO
+   ============================================================ */
+
+.login-footer {
+  margin: 24px 0 0;
+
+  text-align: center;
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  line-height: 1.6;
+}
+
+
+/* Nombre EcoMedic en el pie */
+.login-footer strong {
+  color: #13315c;
+}
+
+/* El tema se hereda del selector global para conservarlo en cualquier ruta. */
+:root[data-theme="dark"] .login-page { background: var(--app-background); }
+:root[data-theme="dark"] .login-form { border-color: var(--border); background: var(--surface); box-shadow: var(--shadow); }
+:root[data-theme="dark"] .login-header h1,
+:root[data-theme="dark"] .form-group label { color: var(--text-primary); }
+:root[data-theme="dark"] .login-header p,
+:root[data-theme="dark"] .login-footer { color: var(--text-secondary); }
+:root[data-theme="dark"] .login-footer strong { color: var(--accent); }
+:root[data-theme="dark"] .form-group input { border-color: var(--border); background: var(--surface); color: var(--text-primary); }
+
+
+/* ============================================================
+   15. DISEÑO RESPONSIVO
+   ============================================================ */
+
+@media (max-width: 480px) {
+
+  .login-page {
+    padding: 16px;
+  }
+
+  .login-form {
+    padding: 30px 22px;
+
+    border-radius: 14px;
+  }
+
+  .login-header h1 {
+    font-size: 26px;
+  }
+
+  .login-logo {
+    width: 150px;
+    height: 50px;
+    font-size: 20px;
+  }
+}

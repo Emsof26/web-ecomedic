@@ -1,0 +1,99 @@
+import { storageService } from "./storageService";
+
+export type Specialty = "Obstétrica" | "Abdominal" | "Renal" | "Mamaria" | "Partes blandas";
+
+export interface ClinicalPatient {
+  id: string;
+  name: string;
+  carnet: string;
+  phone?: string;
+  sex: "Femenino" | "Masculino";
+  age: number;
+  studies: Specialty[];
+}
+
+export type StudyStatus = "Borrador" | "Firmado" | "Finalizado" | "Anulado";
+
+export interface StudyImage {
+  name: string;
+  type: string;
+  dataUrl: string;
+}
+
+export interface ClinicalReportData {
+  clinicalReason?: string;
+  findings?: string;
+  measurements?: string;
+  observations?: string;
+  conclusion?: string;
+  recommendations?: string;
+  cancellationReason?: string;
+  parameters?: Record<string, string>;
+  images?: StudyImage[];
+}
+
+export interface ClinicalStudy {
+  id: string;
+  patientId: string;
+  patientName: string;
+  specialty: Specialty;
+  doctor: string;
+  date: string;
+  status: StudyStatus;
+  conclusion?: string;
+  reportData?: ClinicalReportData;
+}
+
+const PATIENTS_KEY = "ecomedic_patients";
+const STUDIES_KEY = "ecomedic_studies";
+
+const initialPatients: ClinicalPatient[] = [
+  { id: "patient-1", name: "María Elena Vargas", carnet: "6482913", sex: "Femenino", age: 30, studies: ["Obstétrica", "Abdominal", "Renal"] },
+  { id: "patient-2", name: "José Luis Fernández", carnet: "5521048", sex: "Masculino", age: 57, studies: ["Renal", "Abdominal"] },
+  { id: "patient-3", name: "Andrea Sofía Choque", carnet: "7890231", sex: "Femenino", age: 36, studies: ["Mamaria"] },
+  { id: "patient-4", name: "Ricardo Aguilar", carnet: "4432109", sex: "Masculino", age: 11, studies: ["Partes blandas"] },
+  { id: "patient-5", name: "Lucía Rojas", carnet: "3345678", sex: "Femenino", age: 40, studies: [] },
+];
+
+const initialStudies: ClinicalStudy[] = [
+  { id: "study-1", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dr. Marcos Pérez", date: "09 ago 2026", status: "Firmado", conclusion: "Feto único vivo, EG acorde a FUR, sin hallazgos patológicos." },
+  { id: "study-2", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dra. Fabiola Rojas", date: "01 jun 2026", status: "Firmado", conclusion: "Control gestacional normal, biometría acorde." },
+  { id: "study-3", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "19 ene 2026", status: "Firmado", conclusion: "Hígado, vesícula y páncreas sin alteraciones ecográficas." },
+  { id: "study-4", patientId: "patient-2", patientName: "José Luis Fernández", specialty: "Renal", doctor: "Dr. Marcos Pérez", date: "27 jul 2026", status: "Finalizado", conclusion: "Estudio renal sin alteraciones ecográficas significativas." },
+  { id: "study-5", patientId: "patient-3", patientName: "Andrea Sofía Choque", specialty: "Mamaria", doctor: "Dr. Marcos Pérez", date: "04 ago 2026", status: "Borrador", conclusion: "Estudio mamario pendiente de conclusión final." },
+  { id: "study-6", patientId: "patient-4", patientName: "Ricardo Aguilar", specialty: "Partes blandas", doctor: "Dr. Marcos Pérez", date: "14 jul 2026", status: "Anulado", conclusion: "Informe anulado." },
+  { id: "study-7", patientId: "patient-5", patientName: "Lucía Rojas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "22 may 2026", status: "Firmado", conclusion: "Estudio abdominal sin hallazgos relevantes." },
+];
+
+export const clinicalStorage = {
+  getPatients(): ClinicalPatient[] {
+    return storageService.get<ClinicalPatient[]>(PATIENTS_KEY) ?? initialPatients;
+  },
+
+  savePatients(patients: ClinicalPatient[]): void {
+    storageService.set(PATIENTS_KEY, patients);
+  },
+
+  getStudies(): ClinicalStudy[] {
+    return storageService.get<ClinicalStudy[]>(STUDIES_KEY) ?? initialStudies;
+  },
+
+  saveStudies(studies: ClinicalStudy[]): void {
+    storageService.set(STUDIES_KEY, studies);
+  },
+
+  addStudy(study: ClinicalStudy): void {
+    this.saveStudies([study, ...this.getStudies()]);
+  },
+
+  upsertStudy(study: ClinicalStudy): void {
+    const studies = this.getStudies();
+    const index = studies.findIndex((item) => item.id === study.id);
+    if (index === -1) this.addStudy(study);
+    else {
+      const updated = [...studies];
+      updated[index] = study;
+      this.saveStudies(updated);
+    }
+  },
+};
