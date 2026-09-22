@@ -1,0 +1,23 @@
+[
+  {
+    "id": "user-1",
+    "name": "Administrador",
+    "carnet": "123",
+    "password": "admin123",
+    "role": "ADMIN"
+  },
+  {
+    "id": "user-2",
+    "name": "Médico General",
+    "carnet": "456",
+    "password": "medico456",
+    "role": "MEDICO"
+  },
+  {
+    "id": "user-3",
+    "name": "Recepcionista",
+    "carnet": "789",
+    "password": "recep789",
+    "role": "RECEPCIONISTA"
+  }
+]

@@ -1,0 +1,84 @@
+:root {
+  color-scheme: light;
+  --app-background: #f5f6f9;
+  --surface: #ffffff;
+  --surface-muted: #f8fafc;
+  --surface-hover: #f1f3f6;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border: #e3e7ee;
+  --accent: #c94b2b;
+  --accent-hover: #a93b22;
+  --notice-background: #e5f4ff;
+  --notice-border: #9ed0f2;
+  --shadow: 0 10px 26px rgba(15, 23, 42, 0.09);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --app-background: #0d1725;
+  --surface: #132238;
+  --surface-muted: #1a2b40;
+  --surface-hover: #1d3149;
+  --text-primary: #edf4fb;
+  --text-secondary: #b3c2d2;
+  --border: #2a425c;
+  --accent: #f07a52;
+  --accent-hover: #ff9975;
+  --notice-background: #14334e;
+  --notice-border: #326282;
+  --shadow: 0 10px 26px rgba(0, 0, 0, .24);
+}
+
+* { box-sizing: border-box; }
+html { background: var(--app-background); }
+body { margin: 0; min-width: 320px; background: var(--app-background); color: var(--text-primary); font-family: Arial, sans-serif; transition: background-color .2s ease, color .2s ease; }
+button, input, select, textarea { font: inherit; }
+button, input, select, textarea, a { transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease; }
+
+:root[data-theme="dark"] .patient-card:hover,
+:root[data-theme="dark"] .patient-study-card:hover,
+:root[data-theme="dark"] .image-card:hover,
+:root[data-theme="dark"] .user-row:hover,
+:root[data-theme="dark"] .status-option:hover {
+  background: var(--surface-hover);
+}
+
+:root[data-theme="dark"] .patient-study-card__specialty,
+:root[data-theme="dark"] .specialty-badge,
+:root[data-theme="dark"] .specialty-badge--abdominal,
+:root[data-theme="dark"] .specialty-badge--renal,
+:root[data-theme="dark"] .specialty-badge--mamaria,
+:root[data-theme="dark"] .specialty-badge--partes-blandas,
+:root[data-theme="dark"] .patient-study-card__status,
+:root[data-theme="dark"] .patient-study-card__status--borrador,
+:root[data-theme="dark"] .patient-study-card__status--finalizado,
+:root[data-theme="dark"] .patient-study-card__status--anulado {
+  border-color: var(--border);
+  background: var(--surface-muted);
+}
+
+:root[data-theme="dark"] .patient-study-card__specialty { color: #73b9ec; }
+:root[data-theme="dark"] .patient-study-card__specialty--obstétrica { color: #63d39a; }
+:root[data-theme="dark"] .patient-study-card__specialty--renal { color: #b899ff; }
+:root[data-theme="dark"] .patient-study-card__specialty--mamaria { color: #f18baa; }
+:root[data-theme="dark"] .patient-study-card__specialty--partes-blandas { color: #f0ad67; }
+:root[data-theme="dark"] .patient-study-card__status { color: #63d39a; }
+:root[data-theme="dark"] .patient-study-card__status--borrador { color: #e8c15b; }
+:root[data-theme="dark"] .patient-study-card__status--finalizado { color: #78b8ed; }
+:root[data-theme="dark"] .patient-study-card__status--anulado { color: #f07f7f; }
+
+:root[data-theme="dark"] .status-option--borrador .status-option__icon { color: #e8c15b; background: rgba(232,193,91,.13); }
+:root[data-theme="dark"] .status-option--finalizado .status-option__icon { color: #78b8ed; background: rgba(120,184,237,.13); }
+:root[data-theme="dark"] .status-option--firmado .status-option__icon { color: #63d39a; background: rgba(99,211,154,.13); }
+:root[data-theme="dark"] .status-option--anulado .status-option__icon { color: #f07f7f; background: rgba(240,127,127,.13); }
+
+:root[data-theme="dark"] .role-badge--admin { background: rgba(237,244,251,.08); color: var(--text-primary); }
+:root[data-theme="dark"] .role-badge--recepcionista { background: rgba(179,194,210,.10); color: var(--text-secondary); }
+:root[data-theme="dark"] .image-preview button { background: rgba(10,25,43,.9); }
+:root[data-theme="dark"] .image-card__preview { background: #050b12; }
+:root[data-theme="dark"] .configuration-notice { border-color: #39734a; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; }
+}
