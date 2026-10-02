@@ -7,7 +7,8 @@
 /* El contenido usa las mismas proporciones y espaciados generales de Inicio. */
 .configuration-page__content {
   min-height: 100vh;
-  margin-left: 274px;
+  margin-left: var(--sidebar-offset, 274px);
+  transition: margin-left .25s ease;
   padding: 34px 34px 60px;
   color: var(--text-primary);
 }

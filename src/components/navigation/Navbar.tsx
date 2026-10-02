@@ -37,8 +37,8 @@ function SunIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><circle 
 
 // Componente principal del menú lateral.
 function Navbar({ user, onLogout }: NavbarProps) {
-  // Estado que controla la apertura del menú en dispositivos pequeños.
-  const [isOpen, setIsOpen] = useState(false);
+  // El panel inicia abierto en escritorio y cerrado en pantallas pequeñas.
+  const [isOpen, setIsOpen] = useState(() => window.matchMedia("(min-width: 769px)").matches);
   // Hash actual de la URL para identificar secciones activas del inicio.
   const [currentHash, setCurrentHash] = useState(window.location.hash);
   // Estado y función para controlar el tema visual.
@@ -49,6 +49,19 @@ function Navbar({ user, onLogout }: NavbarProps) {
 
   // Escucha cambios del hash para actualizar la opción activa.
   useEffect(() => { const updateHash = () => setCurrentHash(window.location.hash); window.addEventListener("hashchange", updateHash); return () => window.removeEventListener("hashchange", updateHash); }, []);
+
+    // Mantiene el espacio del contenido sincronizado con el estado del panel.
+  useEffect(() => {
+    document.documentElement.dataset.sidebarOpen = String(isOpen);
+    return () => { delete document.documentElement.dataset.sidebarOpen; };
+  }, [isOpen]);
+
+  // Escape cierra el panel sin importar el tamaño de pantalla.
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") setIsOpen(false); };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   // Cierra el menú lateral.
   const closeMenu = () => setIsOpen(false);
@@ -67,7 +80,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
 
   // Estructura visual completa del Navbar.
   return <>
-    <button className="navbar-toggle" type="button" aria-label={isOpen ? "Cerrar menú" : "Abrir menú"} aria-controls="main-sidebar" aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><MenuIcon /></button>
+    <button className={`navbar-toggle${isOpen ? " navbar-toggle--open" : ""}`} type="button" aria-label={isOpen ? "Cerrar barra lateral" : "Abrir barra lateral"} aria-controls="main-sidebar" aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><img src="/logo/logo-eco.png" alt="" /><span className="navbar-toggle__action" aria-hidden="true"><MenuIcon /></span><span className="navbar-toggle__tooltip">{isOpen ? "Cerrar barra lateral" : "Abrir barra lateral"}</span></button>
     <button className={`navbar__overlay${isOpen ? " navbar__overlay--visible" : ""}`} type="button" aria-label="Cerrar menú" tabIndex={isOpen ? 0 : -1} onClick={closeMenu} />
     <aside id="main-sidebar" className={`navbar${isOpen ? " navbar--open" : ""}`}>
       {/* Cabecera del menú: logo, nombre y botón de cierre. */}

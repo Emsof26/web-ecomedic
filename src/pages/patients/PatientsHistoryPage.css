@@ -1,5 +1,5 @@
 .patients-page { min-height: 100vh; background: var(--app-background); }
-.patients-page__content { min-height: 100vh; margin-left: 274px; padding: 34px 34px 60px; color: var(--text-primary); }
+.patients-page__content { min-height: 100vh; margin-left: var(--sidebar-offset, 274px); padding: 34px 34px 60px; color: var(--text-primary); transition: margin-left .25s ease; }
 .patients-page__header { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-bottom: 30px; }
 .patients-page__header h1 { margin: 0 0 6px; color: var(--text-primary); font-size: 24px; font-weight: 700; }
 .patients-page__header p { margin: 0; color: var(--text-secondary); font-size: 13px; }
