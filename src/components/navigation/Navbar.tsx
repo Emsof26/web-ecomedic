@@ -21,12 +21,11 @@ interface NavigationItemProps { href: string; label: string; active: boolean; on
 
 // Componente reutilizable para representar una opción de navegación.
 function NavigationItem({ href, label, active, onNavigate, children }: NavigationItemProps) {
-  return <a className={`navbar__link${active ? " navbar__link--active" : ""}`} href={href} aria-current={active ? "page" : undefined} onClick={onNavigate}>{children}<span>{label}</span></a>;
-}
+   return <a className={`navbar__link${active ? " navbar__link--active" : ""}`} href={href} data-label={label} aria-label={label} aria-current={active ? "page" : undefined} onClick={onNavigate}>{children}<span>{label}</span></a>;
+  }
 
 // Iconos SVG utilizados por las diferentes opciones del menú.
 function MenuIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg>; }
-function CloseIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18" /></svg>; }
 function HomeIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="m3 11 9-8 9 8v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-9ZM9 21v-6h6v6" /></svg>; }
 function PatientsIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M16 20v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM21 20v-1a4 4 0 0 0-3-3.9M16 3.1a4 4 0 0 1 0 7.8" /></svg>; }
 function ReportIcon() { return <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 3h8l4 4v14H6a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2ZM14 3v5h5M8 13h8M8 17h6" /></svg>; }
@@ -50,7 +49,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
   // Escucha cambios del hash para actualizar la opción activa.
   useEffect(() => { const updateHash = () => setCurrentHash(window.location.hash); window.addEventListener("hashchange", updateHash); return () => window.removeEventListener("hashchange", updateHash); }, []);
 
-    // Mantiene el espacio del contenido sincronizado con el estado del panel.
+      // Mantiene el espacio del contenido sincronizado con el estado del panel.
   useEffect(() => {
     document.documentElement.dataset.sidebarOpen = String(isOpen);
     return () => { delete document.documentElement.dataset.sidebarOpen; };
@@ -80,11 +79,11 @@ function Navbar({ user, onLogout }: NavbarProps) {
 
   // Estructura visual completa del Navbar.
   return <>
-    <button className={`navbar-toggle${isOpen ? " navbar-toggle--open" : ""}`} type="button" aria-label={isOpen ? "Cerrar barra lateral" : "Abrir barra lateral"} aria-controls="main-sidebar" aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><img src="/logo/logo-eco.png" alt="" /><span className="navbar-toggle__action" aria-hidden="true"><MenuIcon /></span><span className="navbar-toggle__tooltip">{isOpen ? "Cerrar barra lateral" : "Abrir barra lateral"}</span></button>
+    <button className={`navbar-toggle${isOpen ? " navbar-toggle--open" : ""}`} type="button" aria-label={isOpen ? "Cerrar barra lateral" : "Abrir barra lateral"} aria-controls="main-sidebar" aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><img src="/logo/logo-eco.png" alt="" /><span className="navbar-toggle__action" aria-hidden="true"><MenuIcon /></span></button>
     <button className={`navbar__overlay${isOpen ? " navbar__overlay--visible" : ""}`} type="button" aria-label="Cerrar menú" tabIndex={isOpen ? 0 : -1} onClick={closeMenu} />
-    <aside id="main-sidebar" className={`navbar${isOpen ? " navbar--open" : ""}`}>
+    <aside id="main-sidebar" className={`navbar${isOpen ? " navbar--open" : " navbar--collapsed"}`}>
       {/* Cabecera del menú: logo, nombre y botón de cierre. */}
-      <div className="navbar__header"><a className="navbar__brand" href="/" onClick={closeMenu}><span className="navbar__brand-mark"><img src="/logo/logo-eco.png" alt="Logo EcoMedic" /></span><span><strong>EcoMedic</strong><small>Gestión Ecográfica</small></span></a><button className="navbar__close" type="button" aria-label="Cerrar menú" onClick={closeMenu}><CloseIcon /></button></div>
+      <div className="navbar__header"><button className="navbar__brand" type="button" aria-label={isOpen ? "Cerrar barra lateral" : "Abrir barra lateral"} aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><span className="navbar__brand-mark"><img src="/logo/logo-eco.png" alt="" /></span><span><strong>EcoMedic</strong><small>Gestión Ecográfica</small></span></button><button className="navbar__close" type="button" aria-label="Cerrar barra lateral" onClick={closeMenu}><MenuIcon /></button></div>
       {/* Información del usuario autenticado. */}
       <div className="navbar__user-panel"><div className="navbar__account"><span className="navbar__avatar" aria-hidden="true">↯</span><span><strong>{user?.name ?? "Usuario"}</strong><small>{roleLabel}</small></span></div></div>
       {/* Aviso de acceso de solo lectura para recepción. */}
@@ -98,7 +97,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
         {isAdmin && <NavigationItem href="/configuracion" label="Configuración / Usuarios" active={isActive("/configuracion")} onNavigate={closeMenu}><SettingsIcon /></NavigationItem>}
       </nav>
       {/* Pie del menú: cambio de tema, cierre de sesión y copyright. */}
-      <div className="navbar__footer"><button className="navbar__theme" type="button" aria-pressed={theme === "dark"} onClick={toggleTheme}>{theme === "dark" ? <SunIcon /> : <MoonIcon />}{theme === "dark" ? "Modo claro" : "Modo nocturno"}</button><button className="navbar__logout" type="button" onClick={onLogout}>Cerrar sesión</button><p className="navbar__copyright">EcoMedic · Servicios de Ecografía</p></div>
+      <div className="navbar__footer"><button className="navbar__theme" type="button" data-label={theme === "dark" ? "Modo claro" : "Modo nocturno"} aria-label={theme === "dark" ? "Activar modo claro" : "Activar modo nocturno"} aria-pressed={theme === "dark"} onClick={toggleTheme}>{theme === "dark" ? <SunIcon /> : <MoonIcon />}<span>{theme === "dark" ? "Modo claro" : "Modo nocturno"}</span></button><button className="navbar__logout" type="button" data-label="Cerrar sesión" aria-label="Cerrar sesión" onClick={onLogout}><span className="navbar__logout-avatar" aria-hidden="true">CS</span><span>Cerrar sesión</span></button><p className="navbar__copyright">EcoMedic · Servicios de Ecografía</p></div>
     </aside>
   </>;
 }
