@@ -46,7 +46,6 @@ function Navbar({ user, onLogout }: NavbarProps) {
   // Información de la ruta actual y función de navegación.
   const location = useLocation();
   
-
   // Escucha cambios del hash para actualizar la opción activa.
   useEffect(() => { const updateHash = () => setCurrentHash(window.location.hash); window.addEventListener("hashchange", updateHash); return () => window.removeEventListener("hashchange", updateHash); }, []);
 
@@ -61,6 +60,14 @@ function Navbar({ user, onLogout }: NavbarProps) {
     const handleKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") setIsOpen(false); };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+// Al cambiar entre escritorio y móvil, restablece el estado adecuado del menú.
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(min-width: 769px)");
+    const updateMenuForViewport = (event: MediaQueryListEvent) => setIsOpen(event.matches);
+    mediaQuery.addEventListener("change", updateMenuForViewport);
+    return () => mediaQuery.removeEventListener("change", updateMenuForViewport);
   }, []);
 
   // Cierra el menú lateral.
@@ -86,7 +93,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
     <button className={`navbar__overlay${isOpen ? " navbar__overlay--visible" : ""}`} type="button" aria-label="Cerrar menú" tabIndex={isOpen ? 0 : -1} onClick={closeMenu} />
     <aside id="main-sidebar" className={`navbar${isOpen ? " navbar--open" : " navbar--collapsed"}`}>
       {/* Cabecera del menú: logo, nombre y botón de cierre. */}
-      <div className="navbar__header"><button className="navbar__brand" type="button" aria-label={isOpen ? "Contraer barra lateral" : "Expandir barra lateral"} aria-expanded={isOpen} onClick={() => setIsOpen((value) => !value)}><span className="navbar__brand-mark"><img src="/logo/logo-eco.png" alt="" /><span className="navbar__brand-action" aria-hidden="true"><SidebarIcon /></span></span><span><strong>EcoMedic</strong><small>Gestión Ecográfica</small></span></button><button className="navbar__close" type="button" aria-label="Cerrar barra lateral" onClick={() => setIsOpen(false)}><MenuIcon /></button></div>
+      <div className="navbar__header"><div className="navbar__brand"><span className="navbar__brand-mark"><img src="/logo/logo-eco.png" alt="" /></span><span><strong>EcoMedic</strong><small>Gestión Ecográfica</small></span></div><button className="navbar__compact-toggle" type="button" aria-label="Expandir barra lateral" aria-expanded={isOpen} onClick={() => setIsOpen(true)}><span className="navbar__brand-mark"><img src="/logo/logo-eco.png" alt="" /><span className="navbar__brand-action" aria-hidden="true"><MenuIcon /></span></span></button><button className="navbar__close" type="button" aria-label={isOpen ? "Contraer barra lateral" : "Abrir barra lateral"} onClick={() => setIsOpen((value) => !value)}><MenuIcon /></button></div>
       {/* Información del usuario autenticado. */}
       <div className="navbar__user-panel"><div className="navbar__account"><span className="navbar__avatar" aria-hidden="true">↯</span><span><strong>{user?.name ?? "Usuario"}</strong><small>{roleLabel}</small></span></div></div>
       {/* Aviso de acceso de solo lectura para recepción. */}
