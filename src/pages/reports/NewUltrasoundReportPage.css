@@ -471,11 +471,6 @@
   color: #3673ac;
 }
 
-.status-option--firmado .status-option__icon {
-  background: rgba(43, 138, 97, .12);
-  color: #2b8a61;
-}
-
 .status-option--anulado .status-option__icon {
   background: rgba(190, 61, 61, .10);
   color: #b33a3a;
@@ -483,7 +478,6 @@
 
 .status-option--selected.status-option--borrador { border-color: #d4a137; box-shadow: 0 0 0 2px rgba(212, 161, 55, .12); }
 .status-option--selected.status-option--finalizado { border-color: #4a83b8; box-shadow: 0 0 0 2px rgba(74, 131, 184, .12); }
-.status-option--selected.status-option--firmado { border-color: #2b8a61; box-shadow: 0 0 0 2px rgba(43, 138, 97, .12); }
 .status-option--selected.status-option--anulado { border-color: #be3d3d; box-shadow: 0 0 0 2px rgba(190, 61, 61, .12); }
 
 .cancellation-area {

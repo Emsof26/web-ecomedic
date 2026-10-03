@@ -20,8 +20,8 @@
 }
 
 :root[data-theme="dark"] .navbar {
-  --sidebar-bg: #173d4d;
-  --sidebar-surface: #285c70;
+  --sidebar-bg: #20546d;
+  --sidebar-surface: #2f718b;
   --sidebar-border: rgba(221, 240, 241, .17);
   --sidebar-text: #edf5f2;
   --sidebar-muted: #b7ccc8;
@@ -67,7 +67,19 @@
 @media (min-width: 769px) {
   :root { --sidebar-offset: 68px; }
   :root[data-sidebar-open="true"] { --sidebar-offset: 274px; }
-  .navbar--collapsed { width: 68px; padding: 18px 11px 12px; overflow: visible; }
+  .navbar__close { display: grid; }
+  .navbar--collapsed {
+    --sidebar-bg: #24566d;
+    --sidebar-surface: #3a6d82;
+    --sidebar-border: rgba(237, 247, 249, .18);
+    --sidebar-text: #f2f8f8;
+    --sidebar-muted: #d4e4e7;
+    --sidebar-accent: #ff936c;
+    width: 68px;
+    padding: 18px 11px 12px;
+    overflow: visible;
+    box-shadow: 4px 0 18px rgba(23, 61, 77, .18);
+  }
   .navbar--collapsed .navbar__header { justify-content: center; padding: 1px 0 17px; }
   .navbar--collapsed .navbar__brand, .navbar--collapsed .navbar__close, .navbar--collapsed .navbar__user-panel, .navbar--collapsed .navbar__read-only, .navbar--collapsed .navbar__copyright { display: none; }
   .navbar--collapsed .navbar__compact-toggle { display: block; }
@@ -75,9 +87,11 @@
     position: absolute; top: 6px; left: calc(100% + 9px); z-index: 40; width: max-content; padding: 7px 9px; border-radius: 7px; background: var(--sidebar-surface); box-shadow: 0 4px 12px rgba(10, 35, 45, .3); color: var(--sidebar-text); content: "Expandir barra lateral"; font-size: 11px; font-weight: 700; opacity: 0; pointer-events: none; transform: translateX(-4px); transition: opacity .18s ease, transform .18s ease;
   }
   .navbar--collapsed .navbar__compact-toggle:hover::after, .navbar--collapsed .navbar__compact-toggle:focus-visible::after { opacity: 1; transform: translateX(0); }
+  .navbar--collapsed .navbar__navigation { gap: 9px; }
   .navbar--collapsed .navbar__link, .navbar--collapsed .navbar__theme, .navbar--collapsed .navbar__logout { width: 46px; justify-content: center; padding: 0; }
+  .navbar--collapsed .navbar__link { min-height: 46px; }
   .navbar--collapsed .navbar__link span, .navbar--collapsed .navbar__theme > span:last-child, .navbar--collapsed .navbar__logout > span:last-child { display: none; }
-  .navbar--collapsed .navbar__theme { border: 0; background: transparent; }
+  .navbar--collapsed .navbar__theme { min-height: 46px; border: 0; background: transparent; }
   .navbar--collapsed .navbar__logout { margin-top: 8px; }
   .navbar--collapsed .navbar__link::after, .navbar--collapsed .navbar__theme::after, .navbar--collapsed .navbar__logout::after {
     position: absolute; left: calc(100% + 9px); z-index: 40; width: max-content; max-width: 190px; padding: 7px 9px; border-radius: 7px; background: var(--sidebar-surface); box-shadow: 0 4px 12px rgba(21, 48, 59, .25); color: var(--sidebar-text); font-size: 11px; font-weight: 700; opacity: 0; pointer-events: none; transform: translateX(-4px); transition: opacity .18s ease, transform .18s ease;
@@ -92,9 +106,9 @@
   .navbar { width: min(84vw, 300px); transform: translateX(-105%); }
   .navbar--open { transform: translateX(0); }
   .navbar--open .navbar__header { padding-left: 56px; }
-  .navbar-toggle { position: fixed; z-index: 30; top: 16px; left: 16px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .68); border-radius: 12px; background: #fbffff; box-shadow: 0 5px 14px rgba(19, 67, 84, .22); color: #22546c; }
+  .navbar-toggle { position: fixed; z-index: 30; top: 16px; left: 16px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 1px solid var(--sidebar-border); border-radius: 12px; background: #fbffff; box-shadow: 0 5px 14px rgba(19, 67, 84, .22); color: #1d6683; }
   .navbar-toggle svg { width: 22px; height: 22px; stroke-width: 2; }
-  .navbar-toggle:hover, .navbar-toggle:focus-visible { border-color: #a9d0da; background: #e4f5f7; color: #173d4d; }
+  .navbar-toggle:hover, .navbar-toggle:focus-visible { border-color: #9dcbd4; background: #e0f2f5; color: #174f69; }
   .navbar--open .navbar__close { display: none; }
   .navbar__overlay { position: fixed; z-index: 15; inset: 0; display: block; visibility: hidden; border: 0; background: rgba(17, 38, 48, .48); opacity: 0; transition: opacity .25s ease, visibility .25s ease; }
   .navbar__overlay--visible { visibility: visible; opacity: 1; }

@@ -70,7 +70,6 @@ body *, body *::before, body *::after { transition: background-color .25s ease, 
 
 :root[data-theme="dark"] .status-option--borrador .status-option__icon { color: #e8c15b; background: rgba(232,193,91,.13); }
 :root[data-theme="dark"] .status-option--finalizado .status-option__icon { color: #78b8ed; background: rgba(120,184,237,.13); }
-:root[data-theme="dark"] .status-option--firmado .status-option__icon { color: #63d39a; background: rgba(99,211,154,.13); }
 :root[data-theme="dark"] .status-option--anulado .status-option__icon { color: #f07f7f; background: rgba(240,127,127,.13); }
 
 :root[data-theme="dark"] .role-badge--admin { background: rgba(237,244,251,.08); color: var(--text-primary); }

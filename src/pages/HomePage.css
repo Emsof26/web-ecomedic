@@ -40,7 +40,6 @@
 .activity-item:hover, .activity-item:focus-visible { background: var(--surface-hover); outline: none; }
 .activity-item__dot { width: 9px; height: 9px; border-radius: 50%; }
 .activity-item__dot--anulado { background: #d94a4a; }
-.activity-item__dot--firmado { background: #39a66e; }
 .activity-item__dot--borrador { background: #e1ad37; }
 .activity-item__dot--finalizado { background: #3d83c6; }
 .activity-item__main { min-width: 0; }
@@ -51,7 +50,6 @@
 .activity-item__main small b { margin: 0 5px; font-weight: 700; }
 .activity-item__status { min-width: 74px; text-align: right; font-size: 11px; font-weight: 700; }
 .activity-item__status--anulado { color: #c83d3d; }
-.activity-item__status--firmado { color: #278858; }
 .activity-item__status--borrador { color: #b38318; }
 .activity-item__status--finalizado { color: #3376b4; }
 .activity-empty { margin: 0; padding: 24px 0; color: var(--text-secondary); text-align: center; font-size: 13px; }

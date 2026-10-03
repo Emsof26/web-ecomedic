@@ -38,7 +38,7 @@ function HomePage() {
   };
 
   const draftCount = studies.filter((study) => study.status === "Borrador").length;
-  const signedCount = studies.filter((study) => study.status === "Firmado").length;
+  const finalizedCount = studies.filter((study) => study.status === "Finalizado").length;
   const recentStudies = studies.slice(0, 8);
 
   return (
@@ -74,8 +74,8 @@ function HomePage() {
 
           <article className="summary-card">
             <span className="summary-card__icon summary-card__icon--green"><CheckIcon /></span>
-            <strong>{signedCount}</strong>
-            <p>Informes firmados</p>
+            <strong>{finalizedCount}</strong>
+            <p>Informes finalizados</p>
           </article>
 
           <article className="summary-card">

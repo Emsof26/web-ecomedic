@@ -245,7 +245,7 @@ const statusDefinitions: Array<{
   value: StudyStatus;
   label: string;
   description: string;
-  icon: "draft" | "finished" | "signed" | "cancelled";
+  icon: "draft" | "finished" | "cancelled";
 }> = [
   {
     value: "Borrador",
@@ -258,12 +258,6 @@ const statusDefinitions: Array<{
     label: "Finalizado",
     description: "Estudio terminado",
     icon: "finished",
-  },
-  {
-    value: "Firmado",
-    label: "Firmado",
-    description: "Informe validado",
-    icon: "signed",
   },
   {
     value: "Anulado",
@@ -729,11 +723,9 @@ function NewUltrasoundReportPage() {
     setSavedMessage(
       nextStatus === "Borrador"
         ? "Informe guardado como borrador correctamente."
-        : nextStatus === "Firmado"
-          ? "Informe firmado correctamente."
-          : nextStatus === "Finalizado"
-            ? "Informe marcado como finalizado."
-            : "Informe anulado correctamente.",
+        : nextStatus === "Finalizado"
+          ? "Informe marcado como finalizado."
+          : "Informe anulado correctamente.",
     );
 
     return true;
@@ -752,11 +744,11 @@ function NewUltrasoundReportPage() {
   };
 
   /* =========================================================
-     FINALIZAR Y FIRMAR
+     FINALIZAR INFORME
      ========================================================= */
 
-  const handleFinalizeAndSign = () => {
-    if (persistStudy("Firmado", true)) {
+  const handleFinalize = () => {
+    if (persistStudy("Finalizado", true)) {
       window.setTimeout(
         () =>
           navigate(
@@ -1608,10 +1600,7 @@ function NewUltrasoundReportPage() {
                           : item.icon ===
                               "finished"
                             ? "document-plus"
-                            : item.icon ===
-                                "signed"
-                              ? "shield"
-                              : "ban"
+                          : "ban"
                       }
                       size={19}
                     />
@@ -1733,14 +1722,14 @@ function NewUltrasoundReportPage() {
             <button
               className="report-button report-button--primary"
               type="button"
-              onClick={handleFinalizeAndSign}
+              onClick={handleFinalize}
             >
               <Icon
                 name="shield"
                 size={16}
               />
 
-              Finalizar y firmar
+              Finalizar informe
             </button>
 
             <button
