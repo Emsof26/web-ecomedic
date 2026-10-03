@@ -1,10 +1,10 @@
 .navbar {
-  --sidebar-bg: #f9fcfc;
-  --sidebar-surface: #e4f2f4;
-  --sidebar-border: #c7e0e4;
-  --sidebar-text: #1f5f78;
-  --sidebar-muted: #5d7c88;
-  --sidebar-accent: #db7658;
+  --sidebar-bg: #22546c;
+  --sidebar-surface: #326b83;
+  --sidebar-border: rgba(229, 244, 247, .18);
+  --sidebar-text: #f3f9fa;
+  --sidebar-muted: #c0d8de;
+  --sidebar-accent: #ff956f;
   position: fixed;
   z-index: 20;
   inset: 0 auto 0 0;
@@ -20,9 +20,9 @@
 }
 
 :root[data-theme="dark"] .navbar {
-  --sidebar-bg: #20546d;
-  --sidebar-surface: #2f718b;
-  --sidebar-border: rgba(221, 240, 241, .19);
+  --sidebar-bg: #173d4d;
+  --sidebar-surface: #285c70;
+  --sidebar-border: rgba(221, 240, 241, .17);
   --sidebar-text: #edf5f2;
   --sidebar-muted: #b7ccc8;
   --sidebar-accent: #efa175;
@@ -58,7 +58,7 @@
 .navbar__copyright { margin: 10px 0 0; color: var(--sidebar-muted); font-size: 9px; text-align: center; }
 .navbar-toggle, .navbar__close, .navbar__compact-toggle { border: 0; background: transparent; color: var(--sidebar-text); cursor: pointer; }
 .navbar-toggle { display: none; }
-.navbar__compact-toggle { display: none; padding: 0; }
+.navbar__compact-toggle { position: relative; display: none; padding: 0; }
 .navbar__close { display: none; place-items: center; padding: 8px; border-radius: 8px; }
 .navbar__close:hover { background: var(--sidebar-surface); color: var(--sidebar-accent); }
 .navbar__overlay { display: none; }
@@ -71,6 +71,10 @@
   .navbar--collapsed .navbar__header { justify-content: center; padding: 1px 0 17px; }
   .navbar--collapsed .navbar__brand, .navbar--collapsed .navbar__close, .navbar--collapsed .navbar__user-panel, .navbar--collapsed .navbar__read-only, .navbar--collapsed .navbar__copyright { display: none; }
   .navbar--collapsed .navbar__compact-toggle { display: block; }
+  .navbar--collapsed .navbar__compact-toggle::after {
+    position: absolute; top: 6px; left: calc(100% + 9px); z-index: 40; width: max-content; padding: 7px 9px; border-radius: 7px; background: var(--sidebar-surface); box-shadow: 0 4px 12px rgba(10, 35, 45, .3); color: var(--sidebar-text); content: "Expandir barra lateral"; font-size: 11px; font-weight: 700; opacity: 0; pointer-events: none; transform: translateX(-4px); transition: opacity .18s ease, transform .18s ease;
+  }
+  .navbar--collapsed .navbar__compact-toggle:hover::after, .navbar--collapsed .navbar__compact-toggle:focus-visible::after { opacity: 1; transform: translateX(0); }
   .navbar--collapsed .navbar__link, .navbar--collapsed .navbar__theme, .navbar--collapsed .navbar__logout { width: 46px; justify-content: center; padding: 0; }
   .navbar--collapsed .navbar__link span, .navbar--collapsed .navbar__theme > span:last-child, .navbar--collapsed .navbar__logout > span:last-child { display: none; }
   .navbar--collapsed .navbar__theme { border: 0; background: transparent; }
@@ -87,10 +91,10 @@
   :root, :root[data-sidebar-open="true"] { --sidebar-offset: 0px; }
   .navbar { width: min(84vw, 300px); transform: translateX(-105%); }
   .navbar--open { transform: translateX(0); }
-    .navbar--open .navbar__header { padding-left: 56px; }
-  .navbar-toggle { position: fixed; z-index: 30; top: 16px; left: 16px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 1px solid var(--sidebar-border); border-radius: 12px; background: #fbffff; box-shadow: 0 5px 14px rgba(19, 67, 84, .22); color: #1d6683; }
+  .navbar--open .navbar__header { padding-left: 56px; }
+  .navbar-toggle { position: fixed; z-index: 30; top: 16px; left: 16px; width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 255, 255, .68); border-radius: 12px; background: #fbffff; box-shadow: 0 5px 14px rgba(19, 67, 84, .22); color: #22546c; }
   .navbar-toggle svg { width: 22px; height: 22px; stroke-width: 2; }
-  .navbar-toggle:hover, .navbar-toggle:focus-visible { border-color: #9dcbd4; background: #e0f2f5; color: #174f69; }
+  .navbar-toggle:hover, .navbar-toggle:focus-visible { border-color: #a9d0da; background: #e4f5f7; color: #173d4d; }
   .navbar--open .navbar__close { display: none; }
   .navbar__overlay { position: fixed; z-index: 15; inset: 0; display: block; visibility: hidden; border: 0; background: rgba(17, 38, 48, .48); opacity: 0; transition: opacity .25s ease, visibility .25s ease; }
   .navbar__overlay--visible { visibility: visible; opacity: 1; }

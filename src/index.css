@@ -32,9 +32,9 @@
 
 * { box-sizing: border-box; }
 html { background: var(--app-background); }
-body { margin: 0; min-width: 320px; background: var(--app-background); color: var(--text-primary); font-family: Arial, sans-serif; transition: background-color .2s ease, color .2s ease; }
+body { margin: 0; min-width: 320px; background: var(--app-background); color: var(--text-primary); font-family: Arial, sans-serif; transition: background-color .25s ease, color .25s ease; }
 button, input, select, textarea { font: inherit; }
-button, input, select, textarea, a { transition: background-color .15s ease, border-color .15s ease, color .15s ease, box-shadow .15s ease, transform .15s ease; }
+body *, body *::before, body *::after { transition: background-color .25s ease, border-color .25s ease, color .25s ease, box-shadow .25s ease, fill .25s ease, stroke .25s ease; }
 
 :root[data-theme="dark"] .patient-card:hover,
 :root[data-theme="dark"] .patient-study-card:hover,
