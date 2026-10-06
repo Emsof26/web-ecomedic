@@ -37,8 +37,8 @@ function HomePage() {
     navigate("/login", { replace: true });
   };
 
-  const draftCount = studies.filter((study) => study.status === "Borrador").length;
-  const finalizedCount = studies.filter((study) => study.status === "Finalizado").length;
+  const studiesWithConclusion = studies.filter((study) => Boolean(study.conclusion || study.reportData?.conclusion)).length;
+  const specialtyCount = new Set(studies.map((study) => study.specialty)).size;
   const recentStudies = studies.slice(0, 8);
 
   return (
@@ -68,14 +68,14 @@ function HomePage() {
 
           <article className="summary-card">
             <span className="summary-card__icon"><PencilIcon /></span>
-            <strong>{draftCount}</strong>
-            <p>Informes en borrador</p>
+            <strong>{studiesWithConclusion}</strong>
+            <p>Estudios con conclusión</p>
           </article>
 
           <article className="summary-card">
             <span className="summary-card__icon summary-card__icon--green"><CheckIcon /></span>
-            <strong>{finalizedCount}</strong>
-            <p>Informes finalizados</p>
+            <strong>{specialtyCount}</strong>
+            <p>Especialidades registradas</p>
           </article>
 
           <article className="summary-card">
@@ -102,15 +102,15 @@ function HomePage() {
                 key={study.id}
                 onClick={() => navigate(`/pacientes/${study.patientId}`)}
               >
-                <span className={`activity-item__dot activity-item__dot--${study.status.toLowerCase()}`} aria-hidden="true" />
+                <span className="activity-item__dot" aria-hidden="true" />
 
                 <span className="activity-item__main">
                   <strong>{study.patientName} <em>—</em> <span>{study.specialty}</span></strong>
                   <small>{study.doctor} <b>·</b> {study.date}</small>
                 </span>
 
-                <span className={`activity-item__status activity-item__status--${study.status.toLowerCase()}`}>
-                  {study.status}
+                <span className="activity-item__status">
+                  Estudio ecográfico
                 </span>
               </button>
             ))}
