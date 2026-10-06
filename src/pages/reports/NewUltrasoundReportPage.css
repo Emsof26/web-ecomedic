@@ -410,144 +410,6 @@
   margin-bottom: 18px;
 }
 
-.status-options {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.status-option {
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  min-width: 0;
-  min-height: 64px;
-  padding: 10px 11px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  background: var(--surface);
-  color: var(--text-primary);
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-  transition: border-color .15s ease, background-color .15s ease, transform .15s ease, box-shadow .15s ease;
-}
-
-.status-option:hover {
-  transform: translateY(-1px);
-}
-
-.status-option__icon {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
-  place-items: center;
-  border-radius: 9px;
-}
-
-.status-option strong,
-.status-option small {
-  display: block;
-}
-
-.status-option strong {
-  font-size: 12px;
-}
-
-.status-option small {
-  margin-top: 3px;
-  color: var(--text-secondary);
-  font-size: 10px;
-}
-
-.status-option--borrador .status-option__icon {
-  background: rgba(212, 161, 55, .13);
-  color: #a06c18;
-}
-
-.status-option--finalizado .status-option__icon {
-  background: rgba(62, 126, 190, .12);
-  color: #3673ac;
-}
-
-.status-option--anulado .status-option__icon {
-  background: rgba(190, 61, 61, .10);
-  color: #b33a3a;
-}
-
-.status-option--selected.status-option--borrador { border-color: #d4a137; box-shadow: 0 0 0 2px rgba(212, 161, 55, .12); }
-.status-option--selected.status-option--finalizado { border-color: #4a83b8; box-shadow: 0 0 0 2px rgba(74, 131, 184, .12); }
-.status-option--selected.status-option--anulado { border-color: #be3d3d; box-shadow: 0 0 0 2px rgba(190, 61, 61, .12); }
-
-.cancellation-area {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: end;
-  gap: 14px;
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid var(--border);
-}
-
-.cancel-report-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 7px;
-  min-height: 42px;
-  padding: 0 17px;
-  border: 1px solid #be3d3d;
-  border-radius: 9px;
-  background: #be3d3d;
-  color: #fff;
-  font: inherit;
-  font-size: 12px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: background-color .15s ease, transform .15s ease, opacity .15s ease;
-}
-
-.cancel-report-button:hover {
-  background: #a83232;
-  transform: translateY(-1px);
-}
-
-.report-signature {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.report-signature > div {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.report-signature__icon {
-  display: grid;
-  width: 36px;
-  height: 36px;
-  place-items: center;
-  border-radius: 9px;
-  background: rgba(43, 138, 97, .12);
-  color: #2b8a61;
-  font-weight: 800;
-}
-
-.report-signature h2 {
-  margin: 0 0 4px;
-  font-size: 14px;
-}
-
-.report-signature p {
-  margin: 0;
-  color: var(--text-secondary);
-  font-size: 12px;
-}
-
 .report-alert,
 .report-success {
   display: flex;
@@ -608,20 +470,10 @@
   color: var(--text-secondary);
 }
 
-.report-button--draft {
+.report-button--save {
   border-color: rgba(201, 75, 43, .35);
   background: var(--surface);
   color: var(--accent);
-}
-
-.report-button--primary {
-  border-color: #1da55b;
-  background: #1da55b;
-  color: #fff;
-}
-
-.report-button--primary:hover {
-  background: #17894b;
 }
 
 .report-button--pdf {
@@ -686,10 +538,6 @@
     grid-column: auto;
   }
 
-  .status-options {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
   .image-preview-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
@@ -717,14 +565,6 @@
   .specialty-parameters__title {
     align-items: flex-start;
     flex-direction: column;
-  }
-
-  .cancellation-area {
-    grid-template-columns: 1fr;
-  }
-
-  .cancel-report-button {
-    width: 100%;
   }
 
   .report-form__actions {
@@ -757,14 +597,6 @@
     width: 32px;
     height: 32px;
     flex-basis: 32px;
-  }
-
-  .status-options {
-    grid-template-columns: 1fr;
-  }
-
-  .status-option {
-    min-height: 58px;
   }
 
   .report-form__actions {
