@@ -1,12 +1,11 @@
 import { jsPDF } from "jspdf";
-import type { ClinicalPatient, ClinicalReportData, Specialty, StudyStatus } from "./clinicalStorage";
+import type { ClinicalPatient, ClinicalReportData, Specialty } from "./clinicalStorage";
 
 interface PdfReportInput {
   patient: ClinicalPatient;
   specialty: Specialty;
   studyDate: string;
   doctor: string;
-  status?: StudyStatus;
   data: ClinicalReportData;
 }
 
@@ -89,7 +88,6 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
   addLabeledRow(doc, "Fecha:", studyDate, 110, y, 125);
   y += 6;
   addLabeledRow(doc, "Profesional:", doctor, margin + 5, y, 45);
-  if (status) addLabeledRow(doc, "Estado:", status, 110, y, 125);
   y += 14;
 
   doc.setFont("helvetica", "normal");
@@ -130,11 +128,6 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
 
   y = addSection(doc, "SUGERENCIAS / RECOMENDACIONES", y);
   y = addWrappedText(doc, data.recommendations, margin, y, contentWidth) + 8;
-
-  if (data.cancellationReason) {
-    y = addSection(doc, "MOTIVO DE ANULACIÓN", y);
-    y = addWrappedText(doc, data.cancellationReason, margin, y, contentWidth) + 6;
-  }
 
   if (data.images?.length) {
     y = addSection(doc, "IMÁGENES ADJUNTAS DEL ESTUDIO", y);
