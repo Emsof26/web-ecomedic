@@ -5,6 +5,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 import Navbar from "../../components/navigation/Navbar";
 import { authRepository } from "../../repositories/authRepository";
+import { userManagementService } from "../../services/userManagementService";
 
 import {
   clinicalStorage,
@@ -434,11 +435,15 @@ async function fileToImage(file: File): Promise<StudyImage> {
    COMPONENTE PRINCIPAL
    ========================================================= */
 
-function NewUltrasoundReportPage() {
+function RegisterUltrasoundStudyPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
   const user = authRepository.getCurrentUser();
+
+  const doctors = userManagementService
+    .getUsers()
+    .filter((item) => item.role === "MEDICO");
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -452,6 +457,10 @@ function NewUltrasoundReportPage() {
 
   const [specialty, setSpecialty] =
     useState<Specialty | "">("");
+
+  const [doctor, setDoctor] = useState(
+    () => user?.role === "MEDICO" ? user.name : doctors[0]?.name ?? "",
+  );
 
   const [clinicalReason, setClinicalReason] = useState("");
   const [findings, setFindings] = useState("");
@@ -589,7 +598,7 @@ function NewUltrasoundReportPage() {
       return "Completa la descripción de hallazgos.";
 
     if (!conclusion.trim())
-      return "Completa la conclusión diagnóstica.";
+      return "Completa la conclusión del estudio.";
 
     return "";
   };
@@ -649,8 +658,7 @@ function NewUltrasoundReportPage() {
       /* specialty ya está comprobado como Specialty */
       specialty,
 
-      doctor:
-        user?.name ?? "Profesional de salud",
+      doctor: doctor || "Profesional de salud",
 
       date: formatStudyDate(studyDate),
 
@@ -794,8 +802,7 @@ function NewUltrasoundReportPage() {
       patient: patient!,
       specialty,
       studyDate: formatStudyDate(studyDate),
-      doctor:
-        user?.name ?? "Profesional de salud",
+      doctor: doctor || "Profesional de salud",
       data: getReportData(),
     });
 
@@ -885,11 +892,10 @@ function NewUltrasoundReportPage() {
 
         <header className="report-page__header">
           <div>
-            <h1>Nuevo Informe Ecográfico</h1>
+            <h1>Registrar estudio ecográfico</h1>
 
             <p>
-              Registra los datos del estudio, hallazgos
-              y conclusión diagnóstica.
+              Registra la información del estudio, agrega las imágenes y genera el informe.
             </p>
           </div>
 
@@ -924,7 +930,7 @@ function NewUltrasoundReportPage() {
                 </span>
 
                 <div>
-                  <h2>Paciente y estudio</h2>
+                  <h2>Paciente, especialidad y médico</h2>
 
                   <p>
                     Selecciona el paciente y el tipo de
@@ -1039,6 +1045,25 @@ function NewUltrasoundReportPage() {
                   }
                   required
                 />
+              </label>
+
+              <label className="report-field">
+                <span>
+                  Médico <b>*</b>
+                </span>
+
+                <select
+                  value={doctor}
+                  onChange={(event) => setDoctor(event.target.value)}
+                  required
+                >
+                  <option value="">Selecciona un médico</option>
+                  {doctors.map((item) => (
+                    <option key={item.id} value={item.name}>
+                      {item.name}
+                    </option>
+                  ))}
+                </select>
               </label>
 
               <label className="report-field report-field--wide">
@@ -1271,12 +1296,11 @@ function NewUltrasoundReportPage() {
 
                 <div>
                   <h2>
-                    Conclusión diagnóstica y observaciones
+                    Conclusión del estudio
                   </h2>
 
                   <p>
-                    Resume los resultados y registra las
-                    recomendaciones para el paciente.
+                    Resume el resultado del estudio ecográfico y registra, si corresponde, alguna recomendación.
                   </p>
                 </div>
               </div>
@@ -1286,7 +1310,7 @@ function NewUltrasoundReportPage() {
 
               <label className="report-field">
                 <span>
-                  Conclusión / Diagnóstico ecográfico{" "}
+                  Conclusión ecográfica{" "}
                   <b>*</b>
                 </span>
 
@@ -1297,7 +1321,7 @@ function NewUltrasoundReportPage() {
                       event.target.value,
                     )
                   }
-                  placeholder="Describe los hallazgos y la impresión diagnóstica..."
+                  placeholder="Escribe la conclusión del estudio ecográfico..."
                   rows={5}
                   required
                 />
@@ -1520,4 +1544,4 @@ function NewUltrasoundReportPage() {
   );
 }
 
-export default NewUltrasoundReportPage;
+export default RegisterUltrasoundStudyPage;
