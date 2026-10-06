@@ -57,7 +57,7 @@ function addLabeledRow(doc: jsPDF, label: string, value: string, x: number, y: n
   doc.text(value || "—", valueX, y);
 }
 
-export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doctor, status, data }: PdfReportInput) {
+export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doctor, data }: PdfReportInput) {
   const doc = new jsPDF({ unit: "mm", format: "a4" });
 
   // Cabecera a color para que el archivo descargado sea un informe PDF y no una impresión del navegador.
