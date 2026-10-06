@@ -406,10 +406,6 @@
   white-space: nowrap;
 }
 
-.report-status-card {
-  margin-bottom: 18px;
-}
-
 .report-alert,
 .report-success {
   display: flex;
@@ -625,7 +621,6 @@
   .report-field textarea,
   .image-upload,
   .image-upload__button,
-  .status-option,
   .cancel-report-button {
     transition: none;
   }
