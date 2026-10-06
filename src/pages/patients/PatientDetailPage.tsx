@@ -53,7 +53,6 @@ function PatientDetailPage() {
       specialty: study.specialty,
       studyDate: study.date,
       doctor: study.doctor,
-      status: study.status,
       data: study.reportData ?? { conclusion: study.conclusion ?? "Resultado del estudio registrado en EcoMedic." },
     });
   };
@@ -110,7 +109,6 @@ function PatientDetailPage() {
                 <div className="patient-study-card__main">
                   <div className="patient-study-card__title-row">
                     <span className={`patient-study-card__specialty patient-study-card__specialty--${study.specialty.toLowerCase().replaceAll(" ", "-")}`}>{study.specialty}</span>
-                    <span className={`patient-study-card__status patient-study-card__status--${study.status.toLowerCase()}`}><span />{study.status}</span>
                   </div>
                   <p className="patient-study-card__conclusion">{study.conclusion ?? "Resultado del estudio registrado en EcoMedic."}</p>
                   <div className="patient-study-card__metadata"><span><CalendarIcon /> {study.date}</span><span><UserIcon /> {study.doctor}</span></div>
