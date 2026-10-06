@@ -12,7 +12,6 @@ export interface ClinicalPatient {
   studies: Specialty[];
 }
 
-export type StudyStatus = "Borrador" | "Finalizado" | "Anulado";
 
 export interface StudyImage {
   name: string;
@@ -27,7 +26,6 @@ export interface ClinicalReportData {
   observations?: string;
   conclusion?: string;
   recommendations?: string;
-  cancellationReason?: string;
   parameters?: Record<string, string>;
   images?: StudyImage[];
 }
@@ -39,7 +37,6 @@ export interface ClinicalStudy {
   specialty: Specialty;
   doctor: string;
   date: string;
-  status: StudyStatus;
   conclusion?: string;
   reportData?: ClinicalReportData;
 }
@@ -56,13 +53,13 @@ const initialPatients: ClinicalPatient[] = [
 ];
 
 const initialStudies: ClinicalStudy[] = [
-  { id: "study-1", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dr. Marcos Pérez", date: "09 ago 2026", status: "Finalizado", conclusion: "Feto único vivo, EG acorde a FUR, sin hallazgos patológicos." },
-  { id: "study-2", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dra. Fabiola Rojas", date: "01 jun 2026", status: "Finalizado", conclusion: "Control gestacional normal, biometría acorde." },
-  { id: "study-3", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "19 ene 2026", status: "Finalizado", conclusion: "Hígado, vesícula y páncreas sin alteraciones ecográficas." },
-  { id: "study-4", patientId: "patient-2", patientName: "José Luis Fernández", specialty: "Renal", doctor: "Dr. Marcos Pérez", date: "27 jul 2026", status: "Finalizado", conclusion: "Estudio renal sin alteraciones ecográficas significativas." },
-  { id: "study-5", patientId: "patient-3", patientName: "Andrea Sofía Choque", specialty: "Mamaria", doctor: "Dr. Marcos Pérez", date: "04 ago 2026", status: "Borrador", conclusion: "Estudio mamario pendiente de conclusión final." },
-  { id: "study-6", patientId: "patient-4", patientName: "Ricardo Aguilar", specialty: "Partes blandas", doctor: "Dr. Marcos Pérez", date: "14 jul 2026", status: "Anulado", conclusion: "Informe anulado." },
-  { id: "study-7", patientId: "patient-5", patientName: "Lucía Rojas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "22 may 2026", status: "Finalizado", conclusion: "Estudio abdominal sin hallazgos relevantes." },
+  { id: "study-1", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dr. Marcos Pérez", date: "09 ago 2026", conclusion: "Feto único vivo, EG acorde a FUR, sin hallazgos patológicos." },
+  { id: "study-2", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Obstétrica", doctor: "Dra. Fabiola Rojas", date: "01 jun 2026", conclusion: "Control gestacional normal, biometría acorde." },
+  { id: "study-3", patientId: "patient-1", patientName: "María Elena Vargas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "19 ene 2026", conclusion: "Hígado, vesícula y páncreas sin alteraciones ecográficas." },
+  { id: "study-4", patientId: "patient-2", patientName: "José Luis Fernández", specialty: "Renal", doctor: "Dr. Marcos Pérez", date: "27 jul 2026", conclusion: "Estudio renal sin alteraciones ecográficas significativas." },
+  { id: "study-5", patientId: "patient-3", patientName: "Andrea Sofía Choque", specialty: "Mamaria", doctor: "Dr. Marcos Pérez", date: "04 ago 2026", conclusion: "Estudio mamario pendiente de conclusión final." },
+  { id: "study-6", patientId: "patient-4", patientName: "Ricardo Aguilar", specialty: "Partes blandas", doctor: "Dr. Marcos Pérez", date: "14 jul 2026", conclusion: "Estudio de partes blandas registrado." },
+  { id: "study-7", patientId: "patient-5", patientName: "Lucía Rojas", specialty: "Abdominal", doctor: "Dr. Marcos Pérez", date: "22 may 2026", conclusion: "Estudio abdominal sin hallazgos relevantes." },
 ];
 
 export const clinicalStorage = {
