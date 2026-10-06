@@ -12,7 +12,6 @@ import {
   type ClinicalReportData,
   type Specialty,
   type StudyImage,
-  type StudyStatus,
 } from "../../services/clinicalStorage";
 
 import { downloadUltrasoundReportPdf } from "../../services/pdfService";
@@ -236,36 +235,6 @@ const parameterDefinitions: Record<Specialty, ParameterDefinition[]> = {
     },
   ],
 };
-
-/* =========================================================
-   ESTADOS DISPONIBLES PARA EL INFORME
-   ========================================================= */
-
-const statusDefinitions: Array<{
-  value: StudyStatus;
-  label: string;
-  description: string;
-  icon: "draft" | "finished" | "cancelled";
-}> = [
-  {
-    value: "Borrador",
-    label: "Borrador",
-    description: "En edición",
-    icon: "draft",
-  },
-  {
-    value: "Finalizado",
-    label: "Finalizado",
-    description: "Estudio terminado",
-    icon: "finished",
-  },
-  {
-    value: "Anulado",
-    label: "Anulado",
-    description: "Informe cancelado",
-    icon: "cancelled",
-  },
-];
 
 /* =========================================================
    COMPONENTE DE ICONOS
@@ -502,11 +471,6 @@ function NewUltrasoundReportPage() {
 
   const [studyId, setStudyId] = useState("");
 
-  const [status, setStatus] =
-    useState<StudyStatus>("Borrador");
-
-  const [cancellationReason, setCancellationReason] =
-    useState("");
 
   const [savedMessage, setSavedMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
@@ -641,7 +605,6 @@ function NewUltrasoundReportPage() {
     observations: observations.trim(),
     conclusion: conclusion.trim(),
     recommendations: recommendations.trim(),
-    cancellationReason: cancellationReason.trim(),
     parameters,
     images,
   });
@@ -650,10 +613,7 @@ function NewUltrasoundReportPage() {
      GUARDAR / ACTUALIZAR INFORME
      ========================================================= */
 
-  const persistStudy = (
-    nextStatus: StudyStatus,
-    requireComplete = true,
-  ) => {
+  const persistStudy = (requireComplete = true) => {
     const validation = requireComplete
       ? validateComplete()
       : validateBase();
@@ -679,21 +639,6 @@ function NewUltrasoundReportPage() {
       return false;
     }
 
-    /* =====================================================
-       VALIDACIÓN PARA ANULAR EL INFORME
-       ===================================================== */
-
-    if (
-      nextStatus === "Anulado" &&
-      !cancellationReason.trim()
-    ) {
-      setErrorMessage(
-        "La justificación de anulación es obligatoria.",
-      );
-      setSavedMessage("");
-      return false;
-    }
-
     const id = studyId || crypto.randomUUID();
 
     clinicalStorage.upsertStudy({
@@ -709,79 +654,28 @@ function NewUltrasoundReportPage() {
 
       date: formatStudyDate(studyDate),
 
-      status: nextStatus,
-
       conclusion: conclusion.trim(),
 
       reportData: getReportData(),
     });
 
     setStudyId(id);
-    setStatus(nextStatus);
     setErrorMessage("");
 
-    setSavedMessage(
-      nextStatus === "Borrador"
-        ? "Informe guardado como borrador correctamente."
-        : nextStatus === "Finalizado"
-          ? "Informe marcado como finalizado."
-          : "Informe anulado correctamente.",
-    );
+    setSavedMessage("Informe guardado correctamente.");
 
     return true;
   };
 
   /* =========================================================
-     GUARDAR BORRADOR
+     GUARDAR INFORME
      ========================================================= */
 
   const handleSubmit = (
     event: FormEvent<HTMLFormElement>,
   ) => {
     event.preventDefault();
-
-    persistStudy("Borrador", false);
-  };
-
-  /* =========================================================
-     FINALIZAR INFORME
-     ========================================================= */
-
-  const handleFinalize = () => {
-    if (persistStudy("Finalizado", true)) {
-      window.setTimeout(
-        () =>
-          navigate(
-            patient
-              ? `/pacientes/${patient.id}`
-              : "/pacientes",
-          ),
-        700,
-      );
-    }
-  };
-
-  /* =========================================================
-     CAMBIAR ESTADO DEL INFORME
-     ========================================================= */
-
-  const handleStatusSelect = (
-    nextStatus: StudyStatus,
-  ) => {
-    if (nextStatus === "Borrador") {
-      persistStudy("Borrador", false);
-    } else if (nextStatus === "Anulado") {
-      setStatus(nextStatus);
-      setSavedMessage("");
-
-      setErrorMessage(
-        cancellationReason.trim()
-          ? ""
-          : "Completa la justificación para poder anular el informe.",
-      );
-    } else {
-      persistStudy(nextStatus, true);
-    }
+    persistStudy(true);
   };
 
   /* =========================================================
@@ -1553,120 +1447,6 @@ function NewUltrasoundReportPage() {
           </section>
 
           {/* =================================================
-              05 - ESTADO
-              ================================================= */}
-
-          <section className="report-card report-status-card">
-            <div className="report-card__heading">
-              <div>
-                <span className="report-card__number">
-                  05
-                </span>
-
-                <div>
-                  <h2>
-                    Estado del informe
-                  </h2>
-
-                  <p>
-                    Selecciona el estado correspondiente
-                    al avance del informe.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div className="status-options">
-              {statusDefinitions.map((item) => (
-                <button
-                  key={item.value}
-                  type="button"
-                  className={`status-option status-option--${item.value.toLowerCase()}${
-                    status === item.value
-                      ? " status-option--selected"
-                      : ""
-                  }`}
-                  onClick={() =>
-                    handleStatusSelect(
-                      item.value,
-                    )
-                  }
-                >
-                  <span className="status-option__icon">
-                    <Icon
-                      name={
-                        item.icon === "draft"
-                          ? "pencil"
-                          : item.icon ===
-                              "finished"
-                            ? "document-plus"
-                          : "ban"
-                      }
-                      size={19}
-                    />
-                  </span>
-
-                  <span>
-                    <strong>
-                      {item.label}
-                    </strong>
-
-                    <small>
-                      {item.description}
-                    </small>
-                  </span>
-                </button>
-              ))}
-            </div>
-
-            <div className="cancellation-area">
-              <label className="report-field">
-                <span>
-                  Justificación de anulación{" "}
-                  <small>
-                    (obligatoria para anular)
-                  </small>
-                </span>
-
-                <textarea
-                  value={cancellationReason}
-                  onChange={(event) => {
-                    setCancellationReason(
-                      event.target.value,
-                    );
-
-                    if (
-                      event.target.value.trim()
-                    ) {
-                      setErrorMessage("");
-                    }
-                  }}
-                  placeholder="Motivo de anulación..."
-                  rows={3}
-                />
-              </label>
-
-              <button
-                type="button"
-                className="cancel-report-button"
-                onClick={() =>
-                  persistStudy(
-                    "Anulado",
-                    false,
-                  )
-                }
-              >
-                <Icon
-                  name="ban"
-                  size={17}
-                />
-
-                Anular informe
-              </button>
-            </div>
-          </section>
-
-          {/* =================================================
               MENSAJES
               ================================================= */}
 
@@ -1716,20 +1496,7 @@ function NewUltrasoundReportPage() {
                 size={16}
               />
 
-              Guardar borrador
-            </button>
-
-            <button
-              className="report-button report-button--primary"
-              type="button"
-              onClick={handleFinalize}
-            >
-              <Icon
-                name="shield"
-                size={16}
-              />
-
-              Finalizar informe
+              Guardar informe
             </button>
 
             <button
