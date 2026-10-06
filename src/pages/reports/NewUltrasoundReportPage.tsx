@@ -1512,7 +1512,7 @@ function RegisterUltrasoundStudyPage() {
             </button>
 
             <button
-              className="report-button report-button--draft"
+              className="report-button report-button--save"
               type="submit"
             >
               <Icon
