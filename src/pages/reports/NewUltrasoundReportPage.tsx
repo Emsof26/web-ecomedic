@@ -279,31 +279,6 @@ function Icon({
       </svg>
     );
 
-  if (name === "pencil")
-    return (
-      <svg {...common}>
-        <path d="m4 20 4.2-1 10.1-10.1a2.2 2.2 0 0 0-3.1-3.1L5.1 15.9 4 20Z" />
-        <path d="m13.8 7.2 3 3" />
-      </svg>
-    );
-
-  if (name === "document-plus")
-    return (
-      <svg {...common}>
-        <path d="M6 3h8l4 4v14H6z" />
-        <path d="M14 3v5h5" />
-        <path d="M12 12v6M9 15h6" />
-      </svg>
-    );
-
-  if (name === "shield")
-    return (
-      <svg {...common}>
-        <path d="M12 3 19 6v5c0 4.5-2.7 8-7 10-4.3-2-7-5.5-7-10V6l7-3Z" />
-        <path d="m9 12 2 2 4-4" />
-      </svg>
-    );
-
   if (name === "ban")
     return (
       <svg {...common}>
@@ -619,7 +594,7 @@ function RegisterUltrasoundStudyPage() {
   });
 
   /* =========================================================
-     GUARDAR / ACTUALIZAR INFORME
+     GUARDAR / ACTUALIZAR ESTUDIO
      ========================================================= */
 
   const persistStudy = (requireComplete = true) => {
@@ -670,13 +645,13 @@ function RegisterUltrasoundStudyPage() {
     setStudyId(id);
     setErrorMessage("");
 
-    setSavedMessage("Informe guardado correctamente.");
+    setSavedMessage("Estudio guardado correctamente.");
 
     return true;
   };
 
   /* =========================================================
-     GUARDAR INFORME
+     GUARDAR ESTUDIO
      ========================================================= */
 
   const handleSubmit = (
@@ -704,7 +679,7 @@ function RegisterUltrasoundStudyPage() {
 
     if (images.length + validFiles.length > 5) {
       setErrorMessage(
-        "Puedes adjuntar como máximo 5 imágenes por informe.",
+        "Puedes adjuntar como máximo 5 imágenes por estudio.",
       );
       return;
     }
@@ -858,7 +833,7 @@ function RegisterUltrasoundStudyPage() {
 
             <p>
               Tu perfil de Recepcionista tiene permisos
-              de solo lectura y no puede crear informes
+              de solo lectura y no puede registrar estudios
               ecográficos.
             </p>
 
@@ -1520,7 +1495,7 @@ function RegisterUltrasoundStudyPage() {
                 size={16}
               />
 
-              Guardar informe
+              Guardar estudio
             </button>
 
             <button
