@@ -40,7 +40,7 @@ function PatientDetailPage() {
     navigate("/login", { replace: true });
   };
 
-  const handleNewReport = () => {
+  const handleRegisterStudy = () => {
     navigate(`/nuevo-informe?patientId=${encodeURIComponent(patientId ?? "")}`);
   };
 
@@ -89,14 +89,14 @@ function PatientDetailPage() {
             </div>
           </div>
 
-          {user?.role !== "RECEPCIONISTA" && <button className="patient-detail__new-report" type="button" onClick={handleNewReport}><PlusIcon /> Nuevo Informe</button>}
+          {user?.role !== "RECEPCIONISTA" && <button className="patient-detail__new-report" type="button" onClick={handleRegisterStudy}><PlusIcon /> Registrar estudio</button>}
         </section>
 
         <section className="patient-timeline">
           <div className="patient-timeline__header">
             <div>
               <h2>Línea de tiempo de estudios</h2>
-              <p>Consulta los informes y resultados registrados para este paciente.</p>
+              <p>Consulta los estudios y resultados registrados para este paciente.</p>
             </div>
             <select value={specialty} onChange={(event) => setSpecialty(event.target.value as (typeof specialties)[number])} aria-label="Filtrar estudios por especialidad">
               {specialties.map((item) => <option key={item}>{item}</option>)}
