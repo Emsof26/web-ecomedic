@@ -26,17 +26,11 @@
 .patient-study-card { display: flex; align-items: center; justify-content: space-between; gap: 22px; padding: 17px; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); }
 .patient-study-card__main { min-width: 0; flex: 1; }
 .patient-study-card__title-row { display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
-.patient-study-card__specialty, .patient-study-card__status { display: inline-flex; align-items: center; gap: 6px; padding: 4px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; }
 .patient-study-card__specialty { background: #edf4ff; color: #1773bd; border: 1px solid #b9dafa; }
 .patient-study-card__specialty--obstétrica { background: #eefaf4; color: #15945b; border-color: #a9dfc4; }
 .patient-study-card__specialty--renal { background: #f4efff; color: #7046bd; border-color: #d0b9ff; }
 .patient-study-card__specialty--mamaria { background: #fff0f4; color: #b44a72; border-color: #f3bfd1; }
 .patient-study-card__specialty--partes-blandas { background: #fff4e9; color: #bd6a1d; border-color: #f1c99f; }
-.patient-study-card__status { background: #eefaf4; color: #15945b; }
-.patient-study-card__status span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-.patient-study-card__status--borrador { background: #fff8df; color: #a67a00; }
-.patient-study-card__status--finalizado { background: #edf4ff; color: #2472b8; }
-.patient-study-card__status--anulado { background: #fff0f0; color: #c44545; }
 .patient-study-card__conclusion { margin: 11px 0 10px; color: var(--text-primary); font-size: 13px; line-height: 1.55; }
 .patient-study-card__metadata { display: flex; flex-wrap: wrap; gap: 16px; color: var(--text-secondary); font-size: 11px; }
 .patient-study-card__metadata span { display: inline-flex; align-items: center; gap: 5px; }
