@@ -102,7 +102,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
       <nav className="navbar__navigation" aria-label="Navegación principal">
         <NavigationItem href="/" label="Inicio" active={isActive("/")} onNavigate={closeMenu}><HomeIcon /></NavigationItem>
         <NavigationItem href="/pacientes" label="Pacientes e Historiales" active={isActive("/pacientes")} onNavigate={closeMenu}><PatientsIcon /></NavigationItem>
-        {!isReceptionist && <NavigationItem href="/nuevo-informe" label="Nuevo Informe Ecográfico" active={isActive("/nuevo-informe")} onNavigate={closeMenu}><ReportIcon /></NavigationItem>}
+        {!isReceptionist && <NavigationItem href="/nuevo-informe" label="Registrar estudio ecográfico" active={isActive("/nuevo-informe")} onNavigate={closeMenu}><ReportIcon /></NavigationItem>}
         <NavigationItem href="/repositorio" label="Repositorio de Imágenes" active={isActive("/repositorio")} onNavigate={closeMenu}><ImageIcon /></NavigationItem>
         {isAdmin && <NavigationItem href="/configuracion" label="Configuración / Usuarios" active={isActive("/configuracion")} onNavigate={closeMenu}><SettingsIcon /></NavigationItem>}
       </nav>
