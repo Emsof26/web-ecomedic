@@ -19,7 +19,8 @@ const initialUsers: ManagedUser[] = [
 
 export const userManagementService = {
   getUsers(): ManagedUser[] {
-    return storageService.get<ManagedUser[]>(USERS_KEY) ?? initialUsers;
+    const users = storageService.get<ManagedUser[]>(USERS_KEY) ?? initialUsers;
+    return users.filter((user) => user.id !== "managed-6");
   },
 
   saveUsers(users: ManagedUser[]): void {
