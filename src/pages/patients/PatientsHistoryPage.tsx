@@ -16,15 +16,17 @@ function PatientsHistoryPage() {
   const isReceptionist = user?.role === "RECEPCIONISTA";
 
   const [patients, setPatients] = useState<ClinicalPatient[]>(() => clinicalStorage.getPatients());
+  const studies = clinicalStorage.getStudies();
   const [query, setQuery] = useState("");
   const [specialty, setSpecialty] = useState<(typeof specialties)[number]>("Todas las especialidades");
   const [isFormOpen, setIsFormOpen] = useState(false);
 
   const visiblePatients = useMemo(() => patients.filter((patient) => {
     const matchesQuery = `${patient.name} ${patient.carnet}`.toLowerCase().includes(query.toLowerCase().trim());
-    const matchesSpecialty = specialty === "Todas las especialidades" || patient.studies.includes(specialty);
+    const patientStudies = studies.filter((study) => study.patientId === patient.id);
+    const matchesSpecialty = specialty === "Todas las especialidades" || patientStudies.some((study) => study.specialty === specialty);
     return matchesQuery && matchesSpecialty;
-  }), [patients, query, specialty]);
+  }), [patients, query, specialty, studies]);
 
   const registerPatient = (formData: FormData) => {
     const firstName = String(formData.get("firstName") ?? "").trim();
@@ -80,7 +82,7 @@ function PatientsHistoryPage() {
         <section className="patients-page__grid" aria-live="polite">
           {visiblePatients.map((patient) => <button className="patient-card" type="button" key={patient.id} onClick={() => navigate(`/pacientes/${encodeURIComponent(patient.id)}`)}>
             <span className="patient-card__avatar">{patient.name.split(" ").slice(0, 2).map((name) => name[0]).join("")}</span>
-            <span><strong>{patient.name}</strong><small>CI {patient.carnet} · {patient.sex} · {patient.age}a</small><em>{patient.studies.length} estudio(s) registrados</em></span>
+            <span><strong>{patient.name}</strong><small>CI {patient.carnet} · {patient.sex} · {patient.age}a</small><em>{studies.filter((study) => study.patientId === patient.id).length} estudio(s) registrados</em></span>
           </button>)}
           {!visiblePatients.length && <p className="patients-page__empty">No se encontraron pacientes con esos criterios.</p>}
         </section>
