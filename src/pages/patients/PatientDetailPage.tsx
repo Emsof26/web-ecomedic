@@ -111,7 +111,31 @@ function PatientDetailPage() {
                     <span className={`patient-study-card__specialty patient-study-card__specialty--${study.specialty.toLowerCase().replaceAll(" ", "-")}`}>{study.specialty}</span>
                   </div>
                   <p className="patient-study-card__conclusion">{study.conclusion ?? "Resultado del estudio registrado en EcoMedic."}</p>
-                  <div className="patient-study-card__metadata"><span><CalendarIcon /> {study.date}</span><span><UserIcon /> {study.doctor}</span></div>
+                  <div className="patient-study-card__metadata">
+                    <span><CalendarIcon /> {study.date}</span>
+                    <span><UserIcon /> {study.doctor}</span>
+                  </div>
+                  <div className="patient-study-card__details">
+                    <div>
+                      <strong>Motivo de consulta</strong>
+                      <span>{study.reportData?.clinicalReason ?? "No registrado."}</span>
+                    </div>
+                    <div>
+                      <strong>Hallazgos</strong>
+                      <span>{study.reportData?.findings ?? "No registrados."}</span>
+                    </div>
+                    <div>
+                      <strong>Imágenes</strong>
+                      <span>{study.reportData?.images?.length ?? 0} imagen(es) asociada(s)</span>
+                    </div>
+                  </div>
+                  {study.reportData?.images?.length ? (
+                    <div className="patient-study-card__images" aria-label="Imágenes asociadas al estudio">
+                      {study.reportData.images.map((image) => (
+                        <img key={image.name} src={image.dataUrl} alt={image.name} />
+                      ))}
+                    </div>
+                  ) : null}
                 </div>
                 <button className="patient-study-card__download" type="button" onClick={() => handleDownloadReport(study.id)}><FilePdfIcon /> Descargar PDF</button>
               </article>
