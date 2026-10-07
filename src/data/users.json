@@ -15,7 +15,7 @@
   },
   {
     "id": "user-3",
-    "name": "Recepcionista",
+    "name": "Usuario demostrativo de recepción",
     "carnet": "789",
     "password": "recep789",
     "role": "RECEPCIONISTA"
