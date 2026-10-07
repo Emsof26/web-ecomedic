@@ -25,7 +25,6 @@ export interface ClinicalReportData {
   measurements?: string;
   observations?: string;
   conclusion?: string;
-  recommendations?: string;
   parameters?: Record<string, string>;
   images?: StudyImage[];
 }
