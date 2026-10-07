@@ -442,7 +442,6 @@ function RegisterUltrasoundStudyPage() {
   const [measurements, setMeasurements] = useState("");
   const [observations, setObservations] = useState("");
   const [conclusion, setConclusion] = useState("");
-  const [recommendations, setRecommendations] = useState("");
 
   const [studyDate, setStudyDate] = useState(
     new Date().toISOString().slice(0, 10),
@@ -588,7 +587,6 @@ function RegisterUltrasoundStudyPage() {
     measurements: measurements.trim(),
     observations: observations.trim(),
     conclusion: conclusion.trim(),
-    recommendations: recommendations.trim(),
     parameters,
     images,
   });
@@ -1275,7 +1273,7 @@ function RegisterUltrasoundStudyPage() {
                   </h2>
 
                   <p>
-                    Resume el resultado del estudio ecográfico y registra, si corresponde, alguna recomendación.
+                    Resume el resultado del estudio ecográfico.
                   </p>
                 </div>
               </div>
@@ -1302,22 +1300,6 @@ function RegisterUltrasoundStudyPage() {
                 />
               </label>
 
-              <label className="report-field">
-                <span>
-                  Sugerencias / Recomendaciones
-                </span>
-
-                <textarea
-                  value={recommendations}
-                  onChange={(event) =>
-                    setRecommendations(
-                      event.target.value,
-                    )
-                  }
-                  placeholder="Controles sugeridos, exámenes complementarios..."
-                  rows={5}
-                />
-              </label>
 
             </div>
           </section>
