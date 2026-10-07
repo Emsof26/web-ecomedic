@@ -70,7 +70,7 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
   doc.setFontSize(19);
   doc.text("EcoMedic", margin, 12);
   doc.setFontSize(10);
-  doc.text("INFORME ECOGRÁFICO", margin, 21);
+  doc.text("INFORME DE ECOGRAFÍA", margin, 21);
 
   let y = 40;
   doc.setFillColor(...muted);
@@ -84,10 +84,10 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
   addLabeledRow(doc, "Sexo:", patient.sex, margin + 5, y, 45);
   addLabeledRow(doc, "Edad:", `${patient.age} años`, 110, y, 125);
   y += 6;
-  addLabeledRow(doc, "Estudio:", specialty, margin + 5, y, 45);
+  addLabeledRow(doc, "Especialidad:", specialty, margin + 5, y, 45);
   addLabeledRow(doc, "Fecha:", studyDate, 110, y, 125);
   y += 6;
-  addLabeledRow(doc, "Profesional:", doctor, margin + 5, y, 45);
+  addLabeledRow(doc, "Médico:", doctor, margin + 5, y, 45);
   y += 14;
 
   doc.setFont("helvetica", "normal");
@@ -123,11 +123,8 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
   y = addSection(doc, "OBSERVACIONES", y);
   y = addWrappedText(doc, data.observations, margin, y, contentWidth) + 6;
 
-  y = addSection(doc, "CONCLUSIÓN DIAGNÓSTICA", y);
+  y = addSection(doc, "CONCLUSIÓN DEL ESTUDIO", y);
   y = addWrappedText(doc, data.conclusion, margin, y, contentWidth) + 6;
-
-  y = addSection(doc, "SUGERENCIAS / RECOMENDACIONES", y);
-  y = addWrappedText(doc, data.recommendations, margin, y, contentWidth) + 8;
 
   if (data.images?.length) {
     y = addSection(doc, "IMÁGENES ADJUNTAS DEL ESTUDIO", y);
@@ -166,5 +163,5 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
   }
 
   const safeName = patient.name.replace(/[^a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]/g, "").trim().replace(/\s+/g, "-");
-  doc.save(`EcoMedic-Informe-${safeName || "paciente"}-${studyDate}.pdf`);
+  doc.save(`EcoMedic-Ecografia-${safeName || "paciente"}-${studyDate}.pdf`);
 }
