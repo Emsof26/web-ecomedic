@@ -38,10 +38,12 @@ function HomePage() {
   };
 
   const today = new Date();
-  const todayLabel = today
-    .toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" })
-    .replace(".", "");
-  const studiesToday = studies.filter((study) => study.date === todayLabel).length;
+  const todayKey = today.toLocaleDateString("es-ES", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  }).replace(".", "");
+  const studiesToday = studies.filter((study) => study.date === todayKey).length;
   const specialtyCount = new Set(studies.map((study) => study.specialty)).size;
   const recentStudies = studies.slice(0, 8);
 
@@ -114,7 +116,7 @@ function HomePage() {
                 </span>
 
                 <span className="activity-item__status">
-                  Estudio ecográfico
+                  Ecografía registrada
                 </span>
               </button>
             ))}
