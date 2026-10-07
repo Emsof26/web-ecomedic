@@ -37,7 +37,11 @@ function HomePage() {
     navigate("/login", { replace: true });
   };
 
-  const studiesWithConclusion = studies.filter((study) => Boolean(study.conclusion || study.reportData?.conclusion)).length;
+  const today = new Date();
+  const todayLabel = today
+    .toLocaleDateString("es-ES", { day: "2-digit", month: "short", year: "numeric" })
+    .replace(".", "");
+  const studiesToday = studies.filter((study) => study.date === todayLabel).length;
   const specialtyCount = new Set(studies.map((study) => study.specialty)).size;
   const recentStudies = studies.slice(0, 8);
 
@@ -55,7 +59,7 @@ function HomePage() {
 
         {isReceptionist && (
           <p className="read-only-message" role="status">
-            Sesión de Recepcionista: puedes consultar pacientes, historiales e imágenes, pero no editar datos clínicos ni crear informes.
+            Sesión de Recepcionista: puedes consultar pacientes, historiales e imágenes, pero no editar datos clínicos ni registrar estudios.
           </p>
         )}
 
