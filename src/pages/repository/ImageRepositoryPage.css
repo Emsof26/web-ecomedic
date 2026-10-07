@@ -17,7 +17,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin-bottom: 30px;
+  margin-bottom: 22px;
 }
 
 .image-repository-page__header h1 {
@@ -32,6 +32,43 @@
   margin: 0;
   color: var(--text-secondary);
   font-size: 13px;
+}
+
+.study-repository-filters {
+  display: grid;
+  grid-template-columns: minmax(220px, 1.5fr) minmax(190px, 1fr) 210px;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.study-repository-search {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.study-repository-search span {
+  color: var(--text-secondary);
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.study-repository-search input {
+  width: 100%;
+  min-height: 42px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  background: var(--surface);
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 12px;
+  outline: none;
+}
+
+.study-repository-search input:focus {
+  border-color: var(--accent);
 }
 
 .image-repository-page__filter {
