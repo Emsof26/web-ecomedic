@@ -1,4 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import type { ReactNode } from "react";
 
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/auth/LoginPage";
@@ -14,7 +15,7 @@ function ProtectedRoute({
   children,
   allowedRoles,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
   allowedRoles?: UserRole[];
 }) {
   const user = authRepository.getCurrentUser();
