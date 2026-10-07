@@ -105,7 +105,7 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
   }
 
   if (data.parameters && Object.keys(data.parameters).length > 0) {
-    y = addSection(doc, "PARÁMETROS DEL ESTUDIO", y);
+    y = addSection(doc, "PARÁMETROS ESPECÍFICOS", y);
     doc.setFontSize(9);
     for (const [label, value] of Object.entries(data.parameters)) {
       if (!value) continue;
@@ -127,7 +127,7 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
   y = addWrappedText(doc, data.conclusion, margin, y, contentWidth) + 6;
 
   if (data.images?.length) {
-    y = addSection(doc, "IMÁGENES ADJUNTAS DEL ESTUDIO", y);
+    y = addSection(doc, "IMÁGENES ASOCIADAS AL ESTUDIO", y);
     let imageY = y;
     for (const image of data.images) {
       if (imageY > 245) {
