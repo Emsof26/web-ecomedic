@@ -72,8 +72,8 @@ function HomePage() {
 
           <article className="summary-card">
             <span className="summary-card__icon"><PencilIcon /></span>
-            <strong>{studiesWithConclusion}</strong>
-            <p>Estudios con conclusión</p>
+            <strong>{studiesToday}</strong>
+            <p>Ecografías realizadas hoy</p>
           </article>
 
           <article className="summary-card">
@@ -85,15 +85,15 @@ function HomePage() {
           <article className="summary-card">
             <span className="summary-card__icon summary-card__icon--blue"><FileTextIcon /></span>
             <strong>{studies.length}</strong>
-            <p>Estudios totales</p>
+            <p>Estudios registrados</p>
           </article>
         </section>
 
         <section id="actividad" className="activity-panel">
           <div className="activity-panel__heading">
             <div>
-              <h2>Actividad reciente</h2>
-              <p>Últimos estudios e informes registrados en EcoMedic.</p>
+              <h2>Estudios recientes</h2>
+              <p>Últimos estudios registrados en EcoMedic.</p>
             </div>
             <button type="button" onClick={() => navigate("/pacientes")}>Ver pacientes →</button>
           </div>
@@ -127,15 +127,15 @@ function HomePage() {
 
         {!isReceptionist && (
           <section id="nuevo-informe" className="dashboard-panel">
-            <h2>Nuevo Informe Ecográfico</h2>
-            <p>Registra un nuevo informe para tus pacientes.</p>
-            <button type="button" onClick={() => navigate("/nuevo-informe")}>Crear informe →</button>
+            <h2>Registrar estudio ecográfico</h2>
+            <p>Registra un nuevo estudio para tus pacientes.</p>
+            <button type="button" onClick={() => navigate("/nuevo-informe")}>Registrar estudio →</button>
           </section>
         )}
 
         <section id="repositorio" className="dashboard-panel">
-          <h2>Repositorio de Imágenes</h2>
-          <p>Organiza y consulta los estudios almacenados.</p>
+          <h2>Repositorio de Estudios</h2>
+          <p>Organiza y consulta los estudios y sus imágenes.</p>
           <button type="button" onClick={() => navigate("/repositorio")}>Abrir repositorio →</button>
         </section>
 
