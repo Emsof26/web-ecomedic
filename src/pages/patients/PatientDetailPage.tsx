@@ -116,7 +116,7 @@ function PatientDetailPage() {
                 <button className="patient-study-card__download" type="button" onClick={() => handleDownloadReport(study.id)}><FilePdfIcon /> Descargar PDF</button>
               </article>
             ))}
-            {!patientStudies.length && <p className="patient-timeline__empty">No hay estudios registrados para este filtro.</p>}
+            {!patientStudies.length && <p className="patient-timeline__empty">Este paciente todavía no tiene estudios ecográficos registrados.</p>}
           </div>
         </section>
       </main>
