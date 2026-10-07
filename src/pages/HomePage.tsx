@@ -61,7 +61,7 @@ function HomePage() {
 
         {isReceptionist && (
           <p className="read-only-message" role="status">
-            Sesión de Recepcionista: puedes consultar pacientes, historiales e imágenes, pero no editar datos clínicos ni registrar estudios.
+            Sesión de rol Recepcionista (demostrativo): puedes consultar pacientes, historiales e imágenes, pero no editar datos clínicos ni registrar estudios.
           </p>
         )}
 
