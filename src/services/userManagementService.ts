@@ -14,9 +14,7 @@ const initialUsers: ManagedUser[] = [
   { id: "managed-1", name: "Dr. Marcos Pérez", email: "marcos.perez@ecomedic.com", role: "MEDICO" },
   { id: "managed-2", name: "Dra. Fabiola Rojas", email: "fabiola.rojas@ecomedic.com", role: "MEDICO" },
   { id: "managed-3", name: "Administrador", email: "administrador@ecomedic.com", role: "ADMIN" },
-  { id: "managed-4", name: "Laura Mendoza", email: "laura.mendoza@ecomedic.com", role: "RECEPCIONISTA" },
-  { id: "managed-5", name: "Dr. Carlos Vargas", email: "carlos.vargas@ecomedic.com", role: "MEDICO" },
-  { id: "managed-6", name: "Sofía Quispe", email: "sofia.quispe@ecomedic.com", role: "RECEPCIONISTA" },
+  { id: "managed-4", name: "Dr. Carlos Vargas", email: "carlos.vargas@ecomedic.com", role: "MEDICO" },
 ];
 
 export const userManagementService = {
