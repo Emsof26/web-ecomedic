@@ -24,6 +24,9 @@ function getRequests(): PasswordRecoveryRequest[] {
   return stored.filter((request) =>
     typeof request.id === "string" &&
     typeof request.createdAt === "string" &&
+    typeof request.userName === "string" &&
+    typeof request.email === "string" &&
+    typeof request.carnet === "string" &&
     ["pending", "approved", "blocked"].includes(request.status),
   );
 }
