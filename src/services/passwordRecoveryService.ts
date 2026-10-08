@@ -1,3 +1,4 @@
+import { authRepository } from "../repositories/authRepository";
 import { storageService } from "./storageService";
 
 export type PasswordRecoveryStatus =
@@ -71,10 +72,12 @@ export const passwordRecoveryService = {
     const now = new Date();
     const requests = markExpiredRequests(getRequests());
     const normalizedEmail = normalizeEmail(email);
+    const user = authRepository.getUserByEmail(normalizedEmail);
 
     const request: PasswordRecoveryRequest = {
       id: generateToken(),
       email: normalizedEmail,
+      userId: user?.id,
       token: generateToken(),
       createdAt: now.toISOString(),
       expiresAt: new Date(now.getTime() + TOKEN_DURATION_MS).toISOString(),
@@ -97,8 +100,14 @@ export const passwordRecoveryService = {
   },
 
   getRequestByToken(token: string): PasswordRecoveryRequest | null {
+    const normalizedToken = token.trim();
+
+    if (!normalizedToken) {
+      return null;
+    }
+
     const requests = markExpiredRequests(getRequests());
-    const request = requests.find((item) => item.token === token);
+    const request = requests.find((item) => item.token === normalizedToken);
 
     if (!request || request.status !== "pending") {
       return null;
@@ -107,10 +116,25 @@ export const passwordRecoveryService = {
     return request;
   },
 
-  invalidateToken(token: string): void {
+  consumeToken(token: string): void {
+    const normalizedToken = token.trim();
     const requests = getRequests();
+
     const updatedRequests = requests.map((request) =>
-      request.token === token
+      request.token === normalizedToken
+        ? { ...request, status: "used" as const }
+        : request,
+    );
+
+    saveRequests(updatedRequests);
+  },
+
+  invalidateToken(token: string): void {
+    const normalizedToken = token.trim();
+    const requests = getRequests();
+
+    const updatedRequests = requests.map((request) =>
+      request.token === normalizedToken
         ? { ...request, status: "invalidated" as const }
         : request,
     );
