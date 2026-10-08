@@ -68,7 +68,7 @@ function ForgotPasswordPage() {
             type="button"
             onClick={() => navigate(`/reset-password?token=${encodeURIComponent(demoToken)}`)}
           >
-            Simular enlace de recuperación
+            Simular enlace de recuperación · Modo demostración
           </button>
 
           <button
