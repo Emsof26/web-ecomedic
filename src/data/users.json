@@ -1,8 +1,8 @@
 [
   {
     "id": "user-1",
-    "name": "Administrador",
-    "carnet": "123",
+    "name": "Emily Agrada Administrador",
+    "carnet": "12706195",
     "email": "administrador@ecomedic.com",
     "password": "admin123",
     "role": "ADMIN",
