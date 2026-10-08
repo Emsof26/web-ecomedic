@@ -8,14 +8,25 @@ import type {
 
 
 const SESSION_KEY = "app_session";
+const USERS_KEY = "ecomedic_auth_users";
 
 
 const users = initialUsers as UserRecord[];
 
 
+function getUsers(): UserRecord[] {
+  return storageService.get<UserRecord[]>(USERS_KEY) ?? users;
+}
+
+
+function saveUsers(updatedUsers: UserRecord[]): void {
+  storageService.set(USERS_KEY, updatedUsers);
+}
+
+
 export const authRepository = {
   login(credentials: LoginCredentials): User | null {
-    const foundUser = users.find(
+    const foundUser = getUsers().find(
       (user) =>
         user.carnet === credentials.carnet &&
         user.password === credentials.password
@@ -39,6 +50,37 @@ export const authRepository = {
 
 
     return sessionUser;
+  },
+
+
+  getUserByEmail(email: string): UserRecord | null {
+    const normalizedEmail = email.trim().toLowerCase();
+
+    return (
+      getUsers().find(
+        (user) => user.email.trim().toLowerCase() === normalizedEmail
+      ) ?? null
+    );
+  },
+
+
+  updatePassword(userId: string, newPassword: string): boolean {
+    const currentUsers = getUsers();
+    const userExists = currentUsers.some((user) => user.id === userId);
+
+    if (!userExists) {
+      return false;
+    }
+
+    saveUsers(
+      currentUsers.map((user) =>
+        user.id === userId
+          ? { ...user, password: newPassword }
+          : user
+      )
+    );
+
+    return true;
   },
 
 
