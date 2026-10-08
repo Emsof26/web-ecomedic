@@ -13,26 +13,34 @@ const users = initialUsers as UserRecord[];
 
 function getUsers(): UserRecord[] {
   const storedUsers = storageService.get<UserRecord[]>(USERS_KEY);
+  storageService.remove("ecomedic_managed_users");
 
   if (!storedUsers) {
     return users.map((user) => ({ ...user, accountStatus: user.accountStatus ?? "active" }));
   }
 
-  const updatedUsers = storedUsers.map((storedUser) => {
-    const initialUser = users.find((user) => user.id === storedUser.id);
+  const baseIds = new Set(users.map((user) => user.id));
+  const baseUsers = users.map((initialUser) => {
+    const storedUser = storedUsers.find((user) => user.id === initialUser.id);
     return {
-      ...storedUser,
-      email: storedUser.email || initialUser?.email || "",
-      accountStatus: storedUser.accountStatus ?? "active",
+      ...initialUser,
+      // Mantiene el estado de cuenta, pero conserva los carnets, contraseñas,
+      // nombres, correos y roles originales de los tres usuarios base.
+      accountStatus: storedUser?.accountStatus ?? "active",
     };
   });
+  const additionalUsers = storedUsers
+    .filter((storedUser) => !baseIds.has(storedUser.id))
+    .map((storedUser) => ({
+      ...storedUser,
+      accountStatus: storedUser.accountStatus ?? "active",
+    }));
+  const updatedUsers = [...baseUsers, ...additionalUsers];
 
-  const needsMigration = updatedUsers.some((user, index) =>
-    user.email !== storedUsers[index].email ||
-    user.accountStatus !== storedUsers[index].accountStatus,
-  );
+  if (JSON.stringify(updatedUsers) !== JSON.stringify(storedUsers)) {
+    saveUsers(updatedUsers);
+  }
 
-  if (needsMigration) saveUsers(updatedUsers);
   return updatedUsers;
 }
 
