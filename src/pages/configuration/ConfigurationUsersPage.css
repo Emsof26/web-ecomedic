@@ -561,3 +561,33 @@
     width: 100%;
   }
 }
+
+
+/* Gestión integrada de cuentas y recuperación simulada. */
+.configuration-create-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px 20px; }
+.configuration-create-form h3 { grid-column: 1 / -1; margin: 10px 0 0; color: var(--text-primary, #234b5b); font-size: 15px; }
+.configuration-create-form label { display: flex; flex-direction: column; gap: 7px; }
+.configuration-create-form label strong { font-size: 13px; }
+.configuration-create-form input, .configuration-create-form select { min-width: 0; width: 100%; box-sizing: border-box; }
+.configuration-create-form .modal-actions, .configuration-create-form .reset-password-message { grid-column: 1 / -1; }
+.configuration-email-preview { display: block; margin-top: 20px; }
+.configuration-email-preview pre { white-space: pre-wrap; overflow-wrap: anywhere; padding: 18px; border: 1px solid var(--sidebar-border, #c7e0e4); border-radius: 12px; background: rgba(127, 160, 174, .08); color: var(--text-primary, #234b5b); font: inherit; font-size: 13px; line-height: 1.6; }
+.configuration-email-preview code { padding: 3px 7px; border-radius: 6px; background: rgba(219, 118, 88, .15); font-weight: 700; }
+.account-status { display: inline-flex; align-items: center; padding: 5px 9px; border-radius: 999px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+.account-status--active, .account-status--approved { color: #216a4b; background: rgba(46, 160, 106, .13); }
+.account-status--blocked { color: #a63f35; background: rgba(190, 65, 55, .13); }
+.account-status--pending { color: #8a6417; background: rgba(215, 166, 50, .17); }
+.recovery-request-row { align-items: flex-start; }
+.recovery-request-row .user-row__identity { align-items: flex-start; }
+.recovery-request-row .user-row__identity small { line-height: 1.5; }
+.recovery-request-row .user-row__actions { flex-wrap: wrap; justify-content: flex-end; }
+.recovery-empty { padding: 20px 0; color: var(--text-secondary, #66808a); }
+.configuration-notice { padding: 12px 16px; border: 1px solid rgba(46, 160, 106, .22); border-radius: 10px; background: rgba(46, 160, 106, .1); color: var(--text-primary, #234b5b); }
+:root[data-theme="dark"] .configuration-create-form h3 { color: var(--text-primary, #edf5f2); }
+:root[data-theme="dark"] .configuration-email-preview pre { color: var(--text-primary, #edf5f2); }
+@media (max-width: 700px) {
+  .configuration-create-form { grid-template-columns: minmax(0, 1fr); }
+  .configuration-create-form h3, .configuration-create-form .modal-actions, .configuration-create-form .reset-password-message { grid-column: 1; }
+  .recovery-request-row { flex-direction: column; gap: 14px; }
+  .recovery-request-row .user-row__actions { justify-content: flex-start; }
+}
