@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import InitialEntryPage from "../pages/auth/InitialEntryPage";
 import ForgotPasswordPage from "../pages/auth/ForgotPasswordPage";
+import ResetPasswordPage from "../pages/auth/ResetPasswordPage";
 import PatientsHistoryPage from "../pages/patients/PatientsHistoryPage";
 import PatientDetailPage from "../pages/patients/PatientDetailPage";
 import NewUltrasoundReportPage from "../pages/reports/NewUltrasoundReportPage";
@@ -38,6 +39,7 @@ function AppRoutes() {
         <Route path="/" element={<InitialEntryPage />} />
         <Route path="/login" element={<InitialEntryPage />} />
         <Route path="/recuperar-contrasena" element={<ForgotPasswordPage />} />
+        <Route path="/reset-password" element={<ResetPasswordPage />} />
 
         <Route
           path="/pacientes"
