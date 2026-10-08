@@ -5,23 +5,24 @@ import type {
   LoginCredentials,
   User,
   UserRecord,
+  UserRole,
 } from "../types/auth";
 
 const SESSION_KEY = "app_session";
 const USERS_KEY = "ecomedic_auth_users";
+const SCHEMA_VERSION_KEY = "ecomedic_users_schema_version";
+const SCHEMA_VERSION = 3;
 const users = initialUsers as UserRecord[];
 
 function getUsers(): UserRecord[] {
   const storedUsers = storageService.get<UserRecord[]>(USERS_KEY);
-  const schemaVersion = storageService.get<number>("ecomedic_users_schema_version");
+  const schemaVersion = storageService.get<number>(SCHEMA_VERSION_KEY);
   storageService.remove("ecomedic_managed_users");
 
-  if (schemaVersion !== 2) {
+  if (schemaVersion !== SCHEMA_VERSION) {
     const storedById = new Map((storedUsers ?? []).map((user) => [user.id, user]));
     const baseUsers = users.map((initialUser) => ({
       ...initialUser,
-      // La migración restaura los datos originales de las tres cuentas base,
-      // pero conserva el estado de cuenta que haya elegido el administrador.
       accountStatus: storedById.get(initialUser.id)?.accountStatus ?? "active",
     }));
     const baseIds = new Set(users.map((user) => user.id));
@@ -33,7 +34,7 @@ function getUsers(): UserRecord[] {
       }));
     const migratedUsers = [...baseUsers, ...additionalUsers];
     saveUsers(migratedUsers);
-    storageService.set("ecomedic_users_schema_version", 2);
+    storageService.set(SCHEMA_VERSION_KEY, SCHEMA_VERSION);
     return migratedUsers;
   }
 
@@ -97,6 +98,35 @@ export const authRepository = {
 
   addUser(user: UserRecord): void {
     saveUsers([...getUsers(), user]);
+  },
+
+  updateUser(
+    userId: string,
+    changes: { name: string; email: string; carnet: string; role: UserRole },
+  ): boolean {
+    const currentUsers = getUsers();
+    if (!currentUsers.some((user) => user.id === userId)) return false;
+
+    const updatedUsers = currentUsers.map((user) =>
+      user.id === userId
+        ? {
+            ...user,
+            name: changes.name.trim(),
+            email: changes.email.trim().toLowerCase(),
+            carnet: changes.carnet.trim(),
+            role: changes.role,
+          }
+        : user,
+    );
+    saveUsers(updatedUsers);
+
+    const session = storageService.get<User>(SESSION_KEY);
+    if (session?.id === userId) {
+      const updatedUser = updatedUsers.find((user) => user.id === userId);
+      if (updatedUser) storageService.set<User>(SESSION_KEY, toSessionUser(updatedUser));
+    }
+
+    return true;
   },
 
   updatePassword(userId: string, newPassword: string): boolean {
