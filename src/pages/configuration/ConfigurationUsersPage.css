@@ -813,3 +813,43 @@
     padding: 10px 12px;
   }
 }
+
+
+.configuration-edit-panel {
+  margin-top: 24px;
+}
+
+.configuration-edit-hint {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.configuration-create-form .modal-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.user-row__actions .modal-cancel,
+.user-row__actions .modal-submit {
+  min-height: 36px;
+  padding: 0 12px;
+}
+
+@media (max-width: 700px) {
+  .configuration-edit-hint {
+    grid-column: 1;
+  }
+
+  .configuration-create-form .modal-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .configuration-create-form .modal-actions button {
+    width: 100%;
+  }
+}
