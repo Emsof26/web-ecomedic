@@ -5,6 +5,7 @@
 // Importa useState para controlar los valores de los campos
 // del formulario dentro del componente.
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 // Tipo utilizado para manejar el evento de envío del formulario.
 import type { FormEventHandler } from "react";
@@ -185,6 +186,13 @@ function LoginForm({ error, onSubmit }: LoginFormProps) {
         >
           Ingresar
         </button>
+
+        <Link
+          className="login-forgot-link"
+          to="/recuperar-contrasena"
+        >
+          ¿Olvidaste tu contraseña?
+        </Link>
 
         {/* ----------------------------------------------------
             PIE DEL FORMULARIO
