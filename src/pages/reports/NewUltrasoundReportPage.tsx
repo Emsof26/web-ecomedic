@@ -1091,7 +1091,7 @@ function RegisterUltrasoundStudyPage() {
 
             <label className="report-field report-field--full">
               <span>
-                Descripción de hallazgos <b>*</b>
+                Hallazgos ecográficos <b>*</b>
               </span>
 
               <textarea
@@ -1101,7 +1101,7 @@ function RegisterUltrasoundStudyPage() {
                     event.target.value,
                   )
                 }
-                placeholder="Escribe los hallazgos del estudio ecográfico..."
+                placeholder="Describe lo observado durante la ecografía..."
                 rows={7}
                 required
               />
@@ -1264,8 +1264,7 @@ function RegisterUltrasoundStudyPage() {
 
               <label className="report-field">
                 <span>
-                  Conclusión ecográfica{" "}
-                  <b>*</b>
+                  Conclusión del estudio <b>*</b>
                 </span>
 
                 <textarea
