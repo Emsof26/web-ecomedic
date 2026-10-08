@@ -32,6 +32,13 @@ export const userManagementService = {
     return { user, temporaryPassword };
   },
 
+  updateUser(
+    userId: string,
+    data: { name: string; email: string; carnet: string; role: UserRole },
+  ): boolean {
+    return authRepository.updateUser(userId, data);
+  },
+
   setAccountStatus(userId: string, status: AccountStatus): boolean {
     return authRepository.setAccountStatus(userId, status);
   },
