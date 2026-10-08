@@ -10,6 +10,7 @@ export interface User {
 
 
 export interface UserRecord extends User {
+  email: string;
   password: string;
 }
 
