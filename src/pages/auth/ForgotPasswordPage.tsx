@@ -1,5 +1,8 @@
-import { FormEventHandler, useState } from "react";
+import { useState } from "react";
+import type { FormEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
+
+import { passwordRecoveryService } from "../../services/passwordRecoveryService";
 
 import "./ForgotPasswordPage.css";
 
@@ -28,9 +31,47 @@ function ForgotPasswordPage() {
       return;
     }
 
+    passwordRecoveryService.createRequest(normalizedEmail);
     setError("");
     setSubmitted(true);
   };
+
+  if (submitted) {
+    return (
+      <main className="forgot-password-page">
+        <section className="forgot-password-card forgot-password-card--confirmation">
+          <div className="forgot-password-header">
+            <img
+              className="forgot-password-logo"
+              src="/logo/logo-eco.png"
+              alt="Logo de EcoMedic"
+            />
+
+            <div
+              className="forgot-password-confirmation-icon"
+              aria-hidden="true"
+            >
+              ✓
+            </div>
+
+            <h1>Solicitud enviada</h1>
+            <p>
+              Si el correo está registrado, recibirás instrucciones para
+              recuperar tu contraseña.
+            </p>
+          </div>
+
+          <button
+            className="forgot-password-back forgot-password-back--confirmation"
+            type="button"
+            onClick={() => navigate("/login")}
+          >
+            Volver al inicio de sesión
+          </button>
+        </section>
+      </main>
+    );
+  }
 
   return (
     <main className="forgot-password-page">
@@ -67,18 +108,11 @@ function ForgotPasswordPage() {
               onChange={(event) => {
                 setEmail(event.target.value);
                 setError("");
-                setSubmitted(false);
               }}
               placeholder="usuario@ejemplo.com"
               autoComplete="email"
               aria-invalid={Boolean(error)}
-              aria-describedby={
-                error
-                  ? "recovery-email-error"
-                  : submitted
-                    ? "recovery-email-success"
-                    : undefined
-              }
+              aria-describedby={error ? "recovery-email-error" : undefined}
               required
             />
           </div>
@@ -91,18 +125,6 @@ function ForgotPasswordPage() {
               aria-live="polite"
             >
               {error}
-            </p>
-          )}
-
-          {submitted && (
-            <p
-              id="recovery-email-success"
-              className="forgot-password-message forgot-password-message--success"
-              role="status"
-              aria-live="polite"
-            >
-              Si el correo está registrado, recibirás instrucciones para
-              recuperar tu contraseña.
             </p>
           )}
 
