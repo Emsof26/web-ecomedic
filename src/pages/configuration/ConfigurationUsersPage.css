@@ -591,3 +591,225 @@
   .recovery-request-row { flex-direction: column; gap: 14px; }
   .recovery-request-row .user-row__actions { justify-content: flex-start; }
 }
+
+
+/* Ajustes de distribución para la configuración de usuarios. */
+.configuration-page__content {
+  box-sizing: border-box;
+  width: auto;
+  max-width: 1600px;
+  padding-top: 32px;
+}
+
+.configuration-header {
+  margin-bottom: 24px;
+}
+
+.configuration-header h1 {
+  line-height: 1.3;
+}
+
+.configuration-header p,
+.users-panel__heading p,
+.appearance-panel p {
+  line-height: 1.6;
+}
+
+.users-panel + .users-panel,
+.users-panel + .configuration-email-preview,
+.configuration-email-preview + .configuration-email-preview,
+.configuration-email-preview + .users-panel {
+  margin-top: 24px;
+}
+
+.configuration-create-form {
+  margin-top: 0;
+  padding: 4px 24px 24px;
+  align-items: start;
+}
+
+.configuration-create-form h3 {
+  margin-top: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.4;
+}
+
+.configuration-create-form label {
+  min-width: 0;
+  gap: 8px;
+}
+
+.configuration-create-form input,
+.configuration-create-form select {
+  min-height: 44px;
+  padding: 0 13px;
+  border-radius: 9px;
+  font: inherit;
+  font-size: 13px;
+}
+
+.configuration-create-form .modal-actions {
+  margin-top: 4px;
+  justify-content: flex-start;
+}
+
+.configuration-create-form .modal-submit {
+  min-height: 44px;
+}
+
+.configuration-email-preview {
+  box-sizing: border-box;
+}
+
+.configuration-email-preview > div > p {
+  margin: 8px 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.configuration-email-preview pre {
+  margin: 16px 0;
+}
+
+.user-row__identity {
+  flex: 1 1 320px;
+}
+
+.user-row__identity > div {
+  min-width: 0;
+}
+
+.user-row__actions {
+  flex: 0 1 auto;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.user-row__actions .modal-submit,
+.user-row__actions .modal-cancel {
+  min-height: 36px;
+  padding: 0 12px;
+  font-size: 11px;
+}
+
+.user-row__actions button:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+}
+
+.recovery-request-row {
+  gap: 18px;
+}
+
+.recovery-request-row .user-row__actions {
+  max-width: 390px;
+}
+
+.recovery-empty {
+  margin: 0;
+  padding: 24px;
+}
+
+.configuration-notice {
+  max-width: min(520px, calc(100vw - 40px));
+  line-height: 1.5;
+}
+
+.configuration-empty {
+  box-sizing: border-box;
+}
+
+@media (max-width: 1100px) {
+  .user-row {
+    align-items: flex-start;
+  }
+
+  .user-row__actions {
+    max-width: 100%;
+  }
+
+  .recovery-request-row .user-row__actions {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .configuration-page__content {
+    padding: 82px 16px 36px;
+  }
+
+  .configuration-header {
+    margin-bottom: 20px;
+  }
+
+  .users-panel__heading {
+    padding: 20px 18px 16px;
+  }
+
+  .configuration-create-form {
+    padding: 4px 18px 20px;
+    gap: 15px;
+  }
+
+  .configuration-create-form h3 {
+    margin-top: 8px;
+  }
+
+  .configuration-create-form .modal-actions,
+  .configuration-create-form .modal-submit {
+    width: 100%;
+  }
+
+  .user-row,
+  .recovery-request-row {
+    padding: 18px;
+  }
+
+  .user-row__actions {
+    justify-content: flex-start;
+  }
+
+  .recovery-request-row .user-row__actions {
+    display: flex;
+    align-items: stretch;
+  }
+
+  .recovery-request-row .user-row__actions button {
+    flex: 1 1 170px;
+  }
+
+  .configuration-email-preview {
+    padding: 18px;
+  }
+
+  .configuration-notice {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+    max-width: none;
+  }
+}
+
+@media (max-width: 420px) {
+  .configuration-header h1 {
+    font-size: 21px;
+  }
+
+  .user-row__actions {
+    align-items: flex-start;
+  }
+
+  .role-badge,
+  .account-status {
+    white-space: normal;
+  }
+
+  .configuration-create-form .modal-submit {
+    white-space: normal;
+    line-height: 1.4;
+    padding: 10px 12px;
+  }
+}
