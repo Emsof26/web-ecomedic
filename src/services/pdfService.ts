@@ -120,9 +120,6 @@ export function downloadUltrasoundReportPdf({ patient, specialty, studyDate, doc
     y += 4;
   }
 
-  y = addSection(doc, "OBSERVACIONES", y);
-  y = addWrappedText(doc, data.observations, margin, y, contentWidth) + 6;
-
   y = addSection(doc, "CONCLUSIÓN DEL ESTUDIO", y);
   y = addWrappedText(doc, data.conclusion, margin, y, contentWidth) + 6;
 
