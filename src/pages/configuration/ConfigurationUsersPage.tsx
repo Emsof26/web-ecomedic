@@ -17,6 +17,8 @@ const roleLabels: Record<UserRole, string> = {
   RECEPCIONISTA: "Recepcionista",
 };
 
+type UserFormData = { name: string; email: string; carnet: string; role: UserRole };
+
 function buildWelcomeEmail(user: ManagedUser, password: string): string {
   return `Estimada/o ${user.name}:
 
@@ -40,9 +42,12 @@ function ConfigurationUsersPage() {
   const { theme, toggleTheme } = useTheme();
   const [users, setUsers] = useState<ManagedUser[]>(() => userManagementService.getUsers());
   const [requests, setRequests] = useState<PasswordRecoveryRequest[]>(() => passwordRecoveryService.getRequests());
-  const [form, setForm] = useState({ name: "", email: "", carnet: "", role: "MEDICO" as UserRole });
+  const [form, setForm] = useState<UserFormData>({ name: "", email: "", carnet: "", role: "MEDICO" });
+  const [editingUserId, setEditingUserId] = useState<string | null>(null);
+  const [editForm, setEditForm] = useState<UserFormData>({ name: "", email: "", carnet: "", role: "MEDICO" });
   const [notice, setNotice] = useState("");
   const [formError, setFormError] = useState("");
+  const [editError, setEditError] = useState("");
   const [createdEmail, setCreatedEmail] = useState<{ subject: string; message: string } | null>(null);
   const [approvedEmail, setApprovedEmail] = useState<{ subject: string; message: string; password: string } | null>(null);
 
@@ -65,31 +70,77 @@ function ConfigurationUsersPage() {
       setFormError("Completa nombre, correo electrónico y carnet.");
       return;
     }
-
     if (users.some((item) => item.carnet === carnet)) {
       setFormError("Ya existe un usuario con ese carnet.");
       return;
     }
-
     if (users.some((item) => item.email.toLowerCase() === email)) {
       setFormError("Ya existe un usuario con ese correo electrónico.");
       return;
     }
 
     const { user: createdUser, temporaryPassword } = userManagementService.addUser({
-      name,
-      email,
-      carnet,
-      role: form.role,
+      name, email, carnet, role: form.role,
     });
-
     setCreatedEmail({
       subject: "Datos de acceso a EcoMedic",
       message: buildWelcomeEmail(createdUser, temporaryPassword),
     });
     refreshUsers();
     setForm({ name: "", email: "", carnet: "", role: "MEDICO" });
-    setNotice("Usuario creado correctamente. El mensaje de correo fue generado para demostración.");
+    setNotice("Usuario creado. Por ahora el mensaje se muestra en pantalla; el envío real de correos aún requiere configuración.");
+  };
+
+  const startEditing = (target: ManagedUser) => {
+    setEditingUserId(target.id);
+    setEditForm({
+      name: target.name,
+      email: target.email,
+      carnet: target.carnet,
+      role: target.role,
+    });
+    setEditError("");
+    setNotice("");
+  };
+
+  const cancelEditing = () => {
+    setEditingUserId(null);
+    setEditError("");
+  };
+
+  const handleSaveEdit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!editingUserId) return;
+    setEditError("");
+
+    const name = editForm.name.trim();
+    const email = editForm.email.trim().toLowerCase();
+    const carnet = editForm.carnet.trim();
+
+    if (!name || !email || !carnet) {
+      setEditError("Completa nombre, correo electrónico y carnet.");
+      return;
+    }
+    if (users.some((item) => item.id !== editingUserId && item.carnet === carnet)) {
+      setEditError("Otro usuario ya tiene ese carnet.");
+      return;
+    }
+    if (users.some((item) => item.id !== editingUserId && item.email.trim().toLowerCase() === email)) {
+      setEditError("Otro usuario ya tiene ese correo electrónico.");
+      return;
+    }
+
+    const target = users.find((item) => item.id === editingUserId);
+    const role = target?.id === user?.id ? "ADMIN" : editForm.role;
+    const updated = userManagementService.updateUser(editingUserId, { name, email, carnet, role });
+    if (!updated) {
+      setEditError("No se pudieron guardar los cambios. Inténtalo de nuevo.");
+      return;
+    }
+
+    refreshUsers();
+    setEditingUserId(null);
+    setNotice("Los datos del usuario se actualizaron correctamente. Su contraseña y estado de cuenta se conservaron.");
   };
 
   const handleApprove = (request: PasswordRecoveryRequest) => {
@@ -106,7 +157,7 @@ function ConfigurationUsersPage() {
     });
     refreshUsers();
     refreshRequests();
-    setNotice("Solicitud aprobada. Se generó una nueva contraseña temporal.");
+    setNotice("Solicitud aprobada. Se generó una nueva contraseña temporal; el correo todavía no se envía automáticamente.");
   };
 
   const handleBlockRequest = (request: PasswordRecoveryRequest) => {
@@ -183,7 +234,7 @@ function ConfigurationUsersPage() {
           <section className="appearance-panel configuration-email-preview">
             <div>
               <h2>Usuario creado correctamente</h2>
-              <p><strong>Mensaje de correo generado</strong> · No se ha enviado ningún correo real.</p>
+              <p><strong>Vista previa del mensaje</strong> · No se ha enviado ningún correo real.</p>
               <pre>{`Asunto: ${createdEmail.subject}\n\n${createdEmail.message}`}</pre>
             </div>
             <button className="modal-cancel" type="button" onClick={() => setCreatedEmail(null)}>Cerrar mensaje</button>
@@ -195,20 +246,54 @@ function ConfigurationUsersPage() {
             <div>
               <h2>Solicitud aprobada</h2>
               <p><strong>Nueva contraseña temporal:</strong> <code>{approvedEmail.password}</code></p>
-              <p><strong>Mensaje de correo generado</strong> · No se ha enviado ningún correo real.</p>
+              <p><strong>Vista previa del mensaje</strong> · No se ha enviado ningún correo real.</p>
               <pre>{`Asunto: ${approvedEmail.subject}\n\n${approvedEmail.message}`}</pre>
             </div>
             <button className="modal-cancel" type="button" onClick={() => setApprovedEmail(null)}>Cerrar mensaje</button>
           </section>
         )}
 
+        {editingUserId && (
+          <section className="users-panel configuration-edit-panel">
+            <div className="users-panel__heading">
+              <div>
+                <h2>Editar usuario</h2>
+                <p>Corrige los datos sin borrar la cuenta ni cambiar su contraseña.</p>
+              </div>
+            </div>
+            <form className="user-form configuration-create-form" onSubmit={handleSaveEdit}>
+              <h3>Datos personales y de acceso</h3>
+              <label><strong>Nombre completo</strong><input required value={editForm.name} onChange={(event) => setEditForm({ ...editForm, name: event.target.value })} /></label>
+              <label><strong>Correo electrónico</strong><input required type="email" value={editForm.email} onChange={(event) => setEditForm({ ...editForm, email: event.target.value })} /></label>
+              <label><strong>Carnet</strong><input required value={editForm.carnet} onChange={(event) => setEditForm({ ...editForm, carnet: event.target.value })} /></label>
+              <label><strong>Rol</strong><select disabled={editingUserId === user.id} value={editForm.role} onChange={(event) => setEditForm({ ...editForm, role: event.target.value as UserRole })}><option value="MEDICO">Médico General</option><option value="ADMIN">Administrador</option><option value="RECEPCIONISTA">Recepcionista</option></select></label>
+              {editingUserId === user.id && <p className="configuration-edit-hint">Tu cuenta debe conservar el rol Administrador.</p>}
+              {editError && <p className="reset-password-message" role="alert">{editError}</p>}
+              <div className="modal-actions">
+                <button className="modal-cancel" type="button" onClick={cancelEditing}>Cancelar</button>
+                <button className="modal-submit" type="submit">Guardar cambios</button>
+              </div>
+            </form>
+          </section>
+        )}
+
         <section className="users-panel">
-          <div className="users-panel__heading"><div><h2>Usuarios del sistema ({users.length})</h2><p>Los usuarios base se conservan. Las cuentas bloqueadas permanecen registradas.</p></div></div>
+          <div className="users-panel__heading">
+            <div><h2>Usuarios del sistema ({users.length})</h2><p>Selecciona «Editar» para corregir los datos de una cuenta.</p></div>
+          </div>
           <div className="users-list">
             {users.map((item) => (
               <article className="user-row" key={item.id}>
-                <div className="user-row__identity"><span className="user-row__icon" aria-hidden="true">●</span><div><strong>{item.name}</strong><small>{item.email} · Carnet: {item.carnet}</small></div></div>
-                <div className="user-row__actions"><span className={`role-badge role-badge--${item.role.toLowerCase()}`}>{roleLabels[item.role]}</span><span className={`account-status account-status--${item.accountStatus}`}>{item.accountStatus === "active" ? "Activo" : "Bloqueado"}</span>{item.id !== user.id && <button className={item.accountStatus === "blocked" ? "modal-submit" : "modal-cancel"} type="button" onClick={() => handleToggleUser(item)}>{item.accountStatus === "blocked" ? "Activar" : "Bloquear"}</button>}</div>
+                <div className="user-row__identity">
+                  <span className="user-row__icon" aria-hidden="true">●</span>
+                  <div><strong>{item.name}</strong><small>{item.email} · Carnet: {item.carnet}</small></div>
+                </div>
+                <div className="user-row__actions">
+                  <span className={`role-badge role-badge--${item.role.toLowerCase()}`}>{roleLabels[item.role]}</span>
+                  <span className={`account-status account-status--${item.accountStatus}`}>{item.accountStatus === "active" ? "Activo" : "Bloqueado"}</span>
+                  <button className="modal-cancel" type="button" onClick={() => startEditing(item)}>{editingUserId === item.id ? "Editando…" : "Editar"}</button>
+                  {item.id !== user.id && <button className={item.accountStatus === "blocked" ? "modal-submit" : "modal-cancel"} type="button" onClick={() => handleToggleUser(item)}>{item.accountStatus === "blocked" ? "Activar" : "Bloquear"}</button>}
+                </div>
               </article>
             ))}
           </div>
