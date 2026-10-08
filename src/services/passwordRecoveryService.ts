@@ -85,6 +85,10 @@ export const passwordRecoveryService = {
     return request;
   },
 
+  removeRequestsForUser(userId: string): void {
+    saveRequests(getRequests().filter((request) => request.userId !== userId));
+  },
+
   getRequests(): PasswordRecoveryRequest[] {
     return getRequests().sort(
       (first, second) =>
