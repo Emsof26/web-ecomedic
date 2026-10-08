@@ -13,35 +13,48 @@ const users = initialUsers as UserRecord[];
 
 function getUsers(): UserRecord[] {
   const storedUsers = storageService.get<UserRecord[]>(USERS_KEY);
+  const schemaVersion = storageService.get<number>("ecomedic_users_schema_version");
   storageService.remove("ecomedic_managed_users");
 
-  if (!storedUsers) {
-    return users.map((user) => ({ ...user, accountStatus: user.accountStatus ?? "active" }));
-  }
-
-  const baseIds = new Set(users.map((user) => user.id));
-  const baseUsers = users.map((initialUser) => {
-    const storedUser = storedUsers.find((user) => user.id === initialUser.id);
-    return {
+  if (schemaVersion !== 2) {
+    const storedById = new Map((storedUsers ?? []).map((user) => [user.id, user]));
+    const baseUsers = users.map((initialUser) => ({
       ...initialUser,
-      // Mantiene el estado de cuenta, pero conserva los carnets, contraseñas,
-      // nombres, correos y roles originales de los tres usuarios base.
-      accountStatus: storedUser?.accountStatus ?? "active",
-    };
-  });
-  const additionalUsers = storedUsers
-    .filter((storedUser) => !baseIds.has(storedUser.id))
-    .map((storedUser) => ({
-      ...storedUser,
-      accountStatus: storedUser.accountStatus ?? "active",
+      // La migración restaura los datos originales de las tres cuentas base,
+      // pero conserva el estado de cuenta que haya elegido el administrador.
+      accountStatus: storedById.get(initialUser.id)?.accountStatus ?? "active",
     }));
-  const updatedUsers = [...baseUsers, ...additionalUsers];
-
-  if (JSON.stringify(updatedUsers) !== JSON.stringify(storedUsers)) {
-    saveUsers(updatedUsers);
+    const baseIds = new Set(users.map((user) => user.id));
+    const additionalUsers = (storedUsers ?? [])
+      .filter((storedUser) => !baseIds.has(storedUser.id))
+      .map((storedUser) => ({
+        ...storedUser,
+        accountStatus: storedUser.accountStatus ?? "active",
+      }));
+    const migratedUsers = [...baseUsers, ...additionalUsers];
+    saveUsers(migratedUsers);
+    storageService.set("ecomedic_users_schema_version", 2);
+    return migratedUsers;
   }
 
-  return updatedUsers;
+  const currentUsers = storedUsers ?? users;
+  const knownIds = new Set(currentUsers.map((user) => user.id));
+  const normalizedUsers = [
+    ...currentUsers.map((storedUser) => ({
+      ...storedUser,
+      email: storedUser.email ?? users.find((baseUser) => baseUser.id === storedUser.id)?.email ?? "",
+      accountStatus: storedUser.accountStatus ?? "active",
+    })),
+    ...users
+      .filter((initialUser) => !knownIds.has(initialUser.id))
+      .map((initialUser) => ({ ...initialUser, accountStatus: "active" as const })),
+  ];
+
+  if (JSON.stringify(normalizedUsers) !== JSON.stringify(currentUsers)) {
+    saveUsers(normalizedUsers);
+  }
+
+  return normalizedUsers;
 }
 
 function saveUsers(updatedUsers: UserRecord[]): void {
