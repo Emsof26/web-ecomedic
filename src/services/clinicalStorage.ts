@@ -23,7 +23,6 @@ export interface ClinicalReportData {
   clinicalReason?: string;
   findings?: string;
   measurements?: string;
-  observations?: string;
   conclusion?: string;
   parameters?: Record<string, string>;
   images?: StudyImage[];
