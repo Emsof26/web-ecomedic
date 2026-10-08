@@ -3,13 +3,22 @@ import type { AccountStatus, UserRecord, UserRole } from "../types/auth";
 
 export type ManagedUser = UserRecord;
 
+function generateTemporaryPassword(): string {
+  const existingPasswords = new Set(authRepository.getUsers().map((user) => user.password));
+  let candidate = "";
+  do {
+    candidate = `Ecomedic#${Math.floor(1000 + Math.random() * 9000)}`;
+  } while (existingPasswords.has(candidate));
+  return candidate;
+}
+
 export const userManagementService = {
   getUsers(): ManagedUser[] {
     return authRepository.getUsers();
   },
 
   addUser(data: { name: string; email: string; carnet: string; role: UserRole }): { user: ManagedUser; temporaryPassword: string } {
-    const temporaryPassword = `Ecomedic#${Math.floor(1000 + Math.random() * 9000)}`;
+    const temporaryPassword = generateTemporaryPassword();
     const user: ManagedUser = {
       id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
       name: data.name.trim(),
