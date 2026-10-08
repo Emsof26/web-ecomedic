@@ -15,9 +15,9 @@
   overflow: hidden;
   color: var(--text-primary);
   background:
-    radial-gradient(circle at 12% 18%, rgba(34, 101, 142, 0.28), transparent 34%),
-    radial-gradient(circle at 88% 78%, rgba(218, 111, 67, 0.22), transparent 36%),
-    linear-gradient(120deg, #e9f2f7 0%, #f2eee9 48%, #f5e5dc 100%);
+    radial-gradient(circle at 14% 22%, rgba(26, 105, 151, 0.52), transparent 38%),
+    radial-gradient(circle at 84% 76%, rgba(218, 92, 47, 0.44), transparent 40%),
+    linear-gradient(115deg, #dbeaf4 0%, #b9cdd7 28%, #d6c4bc 55%, #edb39a 78%, #df754d 100%);
   background-size: 150% 150%;
   animation: login-background-shift 18s ease-in-out infinite alternate;
 }
@@ -96,21 +96,13 @@
   width: 158px;
   height: 52px;
   margin: 0 auto 22px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 12px;
-  background: linear-gradient(145deg, #1d5577, #2f7891);
-  color: #ffffff;
-  font-size: 21px;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-  white-space: nowrap;
-  border-bottom: 3px solid #e07a4f;
-  box-shadow:
-    0 10px 24px rgba(26, 80, 108, 0.2),
-    0 0 0 5px rgba(37, 104, 143, 0.06);
+  display: block;
+  object-fit: contain;
+  object-position: center;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .login-header h1 {
@@ -257,8 +249,13 @@
 }
 
 .splash-logo {
+  width: min(62vw, 520px);
+  height: auto;
+  max-height: 42vh;
   margin: 0;
-  animation: splash-logo-in 0.8s ease-out both;
+  object-fit: contain;
+  object-position: center;
+  animation: splash-logo-in 0.9s ease-out both;
 }
 
 .entry-content {
@@ -323,9 +320,9 @@
 
 :root[data-theme="dark"] .login-page {
   background:
-    radial-gradient(circle at 12% 18%, rgba(54, 128, 171, 0.2), transparent 34%),
-    radial-gradient(circle at 88% 78%, rgba(225, 122, 82, 0.13), transparent 36%),
-    linear-gradient(120deg, #101f29 0%, #182b35 48%, #261f20 100%);
+    radial-gradient(circle at 14% 22%, rgba(48, 132, 184, 0.38), transparent 38%),
+    radial-gradient(circle at 84% 76%, rgba(225, 106, 67, 0.3), transparent 40%),
+    linear-gradient(115deg, #0d2636 0%, #173f52 30%, #403b3a 58%, #713e32 82%, #3a211d 100%);
 }
 
 :root[data-theme="dark"] .login-page::before {
@@ -342,11 +339,6 @@
   box-shadow:
     0 26px 70px rgba(0, 0, 0, 0.3),
     0 5px 18px rgba(0, 0, 0, 0.16);
-}
-
-:root[data-theme="dark"] .login-logo {
-  background: linear-gradient(145deg, #163f5b, #245f75);
-  border-bottom-color: #e8895f;
 }
 
 :root[data-theme="dark"] .form-group input {
@@ -427,7 +419,11 @@
     width: 146px;
     height: 48px;
     margin-bottom: 18px;
-    font-size: 19px;
+  }
+
+  .splash-logo {
+    width: min(78vw, 390px);
+    max-height: 34vh;
   }
 
   .form-group input,
