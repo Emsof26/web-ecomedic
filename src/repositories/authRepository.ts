@@ -11,17 +11,19 @@ import type {
 const SESSION_KEY = "app_session";
 const USERS_KEY = "ecomedic_auth_users";
 const SCHEMA_VERSION_KEY = "ecomedic_users_schema_version";
+const DELETED_USERS_KEY = "ecomedic_deleted_user_ids";
 const SCHEMA_VERSION = 3;
 const users = initialUsers as UserRecord[];
 
 function getUsers(): UserRecord[] {
   const storedUsers = storageService.get<UserRecord[]>(USERS_KEY);
   const schemaVersion = storageService.get<number>(SCHEMA_VERSION_KEY);
+  const deletedUserIds = new Set(storageService.get<string[]>(DELETED_USERS_KEY) ?? []);
   storageService.remove("ecomedic_managed_users");
 
   if (schemaVersion !== SCHEMA_VERSION) {
     const storedById = new Map((storedUsers ?? []).map((user) => [user.id, user]));
-    const baseUsers = users.map((initialUser) => ({
+    const baseUsers = users.filter((initialUser) => !deletedUserIds.has(initialUser.id)).map((initialUser) => ({
       ...initialUser,
       accountStatus: storedById.get(initialUser.id)?.accountStatus ?? "active",
     }));
@@ -47,7 +49,7 @@ function getUsers(): UserRecord[] {
       accountStatus: storedUser.accountStatus ?? "active",
     })),
     ...users
-      .filter((initialUser) => !knownIds.has(initialUser.id))
+      .filter((initialUser) => !knownIds.has(initialUser.id) && !deletedUserIds.has(initialUser.id))
       .map((initialUser) => ({ ...initialUser, accountStatus: "active" as const })),
   ];
 
@@ -97,7 +99,29 @@ export const authRepository = {
   },
 
   addUser(user: UserRecord): void {
+    const deletedIds = storageService.get<string[]>(DELETED_USERS_KEY) ?? [];
+    storageService.set(DELETED_USERS_KEY, deletedIds.filter((id) => id !== user.id));
     saveUsers([...getUsers(), user]);
+  },
+
+  deleteUser(userId: string): boolean {
+    const currentUsers = getUsers();
+    if (!currentUsers.some((user) => user.id === userId)) return false;
+
+    const session = storageService.get<User>(SESSION_KEY);
+    if (session?.id === userId) return false;
+
+    const target = currentUsers.find((user) => user.id === userId);
+    if (target?.role === "ADMIN" && currentUsers.filter((user) => user.role === "ADMIN").length <= 1) {
+      return false;
+    }
+
+    saveUsers(currentUsers.filter((user) => user.id !== userId));
+    if (users.some((user) => user.id === userId)) {
+      const deletedIds = storageService.get<string[]>(DELETED_USERS_KEY) ?? [];
+      if (!deletedIds.includes(userId)) storageService.set(DELETED_USERS_KEY, [...deletedIds, userId]);
+    }
+    return true;
   },
 
   updateUser(
