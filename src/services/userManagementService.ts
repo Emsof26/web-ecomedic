@@ -1,41 +1,29 @@
-import { storageService } from "./storageService";
-import type { UserRole } from "../types/auth";
+import { authRepository } from "../repositories/authRepository";
+import type { AccountStatus, UserRecord, UserRole } from "../types/auth";
 
-export interface ManagedUser {
-  id: string;
-  name: string;
-  email: string;
-  role: UserRole;
-}
-
-const USERS_KEY = "ecomedic_managed_users";
-
-const initialUsers: ManagedUser[] = [
-  { id: "managed-1", name: "Dr. Marcos Pérez", email: "marcos.perez@ecomedic.com", role: "MEDICO" },
-  { id: "managed-2", name: "Dra. Fabiola Rojas", email: "fabiola.rojas@ecomedic.com", role: "MEDICO" },
-  { id: "managed-3", name: "Administrador", email: "administrador@ecomedic.com", role: "ADMIN" },
-  { id: "managed-4", name: "Dr. Carlos Vargas", email: "carlos.vargas@ecomedic.com", role: "MEDICO" },
-];
+export type ManagedUser = UserRecord;
 
 export const userManagementService = {
   getUsers(): ManagedUser[] {
-    const users = storageService.get<ManagedUser[]>(USERS_KEY) ?? initialUsers;
-    return users.filter(
-      (user) =>
-        user.email !== "laura.mendoza@ecomedic.com" &&
-        user.email !== "sofia.quispe@ecomedic.com",
-    );
+    return authRepository.getUsers();
   },
 
-  saveUsers(users: ManagedUser[]): void {
-    storageService.set(USERS_KEY, users);
+  addUser(data: { name: string; email: string; carnet: string; role: UserRole }): { user: ManagedUser; temporaryPassword: string } {
+    const temporaryPassword = `Ecomedic#${Math.floor(1000 + Math.random() * 9000)}`;
+    const user: ManagedUser = {
+      id: `user-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+      name: data.name.trim(),
+      email: data.email.trim().toLowerCase(),
+      carnet: data.carnet.trim(),
+      password: temporaryPassword,
+      role: data.role,
+      accountStatus: "active",
+    };
+    authRepository.addUser(user);
+    return { user, temporaryPassword };
   },
 
-  addUser(user: ManagedUser): void {
-    this.saveUsers([...this.getUsers(), user]);
-  },
-
-  deleteUser(id: string): void {
-    this.saveUsers(this.getUsers().filter((user) => user.id !== id));
+  setAccountStatus(userId: string, status: AccountStatus): boolean {
+    return authRepository.setAccountStatus(userId, status);
   },
 };
