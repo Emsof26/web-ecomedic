@@ -1,8 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import type { ReactNode } from "react";
 
-import HomePage from "../pages/HomePage";
-import LoginPage from "../pages/auth/LoginPage";
+import InitialEntryPage from "../pages/auth/InitialEntryPage";
 import PatientsHistoryPage from "../pages/patients/PatientsHistoryPage";
 import PatientDetailPage from "../pages/patients/PatientDetailPage";
 import NewUltrasoundReportPage from "../pages/reports/NewUltrasoundReportPage";
@@ -35,16 +34,8 @@ function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-
-        <Route
-          path="/"
-          element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
-          }
-        />
+        <Route path="/" element={<InitialEntryPage />} />
+        <Route path="/login" element={<InitialEntryPage />} />
 
         <Route
           path="/pacientes"
@@ -91,7 +82,7 @@ function AppRoutes() {
           }
         />
 
-        <Route path="*" element={<Navigate to="/login" replace />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>
   );
