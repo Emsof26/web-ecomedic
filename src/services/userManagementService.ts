@@ -32,6 +32,10 @@ export const userManagementService = {
     return { user, temporaryPassword };
   },
 
+  deleteUser(userId: string): boolean {
+    return authRepository.deleteUser(userId);
+  },
+
   updateUser(
     userId: string,
     data: { name: string; email: string; carnet: string; role: UserRole },
