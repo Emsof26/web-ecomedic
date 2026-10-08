@@ -34,6 +34,13 @@ function LoginPage({ skipSplash = false }: LoginPageProps) {
   const handleLogin = (credentials: LoginCredentials) => {
     setError("");
 
+    const accountStatus = authRepository.getAccountStatusByCarnet(credentials.carnet);
+
+    if (accountStatus === "blocked") {
+      setError("Esta cuenta se encuentra bloqueada. Comuníquese con el administrador.");
+      return;
+    }
+
     const user = authRepository.login(credentials);
 
     if (!user) {
