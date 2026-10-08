@@ -1,5 +1,6 @@
 export type UserRole = "ADMIN" | "MEDICO" | "RECEPCIONISTA";
 
+export type AccountStatus = "active" | "blocked";
 
 export interface User {
   id: string;
@@ -8,12 +9,11 @@ export interface User {
   role: UserRole;
 }
 
-
 export interface UserRecord extends User {
   email: string;
   password: string;
+  accountStatus: AccountStatus;
 }
-
 
 export interface LoginCredentials {
   carnet: string;
