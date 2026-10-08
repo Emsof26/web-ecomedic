@@ -105,7 +105,11 @@ function LoginForm({ error, onSubmit }: LoginFormProps) {
 
         <div className="login-header">
           {/* Identidad visual de la aplicación */}
-          <div className="login-logo">EcoMedic</div>
+          <img
+            className="login-logo"
+            src="/logo/logo-eco.png"
+            alt="Logo de EcoMedic"
+          />
 
           {/* Título principal */}
           <h1>Iniciar sesión</h1>
