@@ -38,8 +38,12 @@ function InitialEntryPage() {
       </div>
 
       {showSplash && (
-        <section className="splash-screen" aria-label="EcoMedic">
-          <div className="login-logo splash-logo">EcoMedic</div>
+        <section className="splash-screen" aria-label="Logo de EcoMedic">
+          <img
+            className="splash-logo"
+            src="/logo/logo-eco.png"
+            alt="Logo de EcoMedic"
+          />
         </section>
       )}
     </>
