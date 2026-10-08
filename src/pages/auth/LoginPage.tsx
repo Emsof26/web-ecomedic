@@ -48,7 +48,11 @@ function LoginPage({ skipSplash = false }: LoginPageProps) {
     <>
       {showSplash && (
         <section className="splash-screen" aria-label="EcoMedic">
-          <div className="login-logo splash-logo">EcoMedic</div>
+          <img
+            className="login-logo splash-logo"
+            src="/logo/logo-eco.png"
+            alt="Logo de EcoMedic"
+          />
         </section>
       )}
 
