@@ -171,6 +171,28 @@ function ConfigurationUsersPage() {
     setNotice("Solicitud marcada como bloqueada.");
   };
 
+  const handleDeleteUser = (target: ManagedUser) => {
+    if (target.id === user?.id) {
+      setNotice("No puedes eliminar tu propia cuenta mientras estás administrándola.");
+      return;
+    }
+    if (target.role === "ADMIN" && users.filter((item) => item.role === "ADMIN").length <= 1) {
+      setNotice("No puedes eliminar al único administrador del sistema.");
+      return;
+    }
+    if (!window.confirm(`¿Eliminar definitivamente la cuenta de ${target.name}? Esta acción no se puede deshacer.`)) return;
+
+    if (!userManagementService.deleteUser(target.id)) {
+      setNotice("No se pudo eliminar el usuario. Verifica que no sea tu cuenta ni el último administrador.");
+      return;
+    }
+    passwordRecoveryService.removeRequestsForUser(target.id);
+    if (editingUserId === target.id) setEditingUserId(null);
+    refreshUsers();
+    refreshRequests();
+    setNotice(`El usuario ${target.name} fue eliminado.`);
+  };
+
   const handleToggleUser = (target: ManagedUser) => {
     const nextStatus = target.accountStatus === "blocked" ? "active" : "blocked";
     if (nextStatus === "blocked" && target.id === user?.id) {
@@ -292,7 +314,7 @@ function ConfigurationUsersPage() {
                   <span className={`role-badge role-badge--${item.role.toLowerCase()}`}>{roleLabels[item.role]}</span>
                   <span className={`account-status account-status--${item.accountStatus}`}>{item.accountStatus === "active" ? "Activo" : "Bloqueado"}</span>
                   <button className="modal-cancel" type="button" onClick={() => startEditing(item)}>{editingUserId === item.id ? "Editando…" : "Editar"}</button>
-                  {item.id !== user.id && <button className={item.accountStatus === "blocked" ? "modal-submit" : "modal-cancel"} type="button" onClick={() => handleToggleUser(item)}>{item.accountStatus === "blocked" ? "Activar" : "Bloquear"}</button>}
+                  {item.id !== user.id && <><button className={item.accountStatus === "blocked" ? "modal-submit" : "modal-cancel"} type="button" onClick={() => handleToggleUser(item)}>{item.accountStatus === "blocked" ? "Activar" : "Bloquear"}</button><button className="modal-delete" type="button" onClick={() => handleDeleteUser(item)}>Eliminar</button></>}
                 </div>
               </article>
             ))}
