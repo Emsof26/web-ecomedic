@@ -36,7 +36,12 @@ function saveRequests(requests: PasswordRecoveryRequest[]): void {
 }
 
 function generateTemporaryPassword(): string {
-  return `Ecomedic#${Math.floor(1000 + Math.random() * 9000)}`;
+  const existingPasswords = new Set(authRepository.getUsers().map((user) => user.password));
+  let candidate = "";
+  do {
+    candidate = `Ecomedic#${Math.floor(1000 + Math.random() * 9000)}`;
+  } while (existingPasswords.has(candidate));
+  return candidate;
 }
 
 function createEmailMessage(name: string, carnet: string, role: string, password: string): string {
@@ -93,7 +98,7 @@ export const passwordRecoveryService = {
     if (!request || request.status !== "pending" || !request.userId) return null;
 
     const user = authRepository.getUsers().find((item) => item.id === request.userId);
-    if (!user) return null;
+    if (!user || user.accountStatus === "blocked") return null;
 
     const temporaryPassword = generateTemporaryPassword();
     if (!authRepository.updatePassword(user.id, temporaryPassword)) return null;
