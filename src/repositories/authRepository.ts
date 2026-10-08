@@ -15,7 +15,34 @@ const users = initialUsers as UserRecord[];
 
 
 function getUsers(): UserRecord[] {
-  return storageService.get<UserRecord[]>(USERS_KEY) ?? users;
+  const storedUsers = storageService.get<UserRecord[]>(USERS_KEY);
+
+  if (!storedUsers) {
+    return users;
+  }
+
+  const updatedUsers = storedUsers.map((storedUser) => {
+    const initialUser = users.find((user) => user.id === storedUser.id);
+
+    if (storedUser.email || !initialUser) {
+      return storedUser;
+    }
+
+    return {
+      ...storedUser,
+      email: initialUser.email,
+    };
+  });
+
+  const needsMigration = updatedUsers.some(
+    (user, index) => user.email !== storedUsers[index].email,
+  );
+
+  if (needsMigration) {
+    saveUsers(updatedUsers);
+  }
+
+  return updatedUsers;
 }
 
 
