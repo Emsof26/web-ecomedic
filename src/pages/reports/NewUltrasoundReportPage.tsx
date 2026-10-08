@@ -1353,14 +1353,16 @@ function RegisterUltrasoundStudyPage() {
                   />
                 </span>
 
-                <strong>
-                  Arrastra imágenes del ecógrafo aquí
-                </strong>
+                <div className="image-upload__copy">
+                  <strong>
+                    Arrastra imágenes del ecógrafo aquí
+                  </strong>
 
-                <small>
-                  PNG, JPG, JPEG o WEBP · máximo 5
-                  imágenes
-                </small>
+                  <small>
+                    PNG, JPG, JPEG o WEBP
+                    <span>Máximo 5 imágenes</span>
+                  </small>
+                </div>
               </div>
 
               <input
