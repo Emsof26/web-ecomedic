@@ -440,7 +440,6 @@ function RegisterUltrasoundStudyPage() {
   const [clinicalReason, setClinicalReason] = useState("");
   const [findings, setFindings] = useState("");
   const [measurements, setMeasurements] = useState("");
-  const [observations, setObservations] = useState("");
   const [conclusion, setConclusion] = useState("");
 
   const [studyDate, setStudyDate] = useState(
@@ -569,7 +568,7 @@ function RegisterUltrasoundStudyPage() {
     if (base) return base;
 
     if (!findings.trim())
-      return "Completa la descripción de hallazgos.";
+      return "Completa los hallazgos ecográficos.";
 
     if (!conclusion.trim())
       return "Completa la conclusión del estudio.";
@@ -585,7 +584,6 @@ function RegisterUltrasoundStudyPage() {
     clinicalReason: clinicalReason.trim(),
     findings: findings.trim(),
     measurements: measurements.trim(),
-    observations: observations.trim(),
     conclusion: conclusion.trim(),
     parameters,
     images,
@@ -1124,23 +1122,6 @@ function RegisterUltrasoundStudyPage() {
                     )
                   }
                   placeholder="Órgano, medida, volumen, localización..."
-                  rows={4}
-                />
-              </label>
-
-              <label className="report-field">
-                <span>
-                  Observaciones
-                </span>
-
-                <textarea
-                  value={observations}
-                  onChange={(event) =>
-                    setObservations(
-                      event.target.value,
-                    )
-                  }
-                  placeholder="Información complementaria del estudio..."
                   rows={4}
                 />
               </label>
