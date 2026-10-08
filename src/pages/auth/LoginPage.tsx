@@ -5,18 +5,27 @@ import LoginForm from "../../components/auth/LoginForm";
 import { authRepository } from "../../repositories/authRepository";
 import type { LoginCredentials } from "../../types/auth";
 
-function LoginPage() {
+interface LoginPageProps {
+  skipSplash?: boolean;
+}
+
+function LoginPage({ skipSplash = false }: LoginPageProps) {
   const navigate = useNavigate();
   const [error, setError] = useState("");
-  const [showSplash, setShowSplash] = useState(true);
+  const [showSplash, setShowSplash] = useState(!skipSplash);
 
   useEffect(() => {
+    if (skipSplash) {
+      setShowSplash(false);
+      return;
+    }
+
     const timer = window.setTimeout(() => {
       setShowSplash(false);
-    }, 1500);
+    }, 5000);
 
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [skipSplash]);
 
   if (authRepository.isAuthenticated()) {
     return <Navigate to="/" replace />;
@@ -32,7 +41,7 @@ function LoginPage() {
       return;
     }
 
-    navigate("/", { replace: true });
+    navigate("/", { replace: true, state: { fromLogin: true } });
   };
 
   return (
