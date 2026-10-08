@@ -78,7 +78,7 @@ function Navbar({ user, onLogout }: NavbarProps) {
   const isReceptionist = user?.role === "RECEPCIONISTA";
   const isAdmin = user?.role === "ADMIN";
   // Texto visible del rol del usuario.
-  const roleLabel = { ADMIN: "Administrador", MEDICO: "Médico General", RECEPCIONISTA: "Recepcionista (demostrativo)" }[user?.role ?? "ADMIN"];
+  const roleLabel = { ADMIN: "Administrador", MEDICO: "Médico General", RECEPCIONISTA: "Recepcionista" }[user?.role ?? "ADMIN"];
 
   // Comprueba qué ruta debe mostrarse como activa.
   const isActive = (target: string) => {
