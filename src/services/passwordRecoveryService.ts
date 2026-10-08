@@ -99,6 +99,21 @@ export const passwordRecoveryService = {
     return request;
   },
 
+  getLatestRequestByEmail(email: string): PasswordRecoveryRequest | null {
+    const normalizedEmail = normalizeEmail(email);
+    const requests = markExpiredRequests(getRequests());
+
+    return (
+      requests
+        .filter((request) => request.email === normalizedEmail)
+        .sort(
+          (first, second) =>
+            new Date(second.createdAt).getTime() -
+            new Date(first.createdAt).getTime(),
+        )[0] ?? null
+    );
+  },
+
   getRequestByToken(token: string): PasswordRecoveryRequest | null {
     const normalizedToken = token.trim();
 
