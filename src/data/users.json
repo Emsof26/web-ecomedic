@@ -3,6 +3,7 @@
     "id": "user-1",
     "name": "Administrador",
     "carnet": "123",
+    "email": "administrador@ecomedic.com",
     "password": "admin123",
     "role": "ADMIN"
   },
@@ -10,6 +11,7 @@
     "id": "user-2",
     "name": "Médico General",
     "carnet": "456",
+    "email": "medico@ecomedic.com",
     "password": "medico456",
     "role": "MEDICO"
   },
@@ -17,6 +19,7 @@
     "id": "user-3",
     "name": "Usuario demostrativo de recepción",
     "carnet": "789",
+    "email": "recepcion@ecomedic.com",
     "password": "recep789",
     "role": "RECEPCIONISTA"
   }
