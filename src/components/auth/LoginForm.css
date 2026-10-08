@@ -454,7 +454,7 @@
   }
 
   .splash-screen {
-    animation: none;
+    animation: splash-fade-out 0.25s ease-out 4.75s forwards;
   }
 
   .splash-logo,
