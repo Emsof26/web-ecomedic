@@ -5,7 +5,8 @@
     "carnet": "123",
     "email": "administrador@ecomedic.com",
     "password": "admin123",
-    "role": "ADMIN"
+    "role": "ADMIN",
+    "accountStatus": "active"
   },
   {
     "id": "user-2",
@@ -13,14 +14,16 @@
     "carnet": "456",
     "email": "medico@ecomedic.com",
     "password": "medico456",
-    "role": "MEDICO"
+    "role": "MEDICO",
+    "accountStatus": "active"
   },
   {
     "id": "user-3",
-    "name": "Usuario demostrativo de recepción",
+    "name": "Recepcionista",
     "carnet": "789",
     "email": "recepcion@ecomedic.com",
     "password": "recep789",
-    "role": "RECEPCIONISTA"
+    "role": "RECEPCIONISTA",
+    "accountStatus": "active"
   }
 ]
