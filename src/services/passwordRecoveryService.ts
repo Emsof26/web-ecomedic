@@ -1,40 +1,30 @@
 import { authRepository } from "../repositories/authRepository";
 import { storageService } from "./storageService";
 
-export type PasswordRecoveryStatus =
-  | "pending"
-  | "expired"
-  | "used"
-  | "invalidated";
+export type PasswordRecoveryStatus = "pending" | "approved" | "blocked";
 
 export interface PasswordRecoveryRequest {
   id: string;
-  email: string;
   userId?: string;
-  token: string;
+  userName: string;
+  email: string;
+  carnet: string;
   createdAt: string;
-  expiresAt: string;
   status: PasswordRecoveryStatus;
+  temporaryPassword?: string;
+  emailSubject?: string;
+  emailMessage?: string;
 }
 
 const RECOVERY_REQUESTS_KEY = "ecomedic_password_recovery_requests";
-const TOKEN_DURATION_MS = 15 * 60 * 1000;
-
-function generateToken(): string {
-  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
-    return crypto.randomUUID();
-  }
-
-  return `recovery-${Date.now()}-${Math.random().toString(36).slice(2)}`;
-}
-
-function normalizeEmail(email: string): string {
-  return email.trim().toLowerCase();
-}
 
 function getRequests(): PasswordRecoveryRequest[] {
-  return (
-    storageService.get<PasswordRecoveryRequest[]>(RECOVERY_REQUESTS_KEY) ?? []
+  const stored = storageService.get<PasswordRecoveryRequest[]>(RECOVERY_REQUESTS_KEY) ?? [];
+  // Ignora solicitudes del formato antiguo basado en enlaces/token.
+  return stored.filter((request) =>
+    typeof request.id === "string" &&
+    typeof request.createdAt === "string" &&
+    ["pending", "approved", "blocked"].includes(request.status),
   );
 }
 
@@ -42,118 +32,94 @@ function saveRequests(requests: PasswordRecoveryRequest[]): void {
   storageService.set(RECOVERY_REQUESTS_KEY, requests);
 }
 
-function markExpiredRequests(
-  requests: PasswordRecoveryRequest[],
-): PasswordRecoveryRequest[] {
-  const now = Date.now();
-  let changed = false;
+function generateTemporaryPassword(): string {
+  return `Ecomedic#${Math.floor(1000 + Math.random() * 9000)}`;
+}
 
-  const updatedRequests = requests.map((request) => {
-    if (
-      request.status === "pending" &&
-      new Date(request.expiresAt).getTime() <= now
-    ) {
-      changed = true;
-      return { ...request, status: "expired" as const };
-    }
+function createEmailMessage(name: string, carnet: string, role: string, password: string): string {
+  const roleLabel = {
+    ADMIN: "Administrador",
+    MEDICO: "Médico General",
+    RECEPCIONISTA: "Recepcionista",
+  }[role as "ADMIN" | "MEDICO" | "RECEPCIONISTA"] ?? role;
 
-    return request;
-  });
+  return `Estimada/o ${name}:
 
-  if (changed) {
-    saveRequests(updatedRequests);
-  }
+Su solicitud de recuperación de contraseña fue aprobada.
 
-  return updatedRequests;
+Carnet: ${carnet}
+Nueva contraseña temporal: ${password}
+Rol: ${roleLabel}
+
+Puede ingresar al sistema utilizando su carnet y esta contraseña.
+
+Atentamente,
+EcoMedic
+
+Mensaje generado para demostración. No se ha enviado ningún correo real.`;
 }
 
 export const passwordRecoveryService = {
   createRequest(email: string): PasswordRecoveryRequest {
-    const now = new Date();
-    const requests = markExpiredRequests(getRequests());
-    const normalizedEmail = normalizeEmail(email);
+    const normalizedEmail = email.trim().toLowerCase();
     const user = authRepository.getUserByEmail(normalizedEmail);
-
     const request: PasswordRecoveryRequest = {
-      id: generateToken(),
-      email: normalizedEmail,
+      id: `recovery-request-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       userId: user?.id,
-      token: generateToken(),
-      createdAt: now.toISOString(),
-      expiresAt: new Date(now.getTime() + TOKEN_DURATION_MS).toISOString(),
+      userName: user?.name ?? "Solicitud sin usuario asociado",
+      email: normalizedEmail,
+      carnet: user?.carnet ?? "—",
+      createdAt: new Date().toISOString(),
       status: "pending",
     };
 
-    const updatedRequests = [
-      ...requests.filter(
-        (item) =>
-          !(
-            item.email === normalizedEmail &&
-            item.status === "pending"
-          ),
-      ),
-      request,
-    ];
-
-    saveRequests(updatedRequests);
+    saveRequests([...getRequests(), request]);
     return request;
   },
 
-  getLatestRequestByEmail(email: string): PasswordRecoveryRequest | null {
-    const normalizedEmail = normalizeEmail(email);
-    const requests = markExpiredRequests(getRequests());
-
-    return (
-      requests
-        .filter((request) => request.email === normalizedEmail)
-        .sort(
-          (first, second) =>
-            new Date(second.createdAt).getTime() -
-            new Date(first.createdAt).getTime(),
-        )[0] ?? null
+  getRequests(): PasswordRecoveryRequest[] {
+    return getRequests().sort(
+      (first, second) =>
+        new Date(second.createdAt).getTime() - new Date(first.createdAt).getTime(),
     );
   },
 
-  getRequestByToken(token: string): PasswordRecoveryRequest | null {
-    const normalizedToken = token.trim();
+  approveRequest(requestId: string): PasswordRecoveryRequest | null {
+    const requests = getRequests();
+    const request = requests.find((item) => item.id === requestId);
+    if (!request || request.status !== "pending" || !request.userId) return null;
 
-    if (!normalizedToken) {
-      return null;
+    const user = authRepository.getUsers().find((item) => item.id === request.userId);
+    if (!user) return null;
+
+    const temporaryPassword = generateTemporaryPassword();
+    if (!authRepository.updatePassword(user.id, temporaryPassword)) return null;
+
+    const approvedRequest: PasswordRecoveryRequest = {
+      ...request,
+      status: "approved",
+      temporaryPassword,
+      emailSubject: "Datos de acceso a EcoMedic",
+      emailMessage: createEmailMessage(user.name, user.carnet, user.role, temporaryPassword),
+    };
+
+    saveRequests(requests.map((item) => item.id === requestId ? approvedRequest : item));
+    return approvedRequest;
+  },
+
+  blockRequest(requestId: string): boolean {
+    const requests = getRequests();
+    const request = requests.find((item) => item.id === requestId);
+    if (!request || request.status !== "pending") return false;
+
+    if (request.userId) {
+      const blocked = authRepository.setAccountStatus(request.userId, "blocked");
+      if (!blocked) return false;
     }
 
-    const requests = markExpiredRequests(getRequests());
-    const request = requests.find((item) => item.token === normalizedToken);
-
-    if (!request || request.status !== "pending") {
-      return null;
-    }
-
-    return request;
-  },
-
-  consumeToken(token: string): void {
-    const normalizedToken = token.trim();
-    const requests = getRequests();
-
-    const updatedRequests = requests.map((request) =>
-      request.token === normalizedToken
-        ? { ...request, status: "used" as const }
-        : request,
-    );
-
-    saveRequests(updatedRequests);
-  },
-
-  invalidateToken(token: string): void {
-    const normalizedToken = token.trim();
-    const requests = getRequests();
-
-    const updatedRequests = requests.map((request) =>
-      request.token === normalizedToken
-        ? { ...request, status: "invalidated" as const }
-        : request,
-    );
-
-    saveRequests(updatedRequests);
+    saveRequests(requests.map((item) =>
+      item.id === requestId ? { ...item, status: "blocked" } : item,
+    ));
+    return true;
   },
 };
