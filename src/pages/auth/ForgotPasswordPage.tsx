@@ -11,7 +11,6 @@ function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
-  const [demoToken, setDemoToken] = useState("");
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
@@ -32,8 +31,7 @@ function ForgotPasswordPage() {
       return;
     }
 
-    const request = passwordRecoveryService.createRequest(normalizedEmail);
-    setDemoToken(request.userId ? request.token : `invalid-${request.token}`);
+    passwordRecoveryService.createRequest(normalizedEmail);
     setError("");
     setSubmitted(true);
   };
@@ -63,13 +61,10 @@ function ForgotPasswordPage() {
             </p>
           </div>
 
-          <button
-            className="forgot-password-button forgot-password-button--demo"
-            type="button"
-            onClick={() => navigate(`/reset-password?token=${encodeURIComponent(demoToken)}`)}
-          >
-            Simular enlace de recuperación · Modo demostración
-          </button>
+          <p className="forgot-password-message" role="status">
+            La solicitud quedará pendiente para que el administrador la revise.
+            No se ha enviado ningún correo real.
+          </p>
 
           <button
             className="forgot-password-back forgot-password-back--confirmation"
