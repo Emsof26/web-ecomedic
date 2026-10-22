@@ -746,7 +746,7 @@ function RegisterUltrasoundStudyPage() {
      EXPORTAR INFORME A PDF
      ========================================================= */
 
-  const handleDownloadPdf = () => {
+  const handleDownloadPdf = async () => {
     const validation = validateComplete();
 
     if (validation) {
@@ -769,13 +769,19 @@ function RegisterUltrasoundStudyPage() {
       return;
     }
 
-    downloadUltrasoundReportPdf({
-      patient: patient!,
-      specialty,
-      studyDate: formatStudyDate(studyDate),
-      doctor: doctor || "Profesional de salud",
-      data: getReportData(),
-    });
+    try {
+      await downloadUltrasoundReportPdf({
+        patient: patient!,
+        specialty,
+        studyDate: formatStudyDate(studyDate),
+        doctor: doctor || "Profesional de salud",
+        data: getReportData(),
+      });
+    } catch {
+      setErrorMessage("No se pudo generar el PDF. Revisa los datos e inténtalo nuevamente.");
+      setSavedMessage("");
+      return;
+    }
 
     setSavedMessage(
       "PDF descargado correctamente en tu carpeta de descargas.",
